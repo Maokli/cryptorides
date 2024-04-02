@@ -4,7 +4,7 @@ import { entityType } from '../enum/entityType.enum';
 /**
  * Represents the entity/file association in db.
  */
-@Entity('FileAssignmentsTahle')
+@Entity('FileAssignmentsTable')
 export class FileAssignment {
   @PrimaryGeneratedColumn()
   id: number;
