@@ -1,0 +1,62 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Car {
+  """Unique id of the car"""
+  id: Int!
+  location: String!
+  brand: String!
+  color: String!
+  title: String!
+  rentalPrice: Float!
+  downPayment: Float!
+
+  """Car Owner"""
+  owner: [User!]!
+}
+
+type User {
+  id: Int!
+  name: String!
+  familyName: String!
+  email: String!
+  phoneNumber: String
+  carsCreatedByUser: [Car!]
+  passwordHash: String!
+  passwordSalt: String!
+}
+
+"""Upload files"""
+scalar Upload
+
+type Query {
+  car(id: Int!): Car!
+}
+
+type Mutation {
+  createCar(createCarInput: CreateCarInput!): Car!
+  updateCar(updateCarInput: UpdateCarInput!): Car!
+  removeCar(id: Int!): Car!
+}
+
+input CreateCarInput {
+  location: String!
+  brand: String!
+  color: String!
+  title: String!
+  rentalPrice: Float!
+  downPayment: Float!
+  ownerId: Int!
+}
+
+input UpdateCarInput {
+  location: String
+  brand: String
+  color: String
+  title: String
+  rentalPrice: Float
+  downPayment: Float
+  ownerId: Int
+  id: Int!
+}
