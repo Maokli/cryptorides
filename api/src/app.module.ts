@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './shared/entities/user.entity';
 import { Car } from './shared/entities/car.entity';
 import { FileAssignment } from './shared/entities/fileAssignment.entity';
+import { CarsModule } from './cars/cars.module';
+import { FileAssignementService } from './file-assignement/file-assignement.service';
 
 @Module({
   imports: [
@@ -15,9 +17,10 @@ import { FileAssignment } from './shared/entities/fileAssignment.entity';
       synchronize: true,
       entities: [User, Car, FileAssignment],
     }),
-    SharedModule
+    SharedModule,
+    CarsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, FileAssignementService],
 })
 export class AppModule {}
