@@ -1,0 +1,50 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Car {
+  brand: String!
+  color: String!
+  downPayment: Float!
+  id: ID!
+  location: String!
+  owner: User!
+  rentalPrice: Float!
+  title: String!
+}
+
+input CreateUserInput {
+  passwordHash: String!
+  username: String!
+}
+
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signup(loginUserInput: LoginUserInput!): User!
+}
+
+type Query {
+  user(username: String!): User!
+  users: [User!]!
+}
+
+type User {
+  carsCreatedByUser: [Car!]
+  email: String
+  familyName: String
+  id: ID!
+  name: String
+  phoneNumber: String
+  username: String!
+}
