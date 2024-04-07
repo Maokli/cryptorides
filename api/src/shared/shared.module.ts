@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Car } from './entities/car.entity';
 import { FileAssignment } from './entities/fileAssignment.entity';
+// import { Upload } from './scalars/upload.scalar';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Car, FileAssignment])],
+  imports: [TypeOrmModule.forFeature([User, FileAssignment])],
+  // exports: [Upload, 
+    // nzid nexporti l fileassignment walle? 
+   // ]
 })
 export class SharedModule {}
