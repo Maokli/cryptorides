@@ -1,0 +1,60 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Car {
+  brand: String!
+  color: String!
+  downPayment: Float!
+
+  """Unique id of the car"""
+  id: Int!
+  location: String!
+
+  """Car Owner"""
+  owner: [User!]!
+  rentalPrice: Float!
+  title: String!
+}
+
+input CreateCarInput {
+  brand: String!
+  color: String!
+  downPayment: Float!
+  location: String!
+  ownerId: Int!
+  rentalPrice: Float!
+  title: String!
+}
+
+type Mutation {
+  createCar(createCarInput: CreateCarInput!): Car!
+  removeCar(id: Int!): Car!
+  updateCar(updateCarInput: UpdateCarInput!): Car!
+}
+
+type Query {
+  car(id: Int!): Car!
+}
+
+input UpdateCarInput {
+  brand: String
+  color: String
+  downPayment: Float
+  id: Int!
+  location: String
+  ownerId: Int
+  rentalPrice: Float
+  title: String
+}
+
+type User {
+  carsCreatedByUser: [Car!]
+  email: String!
+  familyName: String!
+  id: Int!
+  name: String!
+  passwordHash: String!
+  passwordSalt: String!
+  phoneNumber: String
+}

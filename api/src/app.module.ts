@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SharedModule } from './shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ConfigModule } from '@nestjs/config';
+import { SharedModule } from './shared/shared.module';
+import { CarModule } from './car/car.module';
+import { Car } from './car/entities/car.entity';
+import { FileAssignmentModule } from './file-assignment/file-assignment.module';
+import { FileAssignment } from './file-assignment/entities/file-assignment.entity';
 import { User } from './shared/entities/user.entity';
-import { Car } from './shared/entities/car.entity';
-import { FileAssignment } from './shared/entities/fileAssignment.entity';
-import { CarsModule } from './cars/cars.module';
-import { FileAssignementService } from './file-assignement/file-assignement.service';
 
 @Module({
   imports: [
@@ -18,9 +21,18 @@ import { FileAssignementService } from './file-assignement/file-assignement.serv
       entities: [User, Car, FileAssignment],
     }),
     SharedModule,
-    CarsModule
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: './schema.gql',
+      sortSchema: true,
+      driver: ApolloDriver,
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    CarModule,
+    FileAssignmentModule,
   ],
   controllers: [AppController],
-  providers: [AppService, FileAssignementService],
+  providers: [AppService],
 })
 export class AppModule {}
