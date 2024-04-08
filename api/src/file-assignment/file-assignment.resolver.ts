@@ -5,7 +5,6 @@ import { FileAssignment } from './entities/file-assignment.entity';
 import { CreateFileAssignmentInput } from './dto/create-file-assignment.input';
 import { UpdateFileAssignmentInput } from './dto/update-file-assignment.input';
 import { entityType } from '../shared/enum/entityType.enum';
-
 @Resolver(() => FileAssignment)
 export class FileAssignmentResolver {
   constructor(private readonly fileAssignmentService: FileAssignmentService) {}

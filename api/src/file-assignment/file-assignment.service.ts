@@ -27,7 +27,7 @@ async create({ elementId, elementType, file }: CreateFileAssignmentInput): Promi
   fileAssignment.elementId = elementId;
   fileAssignment.elementType = elementType;
   const savedFileAssignment = await this.fileAssignmentRepository.save(fileAssignment);
-return savedFileAssignment;
+  return savedFileAssignment;
 }
 
   private generateFileName(): string {
