@@ -1,10 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { entityType } from '../enum/entityType.enum';
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { entityType } from "../enum/entityType.enum";
 
 /**
  * Represents the entity/file association in db.
  */
-@Entity('FileAssignmentsTahle')
+@Entity("FileAssignmentsTahle")
 export class FileAssignment {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,7 +16,7 @@ export class FileAssignment {
    * The id of the entity in the db that has this file.
    * Think of this attribute as a foreign key.
    */
-  @Column({ type: 'integer', nullable: false })
+  @Column({ type: "integer", nullable: false })
   elementId: number;
 
   /**
@@ -25,6 +25,6 @@ export class FileAssignment {
    * should we query on to get the correct element by id.
    * Can also be used as an index to increase query perf.
    */
-  @Column({ type: 'integer', nullable: false, enum: entityType })
+  @Column({ type: "integer", nullable: false, enum: entityType })
   elementType: entityType;
 }

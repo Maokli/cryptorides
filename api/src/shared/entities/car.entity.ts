@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { User } from './user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { ObjectType, Field, ID } from "@nestjs/graphql";
+import { User } from "./user.entity";
 
 @ObjectType()
-@Entity('CarsTahle')
+@Entity("CarsTahle")
 export class Car {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
@@ -28,11 +28,11 @@ export class Car {
   title: string;
 
   @Field()
-  @Column({ type: 'float', nullable: false })
+  @Column({ type: "float", nullable: false })
   rentalPrice: number;
 
   @Field()
-  @Column({ type: 'float', nullable: false })
+  @Column({ type: "float", nullable: false })
   downPayment: number;
 
   @Field(() => User)

@@ -1,27 +1,22 @@
 /* eslint-disable prettier/prettier */
-
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Car } from './car.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { ObjectType, Field, ID } from "@nestjs/graphql";
+import { Car } from "./car.entity";
 
 @ObjectType()
-@Entity('UsersTable')
+@Entity("UsersTable")
 export class User {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
-  @Column({ length: 50, nullable: false })
-  username: string;
-
-  @Field({ nullable: true })
   @Column({ length: 50, nullable: true })
   name: string;
 
   @Field({ nullable: true })
   @Column({ length: 50, nullable: true })
-  familyName: string;
+  FamilyName: string;
 
   @Field({ nullable: true })
   @Column({ length: 255, nullable: true })

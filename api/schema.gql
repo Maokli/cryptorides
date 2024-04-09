@@ -14,8 +14,11 @@ type Car {
 }
 
 input CreateUserInput {
-  passwordHash: String!
-  username: String!
+  FamilyName: String!
+  email: String!
+  name: String!
+  password: String!
+  phoneNumber: String!
 }
 
 type LoginResponse {
@@ -24,27 +27,34 @@ type LoginResponse {
 }
 
 input LoginUserInput {
+  email: String!
   password: String!
-  username: String!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  signup(loginUserInput: LoginUserInput!): User!
+  signup(SignUpUserInput: SignUpUserInput!): User!
 }
 
 type Query {
-  user(username: String!): User!
+  user(email: String!): User!
   users: [User!]!
 }
 
+input SignUpUserInput {
+  email: String!
+  familyName: String!
+  name: String!
+  password: String!
+  phoneNumber: String!
+}
+
 type User {
+  FamilyName: String
   carsCreatedByUser: [Car!]
   email: String
-  familyName: String
   id: ID!
-  name: String
+  name: String!
   phoneNumber: String
-  username: String!
 }

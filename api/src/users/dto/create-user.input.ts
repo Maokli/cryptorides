@@ -1,10 +1,22 @@
 /* eslint-disable prettier/prettier */
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field } from "@nestjs/graphql";
+import { IsEmail, IsNotEmpty, IsString, IsPhoneNumber } from "class-validator";
 @InputType()
 export class CreateUserInput {
   @Field()
-  username: string;
-
+  @IsNotEmpty()
+  @IsString()
+  name: string;
   @Field()
-  passwordHash: string;
+  @IsString()
+  FamilyName: string;
+  @Field()
+  @IsEmail()
+  email: string;
+  @Field()
+  @IsString()
+  password: string;
+  @Field()
+  @IsPhoneNumber()
+  phoneNumber: string;
 }
