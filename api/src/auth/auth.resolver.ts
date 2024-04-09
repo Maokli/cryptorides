@@ -1,24 +1,22 @@
 /* eslint-disable prettier/prettier */
-import { Mutation, Resolver } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
-import { LoginResponse } from './dto/login-response';
-import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from './gql-auth.guard';
-import { LoginUserInput } from './dto/login-user.input';
-import { Args, Context } from '@nestjs/graphql';
-import { User } from 'src/shared/entities/user.entity';
+import { Mutation, Resolver } from "@nestjs/graphql";
+import { AuthService } from "./auth.service";
+import { LoginResponse } from "./dto/login-response";
+import { LoginUserInput } from "./dto/login-user.input";
+import { Args } from "@nestjs/graphql";
+import { User } from "src/shared/entities/user.entity";
+import { SignUpUserInput } from "./dto/sign-up-user";
 @Resolver()
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Mutation(() => LoginResponse)
-  @UseGuards(GqlAuthGuard)
-  login(@Args('loginUserInput') loginUserInput: LoginUserInput, @Context() context) {
-    return this.authService.login(context.user);
+  login(@Args("loginUserInput") loginUserInput: LoginUserInput) {
+    return this.authService.login(loginUserInput);
   }
 
   @Mutation(() => User)
-  signup(@Args('loginUserInput') loginUserInput: LoginUserInput) {
-    return this.authService.signup(loginUserInput);
+  signup(@Args("SignUpUserInput") SignUpUserInput: SignUpUserInput) {
+    return this.authService.signup(SignUpUserInput);
   }
 }
