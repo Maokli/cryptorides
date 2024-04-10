@@ -1,20 +1,19 @@
 /* eslint-disable prettier/prettier */
-
 import { Test, TestingModule } from "@nestjs/testing";
-import { UsersService } from "./users.service";
+import { AuthResolver } from "./auth.resolver";
 
-describe("UsersService", () => {
-  let service: UsersService;
+describe("AuthResolver", () => {
+  let resolver: AuthResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService],
+      providers: [AuthResolver],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    resolver = module.get<AuthResolver>(AuthResolver);
   });
 
   it("should be defined", () => {
-    expect(service).toBeDefined();
+    expect(resolver).toBeDefined();
   });
 });

@@ -10,16 +10,12 @@ export class User {
   id: number;
 
   @Field()
-  @Column({ length: 50, nullable: false })
-  username: string;
-
-  @Field({ nullable: true })
   @Column({ length: 50, nullable: true })
   name: string;
 
   @Field({ nullable: true })
   @Column({ length: 50, nullable: true })
-  familyName: string;
+  FamilyName: string;
 
   @Field({ nullable: true })
   @Column({ length: 255, nullable: true })

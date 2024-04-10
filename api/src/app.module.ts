@@ -1,13 +1,16 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { SharedModule } from './shared/shared.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLModule } from '@nestjs/graphql';
-import { UsersModule } from './users/users.module';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule } from '@nestjs/config';
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { SharedModule } from "./shared/shared.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "./shared/entities/user.entity";
 import { CarModule } from './car/car.module';
+import { FileAssignment } from "./shared/entities/fileAssignment.entity";
+import { GraphQLModule } from "@nestjs/graphql";
+import { AuthModule } from "./auth/auth.module";
+import { UsersModule } from "./users/users.module";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
@@ -26,7 +29,8 @@ import { CarModule } from './car/car.module';
       isGlobal: true}), 
     SharedModule,
     UsersModule,
-    CarModule
+    CarModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
