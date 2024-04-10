@@ -9,6 +9,12 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
+  /**
+   * 
+   * Not recommended to use !!!
+   * Causes problems with next requests
+   * Use signup instead
+   */
   @Mutation(() => User)
   createUser(@Args("createUserInput") createUserInput: CreateUserInput) {
     return this.usersService.create(createUserInput);
@@ -21,6 +27,7 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: "user" })
+  @UseGuards(JwtAuthGuard)
   findOne(@Args("email", { type: () => String }) email: string) {
     return this.usersService.findByEmail(email);
   }

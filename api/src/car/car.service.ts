@@ -3,7 +3,7 @@ import { CreateCarInput } from './dto/create-car.input';
 import { UpdateCarInput } from './dto/update-car.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from './entities/car.entity';
-import { Repository } from 'typeorm';
+import { Repository } from 'typeorm'; 
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
