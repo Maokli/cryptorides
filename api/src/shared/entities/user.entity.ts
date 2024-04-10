@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "@nestjs/graphql";
-import { Car } from "./car.entity";
+import { Car } from "../../car/entities/car.entity";
 
 @ObjectType()
 @Entity("UsersTable")
@@ -30,7 +29,12 @@ export class User {
   @OneToMany(() => Car, (car) => car.owner)
   carsCreatedByUser: Car[];
 
-  // Storing only the password hash in the database
+  /**
+   * A random string of a constant length.
+   * Before hashing the password we concat it with this salt and hash the result.
+   * This is a mechanism to avoid hash collisions.
+   *!!! Storing only the password hash in the database
+   */
   @Column({ nullable: false })
   passwordHash: string;
 }

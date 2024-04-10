@@ -6,10 +6,32 @@ type Car {
   brand: String!
   color: String!
   downPayment: Float!
-  id: ID!
+
+  """Fuel type enum : Gas, Diesel, Electric ..."""
+  fuelType: FuelType!
+
+  """Unique id of the car"""
+  id: Int!
   location: String!
+
+  """Car Owner"""
   owner: User!
   rentalPrice: Float!
+  seatsNumber: Int!
+  title: String!
+}
+
+input CreateCarInput {
+  brand: String!
+  color: String!
+  downPayment: Float!
+
+  """Fuel type enum : Gas, Diesel, Electric ..."""
+  fuelType: FuelType! = Gas
+  location: String!
+  ownerId: Int!
+  rentalPrice: Float!
+  seatsNumber: Int! = 4
   title: String!
 }
 
@@ -19,6 +41,12 @@ input CreateUserInput {
   name: String!
   password: String!
   phoneNumber: String!
+}
+
+enum FuelType {
+  Diesel
+  Electric
+  Gas
 }
 
 type LoginResponse {
@@ -32,12 +60,17 @@ input LoginUserInput {
 }
 
 type Mutation {
+  createCar(createCarInput: CreateCarInput!): Car!
   createUser(createUserInput: CreateUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeCar(id: Int!): Car!
   signup(SignUpUserInput: SignUpUserInput!): User!
+  updateCar(updateCarInput: UpdateCarInput!): Car!
 }
 
 type Query {
+  car(id: Int!): Car!
+  cars: [Car!]!
   user(email: String!): User!
   users: [User!]!
 }
@@ -48,6 +81,21 @@ input SignUpUserInput {
   name: String!
   password: String!
   phoneNumber: String!
+}
+
+input UpdateCarInput {
+  brand: String
+  color: String
+  downPayment: Float
+
+  """Fuel type enum : Gas, Diesel, Electric ..."""
+  fuelType: FuelType = Gas
+  id: Int!
+  location: String
+  ownerId: Int
+  rentalPrice: Float
+  seatsNumber: Int = 4
+  title: String
 }
 
 type User {

@@ -34,7 +34,7 @@ export class AuthService {
       LoginUserInput.password,
     );
     if (!user) {
-      throw new BadRequestException("Invalid credentials")
+      throw new BadRequestException("Invalid credentials");
     }
     return {
       access_token: this.jwtService.sign(
@@ -51,11 +51,12 @@ export class AuthService {
       SignUpUserInput.email,
     );
     if (existingUser) {
-      throw new Error("User already exists")
+      throw new Error("User already exists");
     }
     const hashedPassword = await bcrypt.hash(SignUpUserInput.password, 10);
     return this.usersService.create({
-      email: SignUpUserInput.email,password: hashedPassword,
+      email: SignUpUserInput.email,
+      password: hashedPassword,
       name: SignUpUserInput.name,
       FamilyName: SignUpUserInput.familyName,
       phoneNumber: SignUpUserInput.phoneNumber,

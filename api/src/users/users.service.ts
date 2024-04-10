@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, UseGuards } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateUserInput } from "./dto/create-user.input";
 import { User } from "src/shared/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -22,7 +23,7 @@ export class UsersService {
       passwordHash: password,
     });
 
-    return await this.userRepository.save(newUser); // Save the new user entity to the database
+    return await this.userRepository.save(newUser);
   }
 
   async findAll(): Promise<User[]> {
@@ -31,6 +32,16 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({ where: { email } });
+  }
+
+  async findOneById(id: number): Promise<User | null> {
+    try {
+      const user = await this.userRepository.findOneBy({ id });
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 
   /*** /
