@@ -1,19 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateCarInput } from './dto/create-car.input';
-import { UpdateCarInput } from './dto/update-car.input';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Car } from './entities/car.entity';
-import { Repository } from 'typeorm'; 
-import { UsersService } from 'src/users/users.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreateCarInput } from "./dto/create-car.input";
+import { UpdateCarInput } from "./dto/update-car.input";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Car } from "./entities/car.entity";
+import { Repository } from "typeorm";
+import { UsersService } from "src/users/users.service";
 
 @Injectable()
 export class CarService {
-
   constructor(
     @InjectRepository(Car)
     private readonly carRepository: Repository<Car>,
     private readonly usersService: UsersService,
-  ) { }
+  ) {}
 
   async create(createCarInput: CreateCarInput): Promise<Car> {
     try {
@@ -36,7 +35,7 @@ export class CarService {
 
   async findAll() {
     try {
-      return await this.carRepository.find({ where: {},relations: ['owner'] });
+      return await this.carRepository.find({ where: {}, relations: ["owner"] });
     } catch (error) {
       throw error;
     }
@@ -44,7 +43,10 @@ export class CarService {
 
   async findOne(id: number) {
     try {
-      const car = await this.carRepository.findOne({ where: { id }, relations: ['owner'] });
+      const car = await this.carRepository.findOne({
+        where: { id },
+        relations: ["owner"],
+      });
       if (!car) {
         throw new NotFoundException(`Car with ID ${id} not found`);
       }
@@ -64,7 +66,10 @@ export class CarService {
 
       await this.carRepository.update(id, updateCarInput);
 
-      const updatedCar = await this.carRepository.findOne({ where: { id }, relations: ['owner'] });
+      const updatedCar = await this.carRepository.findOne({
+        where: { id },
+        relations: ["owner"],
+      });
 
       return updatedCar;
     } catch (error) {
@@ -74,7 +79,10 @@ export class CarService {
 
   async remove(id: number) {
     try {
-      const carToRemove = await this.carRepository.findOne({ where: { id }, relations: ['owner'] });
+      const carToRemove = await this.carRepository.findOne({
+        where: { id },
+        relations: ["owner"],
+      });
       if (!carToRemove) {
         throw new NotFoundException(`Car with ID ${id} not found`);
       }
@@ -86,5 +94,4 @@ export class CarService {
       throw error;
     }
   }
-
 }

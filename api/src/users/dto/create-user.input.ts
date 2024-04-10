@@ -4,7 +4,6 @@ import { IsEmail, IsNotEmpty, IsString, IsPhoneNumber } from "class-validator";
 
 @InputType()
 export class CreateUserInput {
-
   @Field()
   @IsNotEmpty()
   @IsString()
@@ -21,9 +20,8 @@ export class CreateUserInput {
   @Field()
   @IsString()
   password: string;
-  
+
   @Field()
   @IsPhoneNumber()
   phoneNumber: string;
-
 }

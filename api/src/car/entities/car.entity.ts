@@ -1,13 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
-import { User } from '../../shared/entities/user.entity';
-import { fuelType } from '../enum/fuelType.enum';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
+import { User } from "../../shared/entities/user.entity";
+import { fuelType } from "../enum/fuelType.enum";
 
 @ObjectType()
-@Entity('CarsTable')
+@Entity("CarsTable")
 export class Car {
-
-  @Field(() => Int, { description: 'Unique id of the car' })
+  @Field(() => Int, { description: "Unique id of the car" })
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -28,22 +27,25 @@ export class Car {
   title: string;
 
   @Field(() => Float, { nullable: false })
-  @Column({ type: 'float', nullable: false })
+  @Column({ type: "float", nullable: false })
   rentalPrice: number;
 
   @Field(() => Float, { nullable: false })
-  @Column({ type: 'float', nullable: false })
+  @Column({ type: "float", nullable: false })
   downPayment: number;
 
   @Field(() => Int, { nullable: false })
-  @Column({ type: 'integer', nullable: false })
+  @Column({ type: "integer", nullable: false })
   seatsNumber: number;
 
-  @Field(() => fuelType,{description: 'Fuel type enum : Gas, Diesel, Electric ...', nullable: false })
+  @Field(() => fuelType, {
+    description: "Fuel type enum : Gas, Diesel, Electric ...",
+    nullable: false,
+  })
   @Column({ nullable: false, enum: fuelType })
   fuelType: fuelType;
 
-  @Field(() => User, {description: 'Car Owner', nullable: false})
+  @Field(() => User, { description: "Car Owner", nullable: false })
   @ManyToOne(() => User, (user) => user.carsCreatedByUser)
-  owner: User
+  owner: User;
 }

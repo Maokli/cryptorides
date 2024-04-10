@@ -10,7 +10,7 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   /**
-   * 
+   *
    * Not recommended to use !!!
    * Causes problems with next requests
    * Use signup instead
