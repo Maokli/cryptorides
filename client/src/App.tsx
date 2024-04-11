@@ -1,17 +1,43 @@
 import React from 'react';
-import BasicDatePicker from './components/DateRange';
-import Search from './components/SearchBar';
-import RangeSlider from './components/RangePrice'
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Search/>
-        <BasicDatePicker />
-        <RangeSlider/>
-      </header>
+import './App.css';
+import CarCard from './components/car-card.component';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@emotion/react';
 
-    </div>
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#3563e9',
+      dark: '#002884',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
+    },
+    text: {
+      primary: '#1a202c',
+      secondary: '#90a3bf'
+    }
+  },
+  typography: {
+    allVariants: {
+      color: "#1a202c"
+    }
+  }
+});
+
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <div className="App" style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100vh"}}>
+        <CarCard></CarCard>
+      </div>
+    </ThemeProvider>
   );
 }
 
