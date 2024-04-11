@@ -17,8 +17,18 @@ type Car {
   """Car Owner"""
   owner: User!
   rentalPrice: Float!
+  rentalscars: Rentalcar!
   seatsNumber: Int!
   title: String!
+}
+
+input CarFilter {
+  availabilityFrom: DateTime
+  availabilityTo: DateTime
+  maxDownPayment: Float
+  maxPrice: Float = 5000
+  minDownPayment: Float
+  minPrice: Float = 50
 }
 
 input CreateCarInput {
@@ -35,6 +45,12 @@ input CreateCarInput {
   title: String!
 }
 
+input CreateRentalcarInput {
+  carId: Int!
+  reservedfrom: DateTime!
+  reservedto: DateTime!
+}
+
 input CreateUserInput {
   FamilyName: String!
   email: String!
@@ -42,6 +58,11 @@ input CreateUserInput {
   password: String!
   phoneNumber: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 enum FuelType {
   Diesel
@@ -61,6 +82,7 @@ input LoginUserInput {
 
 type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
+  createRentalcar(input: CreateRentalcarInput!): Rentalcar!
   createUser(createUserInput: CreateUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
@@ -71,8 +93,17 @@ type Mutation {
 type Query {
   car(id: Int!): Car!
   cars: [Car!]!
+  filteredCars(filter: CarFilter): [Car!]!
+  searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   users: [User!]!
+}
+
+type Rentalcar {
+  car: Car!
+  id: Int!
+  reservedfrom: DateTime!
+  reservedto: DateTime!
 }
 
 input SignUpUserInput {
@@ -104,5 +135,6 @@ type User {
   email: String
   id: ID!
   name: String!
+  passwordHash: String!
   phoneNumber: String
 }

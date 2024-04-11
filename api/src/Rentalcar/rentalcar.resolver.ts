@@ -1,32 +1,44 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { RentalCarService } from './rentalcar.service';
 import { Rentalcar } from './entities/rentalcar.entity';
-import { CarFilter } from './car.filter';
-import { Car } from '../shared/entities/car.entity';
-
+import { CarFilter } from './dto/car.filter';
+import { Car } from '../car/entities/car.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateRentalcarInput } from './dto/create-rentalcar.input';
+import { JwtModule } from '@nestjs/jwt';
+import { Validate, validate } from 'class-validator';
 @Resolver(() => Rentalcar)
 export class RentalcarResolver {
 
 
-  constructor(private readonly rentalcarService: RentalCarService) {}
+  constructor(private readonly rentalcarService: RentalCarService) { }
 
-  
-  
-  @Query( ()=> [Car] )
-  async filteredCars(@Args('filter', { nullable: true }) filter: CarFilter){
 
-    
-       return await this.rentalcarService.filterCars(filter);
- }
 
- @Query(()=> [Car])
- async searchCars(@Args('searchInput') searchInput: string,
- ): Promise<Car[]> {
-     return await this.rentalcarService.searchCars(searchInput);
- }
- 
 
-  
- 
-  
+  @Mutation(() => Rentalcar)
+  @UseGuards(JwtModule)
+  async createRentalcar(@Args('input')input: CreateRentalcarInput): Promise<Rentalcar> {
+    return this.rentalcarService.create(input);
+  }
+
+  @Query(() => [Car])
+  @UseGuards(JwtAuthGuard)
+  async filteredCars(@Args('filter', { nullable: true }) filter: CarFilter) {
+
+
+    return await this.rentalcarService.filterCars(filter);
+  }
+  @Query(() => [Car])
+  @UseGuards(JwtAuthGuard)
+  async searchCars(@Args('searchInput') searchInput: string,
+  ): Promise<Car[]> {
+    return await this.rentalcarService.searchCars(searchInput);
+  }
+
+
+
+
+
 }

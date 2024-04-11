@@ -56,6 +56,15 @@ export class CarService {
       throw error;
     }
   }
+  async findOneById(id: number): Promise<Car | null> {
+    try {
+      const car = await this.carRepository.findOneBy({ id });
+      return car;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 
   async update(id: number, updateCarInput: UpdateCarInput) {
     try {

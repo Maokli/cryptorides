@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CarFilter } from './car.filter';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CarFilter } from './dto/car.filter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Car } from '../shared/entities/car.entity';
+import { Car } from '../car/entities/car.entity';
 import { Repository } from 'typeorm';
 import { Rentalcar } from './entities/rentalcar.entity';
+import { CreateRentalcarInput } from './dto/create-rentalcar.input';
+import { CarService } from '../car/car.service';
 
 
 @Injectable()
@@ -13,11 +15,29 @@ export class RentalCarService {
     @InjectRepository(Car)
     private readonly carrepository: Repository<Car>,
     @InjectRepository(Rentalcar)
-    private readonly rentalcarrepository : Repository<Rentalcar>
-    
+    private readonly rentalcarrepository : Repository<Rentalcar>,
+    private readonly carService : CarService 
     ){}
-
+ 
+    async create(input: CreateRentalcarInput): Promise<Rentalcar> {
+      try {
+        const { carId, ...rentalData } = input;
+        const car = await this.carService.findOneById(carId);
+        if (!car) {
+          throw new NotFoundException(`Owner with ID ${carId} not found`);
+        }
   
+        const rentalcar = this.rentalcarrepository.create({
+          ...rentalData,
+          car,
+        });
+  
+        return this.rentalcarrepository.save(rentalcar);
+      } catch (error) {
+        throw error;
+      }
+    }
+
   async filterCars(filter: CarFilter): Promise<Car[]>{
     
     let query=this.carrepository.createQueryBuilder('car');

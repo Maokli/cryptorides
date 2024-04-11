@@ -8,5 +8,6 @@ import { UsersModule } from "../users/users.module";
 @Module({
   providers: [CarResolver, CarService],
   imports: [TypeOrmModule.forFeature([Car]), UsersModule],
+  exports :[CarService]
 })
 export class CarModule {}
