@@ -12,12 +12,7 @@ import { ConfigModule } from "@nestjs/config";
 import { RentalcarModule } from './Rentalcar/rentalcar.module';
 
 @Module({
-  imports: [ GraphQLModule.forRoot<ApolloDriverConfig>({
-    driver: ApolloDriver,
-    //zid pathhhh
-    autoSchemaFile: true,
-
-  }),
+  imports: [
     TypeOrmModule.forRoot({
       type: "sqlite",
       database: "db/sql",
