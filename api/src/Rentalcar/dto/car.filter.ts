@@ -3,10 +3,10 @@ import { IsOptional } from 'class-validator';
 
 @InputType()
 export class CarFilter {
-  @Field({ nullable: true })
+  @Field(() => Date,{ nullable: true })
   availabilityFrom: Date;
 
-  @Field({ nullable: true })
+  @Field(() => Date,{ nullable: true })
   availabilityTo: Date;
 
   @Field(() => Float, { nullable: true })

@@ -4,28 +4,28 @@ import { Car } from '../../car/entities/car.entity';
 
 @ObjectType()
 @Entity("CarRentalTable")
-export class Rentalcar  {
-  
-   @Field(()=>Int)
-   @PrimaryGeneratedColumn()
-   id: number;
+export class Rentalcar {
 
-   @Field(()=>Date)
-   @Column()
-   reservedfrom : Date;
+  @Field()
+  @PrimaryGeneratedColumn()
+  id: number;
 
-   @Field(()=>Date)
-   @Column()
-   reservedto :Date;
+  @Field(() => Date)
+  @Column()
+  reservedfrom: Date;
 
-
-  @Field(()=>Car)
-  @ManyToOne((car)=>Car,(car) =>car.rentalscars)
-  car : Car;
+  @Field(() => Date)
+  @Column({ type: 'datetime' })
+  reservedto: Date;
 
 
+  @Field(() => Car)
+  @ManyToOne((car) => Car, (car) => car.rentalscars)
+  car: Car;
 
-   
+
+
+
 
 
 

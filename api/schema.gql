@@ -17,7 +17,7 @@ type Car {
   """Car Owner"""
   owner: User!
   rentalPrice: Float!
-  rentalscars: Rentalcar!
+  rentalscars: Rentalcar
   seatsNumber: Int!
   title: String!
 }
@@ -84,6 +84,7 @@ type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
   createRentalcar(input: CreateRentalcarInput!): Rentalcar!
   createUser(createUserInput: CreateUserInput!): User!
+  deleteRentalcarByCarId(carId: Float!): String!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
   signup(SignUpUserInput: SignUpUserInput!): User!
@@ -94,6 +95,7 @@ type Query {
   car(id: Int!): Car!
   cars: [Car!]!
   filteredCars(filter: CarFilter): [Car!]!
+  rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   users: [User!]!
@@ -101,7 +103,7 @@ type Query {
 
 type Rentalcar {
   car: Car!
-  id: Int!
+  id: Float!
   reservedfrom: DateTime!
   reservedto: DateTime!
 }

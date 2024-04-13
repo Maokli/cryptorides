@@ -50,7 +50,7 @@ export class Car {
   @ManyToOne(() => User, (user) => user.carsCreatedByUser)
   owner: User;
   
-  @Field(()=>Rentalcar)
+  @Field(()=>Rentalcar,{nullable: true})
   @OneToMany(()=>Rentalcar,(rentalcar)=>rentalcar.car)
   rentalscars: Rentalcar[];
 }
