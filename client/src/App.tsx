@@ -5,7 +5,7 @@ import { ThemeProvider } from '@emotion/react';
 import CarGrid from './components/car-grid.component';
 import { Car } from './models/car.model';
 import { Route, Routes, redirect } from 'react-router-dom';
-import { isAuthenticated } from './helpers/auth.helper';
+import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import NotFoundPage from './pages/shared/notFound.page';
 

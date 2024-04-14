@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, redirect } from 'react-router-dom';
 import BrowseCarsPage from './browse-cars.page';
-import { isAuthenticated } from '../../helpers/auth.helper';
+import { isAuthenticated } from '../../helpers/auth.helpers';
 import NotFoundPage from '../shared/notFound.page';
 
 function MainAppWrapper() {
