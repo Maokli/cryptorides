@@ -1,16 +1,16 @@
+/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from "@nestjs/testing";
-import { CarResolver } from "./car.resolver";
-import { CarService } from "./car.service";
+import { AuthResolver } from "./auth.resolver";
 
-describe("CarResolver", () => {
-  let resolver: CarResolver;
+describe("AuthResolver", () => {
+  let resolver: AuthResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CarResolver, CarService],
+      providers: [AuthResolver],
     }).compile();
 
-    resolver = module.get<CarResolver>(CarResolver);
+    resolver = module.get<AuthResolver>(AuthResolver);
   });
 
   it("should be defined", () => {

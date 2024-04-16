@@ -1,15 +1,25 @@
 import React, { ChangeEvent, useState } from "react";
+import { Button, Avatar, Box } from "@mui/material";
+import { styled } from "@mui/system";
+import CloseIcon from '@mui/icons-material/Close';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
 interface PictureUploadProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onDiscard: () => void;
   required?: boolean;
+  error?: boolean;
 }
+
+const Input = styled('input')({
+  display: 'none',
+});
 
 const PictureUpload: React.FC<PictureUploadProps> = ({
   onChange,
   onDiscard,
   required,
+  error: boolean,
 }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -24,7 +34,6 @@ const PictureUpload: React.FC<PictureUploadProps> = ({
       setPreviewUrl(imageUrl);
     }
   };
-  
 
   const handleDiscard = () => {
     setPreviewUrl(null);
@@ -34,32 +43,33 @@ const PictureUpload: React.FC<PictureUploadProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-64 h-64 p-8 bg-gray-100 rounded-xl relative">
-  {previewUrl ? (
-    <>
-      <img src={previewUrl} alt="Preview" className="w-48 h-48 object-cover" />
-      <button onClick={handleDiscard} className="absolute top-2 right-2 text-red-500">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" stroke="#85A8F8" />
-        </svg>
-      </button>
-    </>
-  ) : (
-    <label className="cursor-pointer">
-      <img src="images/gallery.svg" alt="Upload Icon" className="w-32 h-32 mb-4" />
-      <input
-        type="file"
-        accept="image/*"
-        required={required}
-        onChange={(e) => {
-          handleImagePreview(e);
-          onChange(e);
-        }}
-        className="hidden"
-      />
-    </label>
-  )}
-</div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: 256, height: 256, p: 2, bgcolor: 'grey.100', borderRadius: 'borderRadius', position: 'relative' }}>
+
+      {previewUrl ? (
+        <>
+          <Avatar src={previewUrl} alt="Preview" sx={{ width: 192, height: 192 }} />
+          <Button onClick={handleDiscard} sx={{ position: 'absolute', top: 8, right: 8, color: 'red' }}>
+            <CloseIcon />
+          </Button>
+        </>
+      ) : (
+        <label htmlFor="contained-button-file">
+          <Input
+            accept="image/*"
+            id="contained-button-file"
+            type="file"
+            onChange={(e) => {
+              handleImagePreview(e);
+              onChange(e);
+            }}
+          />
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <PhotoLibraryIcon sx={{ fontSize: 48, color: 'primary.main' }} />
+            <Box sx={{ mt: 1, color: 'text.primary' }}>Click to select an image</Box>
+          </Box>
+        </label>
+      )}
+    </Box>
   );
 };
 

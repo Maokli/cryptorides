@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from "react";
+import { TextField } from "@mui/material";
 
 interface LabeledInputProps {
   label: string;
@@ -20,23 +21,18 @@ const LabeledInput: React.FC<LabeledInputProps> = ({ label, placeholder, value, 
   };
 
   return (
-    <div className="flex flex-col leading-[150%] max-w-[700px]">
-      <label htmlFor={`${name}-input`} className="w-full text-base font-semibold tracking-tight text-gray-900">
-        {label}
-        <div className="relative w-[650px]">
-          <input
-            id={`${name}-input`}
-            type="text"
-            placeholder={placeholder}
-            value={value}
-            onChange={handleInputChange}
-            name={name}
-            required={required}
-            className="justify-center items-start px-10 py-6 mt-4 w-full text-sm font-medium tracking-tight rounded-xl bg-gray-100 text-gray-900"
-          />
-        </div>
-      </label>
-    </div>
+    <TextField
+      id={`${name}-input`}
+      label={label}
+      placeholder={placeholder}
+      value={value}
+      onChange={handleInputChange}
+      name={name}
+      required={required}
+      variant="outlined"
+      fullWidth
+      type={numeric ? "number" : "text"}
+    />
   );
 };
 

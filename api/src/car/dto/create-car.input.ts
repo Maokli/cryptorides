@@ -1,5 +1,13 @@
-import { InputType, Field, Float, Int } from '@nestjs/graphql';
-import { IsNotEmpty, IsString, IsNumber, IsOptional, Min } from 'class-validator';
+import { InputType, Field, Float, Int } from "@nestjs/graphql";
+import {
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  IsOptional,
+  Min,
+  IsEnum,
+} from "class-validator";
+import { fuelType } from "../enum/fuelType.enum";
 
 @InputType()
 export class CreateCarInput {
@@ -34,6 +42,18 @@ export class CreateCarInput {
   @IsNumber()
   @Min(0)
   downPayment: number;
+
+  @Field(() => Int)
+  @IsOptional()
+  @Min(1)
+  seatsNumber: number = 4;
+
+  @Field(() => fuelType, {
+    description: "Fuel type enum : Gas, Diesel, Electric ...",
+  })
+  @IsOptional()
+  @IsEnum(fuelType)
+  fuelType: fuelType = fuelType.Gas;
 
   @Field(() => Int, { nullable: false })
   @IsNotEmpty()

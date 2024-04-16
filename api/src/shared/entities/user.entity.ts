@@ -1,24 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Car } from '../../car/entities/car.entity';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { ObjectType, Field, ID } from "@nestjs/graphql";
+import { Car } from "../../car/entities/car.entity";
 
 @ObjectType()
-@Entity('UsersTable')
+@Entity("UsersTable")
 export class User {
-  @Field(() => Int)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ nullable: false })
-  @Column({ length: 50, nullable: false })
+  @Field()
+  @Column({ length: 50, nullable: true })
   name: string;
 
-  @Field({ nullable: false })
-  @Column({ length: 50, nullable: false})
-  familyName: string;
+  @Field({ nullable: true })
+  @Column({ length: 50, nullable: true })
+  FamilyName: string;
 
-  @Field({ nullable: false })
-  @Column({ length: 255, nullable: false })
+  @Field({ nullable: true })
+  @Column({ length: 255, nullable: true })
   email: string;
 
   @Field({ nullable: true })
@@ -30,19 +30,12 @@ export class User {
   carsCreatedByUser: Car[];
 
   /**
-   * The hash of the password.
-   * To identify a correct login we should compare hashes not raw passwords.
+   * A random string of a constant length.
+   * Before hashing the password we concat it with this salt and hash the result.
+   * This is a mechanism to avoid hash collisions.
+   *!!! Storing only the password hash in the database
    */
   @Field({ nullable: false })
   @Column({ nullable: false })
   passwordHash: string;
-
-  /**
-   * A random string of a constant length.
-   * Before hashing the password we concat it with this salt and hash the result.
-   * This is a mechanism to avoid hash collisions.
-   */
-  @Field({ nullable: false })
-  @Column({ nullable: false })
-  passwordSalt: string;
 }
