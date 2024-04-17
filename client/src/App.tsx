@@ -3,7 +3,7 @@ import './App.css';
 import CarRentalForm from './CarRentForm';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-
+import CarGrid from './components/car-list-page';
 const theme = createTheme({
   palette: {
     primary: {
@@ -32,9 +32,11 @@ const theme = createTheme({
 
 function App() {
   return (
+    
     <ThemeProvider theme={theme}>
       <div className="App" style={{ backgroundColor: 'lightgrey', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <CarRentalForm />
+
       </div>
     </ThemeProvider>
   );
