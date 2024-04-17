@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
 import { User } from "../../shared/entities/user.entity";
 import { fuelType } from "../enum/fuelType.enum";
@@ -49,8 +55,8 @@ export class Car {
   @Field(() => User, { description: "Car Owner", nullable: false })
   @ManyToOne(() => User, (user) => user.carsCreatedByUser)
   owner: User;
-  
-  @Field(()=>Rentalcar,{nullable: true})
-  @OneToMany(()=>Rentalcar,(rentalcar)=>rentalcar.car)
+
+  @Field(() => Rentalcar, { nullable: true })
+  @OneToMany(() => Rentalcar, (rentalcar) => rentalcar.car)
   rentalscars: Rentalcar[];
 }

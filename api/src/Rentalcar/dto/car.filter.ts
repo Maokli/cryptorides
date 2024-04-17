@@ -1,12 +1,12 @@
-import { InputType, Field, Float } from '@nestjs/graphql';
-import { IsOptional } from 'class-validator';
+import { InputType, Field, Float } from "@nestjs/graphql";
+import { IsOptional } from "class-validator";
 
 @InputType()
 export class CarFilter {
-  @Field(() => Date,{ nullable: true })
+  @Field(() => Date, { nullable: true })
   availabilityFrom: Date;
 
-  @Field(() => Date,{ nullable: true })
+  @Field(() => Date, { nullable: true })
   availabilityTo: Date;
 
   @Field(() => Float, { nullable: true })
