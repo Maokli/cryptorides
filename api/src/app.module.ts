@@ -9,6 +9,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
+import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ConfigModule } from "@nestjs/config";
       isGlobal: true,
     }),
     SharedModule,
+    RentalcarModule,
     UsersModule,
     CarModule,
     AuthModule,
