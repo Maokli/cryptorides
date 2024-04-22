@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import CarRentalForm from './CarRentForm';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import CarGrid from './components/car-list-page';
+import CarGrid from './components/car-grid.component';
+import { Car } from './models/car.model';
+import { Route, Routes, redirect } from 'react-router-dom';
+import { isAuthenticated } from './helpers/auth.helpers';
+import MainAppWrapper from './pages/app/mainApp.wrapper';
+import NotFoundPage from './pages/shared/notFound.page';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,15 +36,33 @@ const theme = createTheme({
 });
 
 function App() {
-  return (
-    
-    <ThemeProvider theme={theme}>
-      <div className="App" style={{ backgroundColor: 'lightgrey', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CarRentalForm />
 
-      </div>
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    setIsLoggedIn(isAuthenticated());
+  }, [])
+
+  return (
+    <ThemeProvider theme={theme}>
+      {/* Routes that will be active when user is not logged in*/}
+      {
+        !isLoggedIn && 
+        <Routes>
+          <Route path='/' element={<h1>Home Page</h1>}/>
+          <Route path='/login' element={<h1>Login Page</h1>}/>
+          <Route path='/signup' element={<h1>Signup Page</h1>}/>
+          <Route path="*" element={<NotFoundPage/>}></Route>
+        </Routes>
+      }
+      
+      {/* Routes that will be active when user is logged in*/}
+      {
+        isLoggedIn && 
+        <MainAppWrapper></MainAppWrapper>
+      }
+
     </ThemeProvider>
-  );
+  )
 }
 
 export default App;

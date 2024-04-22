@@ -17,8 +17,18 @@ type Car {
   """Car Owner"""
   owner: User!
   rentalPrice: Float!
+  rentalscars: Rentalcar
   seatsNumber: Int!
   title: String!
+}
+
+input CarFilter {
+  availabilityFrom: DateTime
+  availabilityTo: DateTime
+  maxDownPayment: Float
+  maxPrice: Float = 5000
+  minDownPayment: Float
+  minPrice: Float = 50
 }
 
 input CreateCarInput {
@@ -33,6 +43,12 @@ input CreateCarInput {
   rentalPrice: Float!
   seatsNumber: Int! = 4
   title: String!
+}
+
+input CreateRentalcarInput {
+  carId: Int!
+  reservedfrom: DateTime!
+  reservedto: DateTime!
 }
 
 input CreateUserInput {
@@ -78,6 +94,7 @@ type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
   createFileAssignment(elementId: Int!, elementType: EntityType!, fileUrl: String!): FileAssignment!
   createUser(createUserInput: CreateUserInput!): User!
+  deleteRentalcarByCarId(carId: Float!): String!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
   removeFileAssignment(id: Int!): FileAssignment!
@@ -92,6 +109,13 @@ type Query {
   fileAssignment(id: Int!): FileAssignment!
   user(email: String!): User!
   users: [User!]!
+}
+
+type Rentalcar {
+  car: Car!
+  id: Float!
+  reservedfrom: DateTime!
+  reservedto: DateTime!
 }
 
 input SignUpUserInput {
@@ -130,6 +154,7 @@ type User {
   email: String
   id: ID!
   name: String!
+  passwordHash: String!
   passwordHash: String!
   phoneNumber: String
 }

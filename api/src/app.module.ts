@@ -11,6 +11,7 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
 import { FileAssignmentModule } from "./file-assignment/file-assignment.module";
 import { FileAssignmentController } from "./file-assignment/file-assignment.controller";
+import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { FileAssignmentController } from "./file-assignment/file-assignment.cont
       isGlobal: true,
     }),
     SharedModule,
+    RentalcarModule,
     UsersModule,
     CarModule,
     FileAssignmentModule,

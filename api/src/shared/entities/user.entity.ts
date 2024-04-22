@@ -35,7 +35,7 @@ export class User {
    * This is a mechanism to avoid hash collisions.
    *!!! Storing only the password hash in the database
    */
-  @Field({ nullable: false })
+  @Field()
   @Column({ nullable: false })
   passwordHash: string;
 }
