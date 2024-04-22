@@ -9,6 +9,8 @@ import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
+import { FileAssignmentModule } from "./file-assignment/file-assignment.module";
+import { FileAssignmentController } from "./file-assignment/file-assignment.controller";
 
 @Module({
   imports: [
@@ -29,9 +31,10 @@ import { ConfigModule } from "@nestjs/config";
     SharedModule,
     UsersModule,
     CarModule,
+    FileAssignmentModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, FileAssignmentController],
   providers: [AppService],
 })
 export class AppModule {}

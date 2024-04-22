@@ -43,6 +43,21 @@ input CreateUserInput {
   phoneNumber: String!
 }
 
+enum EntityType {
+  Car
+  User
+}
+
+type FileAssignment {
+  """Id of the entity that has this file"""
+  elementId: Int!
+
+  """Element type enum : Car (1), User (1 << 1) ..."""
+  elementType: EntityType!
+  fileUrl: String!
+  id: Int!
+}
+
 enum FuelType {
   Diesel
   Electric
@@ -61,16 +76,20 @@ input LoginUserInput {
 
 type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
+  createFileAssignment(elementId: Int!, elementType: EntityType!, fileUrl: String!): FileAssignment!
   createUser(createUserInput: CreateUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
+  removeFileAssignment(id: Int!): FileAssignment!
   signup(SignUpUserInput: SignUpUserInput!): User!
   updateCar(updateCarInput: UpdateCarInput!): Car!
+  updateFileAssignment(updateFileAssignmentInput: UpdateFileAssignmentInput!): FileAssignment!
 }
 
 type Query {
   car(id: Int!): Car!
   cars: [Car!]!
+  fileAssignment(id: Int!): FileAssignment!
   user(email: String!): User!
   users: [User!]!
 }
@@ -98,11 +117,19 @@ input UpdateCarInput {
   title: String
 }
 
+input UpdateFileAssignmentInput {
+  elementId: Int
+  elementType: EntityType
+  fileUrl: String
+  id: Int!
+}
+
 type User {
   FamilyName: String
   carsCreatedByUser: [Car!]
   email: String
   id: ID!
   name: String!
+  passwordHash: String!
   phoneNumber: String
 }

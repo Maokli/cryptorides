@@ -1,13 +1,13 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
-import { GraphQLUpload } from 'graphql-upload';
-import { FileUpload } from 'graphql-upload';
 import { entityType } from '../../shared/enum/entityType.enum';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 @InputType()
 export class CreateFileAssignmentInput {
-  @Field(() => GraphQLUpload, { nullable: false })
-  file: Promise<FileUpload>;
+  @Field(() => String, { nullable: false })
+  @IsNotEmpty()
+  @IsString()
+  fileUrl: string;
 
   @Field(() => Int, { nullable: false })
   @IsNotEmpty()
