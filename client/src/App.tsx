@@ -8,7 +8,10 @@ import { Route, Routes, redirect } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import NotFoundPage from './pages/shared/notFound.page';
-
+import LoginForm  from  './components/loginForm';
+import SignUpForm  from './components/signupForm';
+import { ApolloProvider } from "@apollo/react-hooks";
+import client from './apolloclient'; 
 const theme = createTheme({
   palette: {
     primary: {
@@ -46,13 +49,17 @@ function App() {
     <ThemeProvider theme={theme}>
       {/* Routes that will be active when user is not logged in*/}
       {
+          <ApolloProvider client ={client}>
         !isLoggedIn && 
         <Routes>
+        
           <Route path='/' element={<h1>Home Page</h1>}/>
-          <Route path='/login' element={<h1>Login Page</h1>}/>
-          <Route path='/signup' element={<h1>Signup Page</h1>}/>
+          <Route path='/login' element={<LoginForm />}/>
+          <Route path='/signup' element={<SignUpForm/>}/>
           <Route path="*" element={<NotFoundPage/>}></Route>
+         
         </Routes>
+        </ApolloProvider>
       }
       
       {/* Routes that will be active when user is logged in*/}

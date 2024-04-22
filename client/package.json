@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.9.11",
+    "@apollo/react-hooks": "^4.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.12",
@@ -19,6 +21,7 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "dayjs": "^1.11.10",
+    "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",
@@ -30,7 +33,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=3333 && react-scripts start",
+    "start": "npm start:client",
+    "start:client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -54,11 +58,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-swipeable-views": "^0.13.5",
-    "@types/react-swipeable-views-utils": "^0.13.7"
-  },
-  "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/react-datepicker": "^6.2.0"
+    "@types/react-datepicker": "^6.2.0",
+    "@types/react-swipeable-views": "^0.13.5"
   }
 }
