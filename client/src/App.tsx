@@ -7,11 +7,17 @@ import { Car } from './models/car.model';
 import { Route, Routes, redirect } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
+import LandingPage from './pages/app/LandingPage';
 import NotFoundPage from './pages/shared/notFound.page';
 import LoginForm  from  './components/loginForm';
 import SignUpForm  from './components/signupForm';
+import Navbar  from './components/Navbar';
 import { ApolloProvider } from "@apollo/react-hooks";
 import client from './apolloclient'; 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './index.css'; 
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -47,27 +53,17 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* Routes that will be active when user is not logged in*/}
-      {
-          <ApolloProvider client ={client}>
-        !isLoggedIn && 
+      <ToastContainer /> {/* Add ToastContainer here */}
+      <ApolloProvider client={client}>
         <Routes>
-        
-          <Route path='/' element={<h1>Home Page</h1>}/>
+          <Route path='/navbar' element={<Navbar  />} />
+          <Route path='/' element={<LandingPage />}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
-          <Route path="*" element={<NotFoundPage/>}></Route>
-         
+          <Route path="/notfound" element={<NotFoundPage/>}></Route>
         </Routes>
-        </ApolloProvider>
-      }
-      
-      {/* Routes that will be active when user is logged in*/}
-      {
-        isLoggedIn && 
-        <MainAppWrapper></MainAppWrapper>
-      }
-
+      </ApolloProvider>
+      {isLoggedIn && <MainAppWrapper />}
     </ThemeProvider>
   )
 }
