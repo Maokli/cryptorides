@@ -10,6 +10,7 @@
     "@fontsource/roboto": "^5.0.12",
     "@govuk-react/search-box": "^0.10.6",
     "@mui/icons-material": "^5.15.15",
+    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.15",
     "@mui/styles": "^5.15.15",
     "@mui/x-date-pickers": "^7.1.1",
