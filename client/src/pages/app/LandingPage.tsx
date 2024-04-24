@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import Navbar from '../../components/Navbar';
 import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
+import BasicDateTimeRangePicker from '../../components/calender';
 import { Link as ScrollLink } from 'react-scroll';
 
 interface SectionBoxProps {
@@ -47,9 +48,7 @@ const LandingPage: React.FC = () => {
             </SectionBox>
             {/* Other sections */}
             <SectionBox>
-                <Typography variant="h2" gutterBottom id="fleet">
-                    Vehicle Fleet Section
-                </Typography>
+                < BasicDateTimeRangePicker/>
                 <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
                     {/* Content for Vehicle Fleet section */}
                 </Box>
