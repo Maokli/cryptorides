@@ -5,6 +5,36 @@ import landing from '../../assets/images/landing.png';
 import BasicDateTimeRangePicker from '../../components/calender';
 import VehiculeFleet from '../../components/vehiculeFleet';
 import { Link as ScrollLink , Element } from 'react-scroll';
+import { Car } from '../../models/car.model';
+
+
+const images = [
+    {
+        url:
+            'https://i.ytimg.com/vi/1HAACt8gmE0/maxresdefault.jpg',
+        },
+      {
+        url:
+          'https://fdm.dk/sites/default/files/d6images/07-bpv-toyotagt86-002.jpg',
+    },{
+        url : '../'
+    }
+]
+const cars: Car[] = [
+    {
+      id: 1,
+      location: "New York",
+      brand: "Range",
+      color: "Blue",
+      title: "The Range",
+      fuelType: "Petrol",
+      seats: 5,
+      rentalPrice: 500,
+      downPayment: 1000,
+      images: images
+    }
+]
+
 
 interface SectionBoxProps {
     children: ReactNode;
@@ -54,7 +84,7 @@ const LandingPage: React.FC = () => {
                 < BasicDateTimeRangePicker/>
                 </Element>
                 <Element name='fleet' id='fleet'>
-                    < VehiculeFleet />
+                    < VehiculeFleet cars={cars}/>
                 </Element>
                 <Element name='aboutUs' id='about' >
                     <Typography variant="h2" gutterBottom id="about">
