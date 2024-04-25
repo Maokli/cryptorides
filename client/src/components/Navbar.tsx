@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
           <img src={logo} alt="Crypto Rides Logo" style={{ height: 70 }} />
         </Link >
         <Box sx={{ display: 'flex' }}>
-          <Link activeClass="active" className="home" to="home" spy={true} smooth={true} offset={-70} duration={500} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer' }}>Home</Link>
+        <NavLink to="/"  style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Home</NavLink>
           <Link to="fleet" spy={true} smooth={true} offset={-70} duration={500} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Vehicle fleet</Link>
           <Link to="aboutUs" spy={true} smooth={true} offset={-70} duration={500} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>About us</Link>
           <Link to="advantages" spy={true} smooth={true} offset={-70} duration={500} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Advantages</Link>

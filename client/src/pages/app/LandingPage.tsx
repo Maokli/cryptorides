@@ -89,7 +89,7 @@ const LandingPage: React.FC = () => {
                 </Element>
                 <Element name='aboutUs' id='about' >
                     <Typography variant="h2" gutterBottom id="about">
-                        About Us Section
+                        <AboutUs/>
                     </Typography>
                     <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
                         {/* Content for About Us section */}

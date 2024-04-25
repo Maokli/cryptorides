@@ -13,7 +13,7 @@ import  FancyCarCard  from '../components/car-card-fancy'
 
 export default function VehiculeFleet(props: { cars: Car[] }) {
         return (
-        <Grid container item xs={12} md={6} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+        <Grid container item xs={12} md={16} mt = {1} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
             <Box
                 sx={{
                     display: 'flex',
@@ -24,7 +24,7 @@ export default function VehiculeFleet(props: { cars: Car[] }) {
                     padding: '20px', // Add padding for spacing
                 }}
             >
-                <Grid sx={{ ml: 0 }}>
+                <Grid sx={{ ml: -50 , mt : -10}}>
                     <Typography variant="h4" sx={{ fontFamily: 'Montserrat', color: 'white', textAlign: 'left', mt: -10 }}>
                         WE HAVE <span style={{ color: '#0CC0DF', fontFamily: 'Montserrat', fontWeight: 'bold', textAlign: 'left' }}>A LARGE SELECTION</span>{' '}
                         <br />

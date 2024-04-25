@@ -34,8 +34,7 @@ const theme = createTheme({
       contrastText: '#000',
     },
     text: {
-      primary: '#1a202c',
-      secondary: '#90a3bf'
+      
     }
   },
   typography: {
