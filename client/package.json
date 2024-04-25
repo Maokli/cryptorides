@@ -42,7 +42,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm start:client",
+    "start": "npm run start:client",
     "start:client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
