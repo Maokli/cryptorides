@@ -3,14 +3,16 @@ import { Box, Button, Typography, Grid, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Card, CardContent, Stack } from '@mui/material';
-import blueCar from '../assets/images/blueRange.png';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import SpeedIcon from '@mui/icons-material/Speed';
 import FlashAutoIcon from '@mui/icons-material/FlashAuto';
+import { Car } from '../models/car.model';
+import  FancyCarCard  from '../components/car-card-fancy'
 
-const VehiculeFleet: React.FC = () => {
-    return (
+
+export default function VehiculeFleet(props: { cars: Car[] }) {
+        return (
         <Grid container item xs={12} md={6} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
             <Box
                 sx={{
@@ -124,42 +126,9 @@ const VehiculeFleet: React.FC = () => {
             </Box>
 
             {/* Separate Box for the Card component */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: '20px' }}>
-                <Card sx={{ width: 300, height: 500, backgroundColor: '#1E1E1E', borderRadius: '8px', boxShadow: '0px 0px 10px 0px white', mt: '-10px', border: '1px solid #929293' }}>
-                    <img src={blueCar} alt="Car" style={{ width: '100%', height: 'auto' }} />
-                    <CardContent>
-                        <Typography variant="h5" sx={{ color: 'white', fontFamily: 'Montserrat', fontWeight: 'bold', textAlign: 'center', mt: '20px' }}>
-                            Range
-                        </Typography>
-                        <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                            <Stack direction="row" alignItems="center">
-                                <PeopleIcon sx={{ color: 'white' }} />
-                                <Typography sx={{ color: 'white' }}>4 people</Typography>
-                            </Stack>
-                            <Stack direction="row" alignItems="center">
-                                <FlashAutoIcon sx={{ color: 'white' }} />
-                                <Typography sx={{ color: 'white' }}>Auto</Typography>
-                            </Stack>
-                        </Stack>
-                        <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                            <Stack direction="row" alignItems="center">
-                                <LocalGasStationIcon sx={{ color: 'white' }} />
-                                <Typography sx={{ color: 'white' }}>Petrol</Typography>
-                            </Stack>
-                            <Stack direction="row" alignItems="center">
-                                <SpeedIcon sx={{ color: 'white' }} />
-                                <Typography sx={{ color: 'white' }}>Speed</Typography>
-                            </Stack>
-                        </Stack>
-                        <Typography sx={{ color: 'white', textAlign: 'center', mt: '20px' }}>1-3 days ----------- $400/day</Typography>
-                        <Typography sx={{ color: 'white', textAlign: 'center' }}>4-23 days --------- $385/day</Typography>
-                        <Typography sx={{ color: 'white', textAlign: 'center' }}>24+ days ----------- $325/day</Typography>
-                    </CardContent>
-                </Card>
-            </Box>
-
+            {props.cars.map((car) => (
+                <FancyCarCard car={car} ></FancyCarCard>
+            )) }
         </Grid>
     );
 };
-
-export default VehiculeFleet;

@@ -3,7 +3,7 @@ import './App.css';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import CarGrid from './components/car-grid.component';
-import { Car } from './models/car.model';
+import  BrowseCarsPage  from './pages/app/browse-cars.page';
 import { Route, Routes, redirect } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
@@ -17,6 +17,7 @@ import client from './apolloclient';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css'; 
+import { Link } from 'react-scroll';
 
 const theme = createTheme({
   palette: {
@@ -56,8 +57,9 @@ function App() {
       <ToastContainer /> {/* Add ToastContainer here */}
       <ApolloProvider client={client}>
         <Routes>
-          <Route path='/navbar' element={<Navbar  />} />
+          <Route path='/  ' element={<Navbar  />} />
           <Route path='/' element={<LandingPage />}/>
+          <Route path='/cars' element={<BrowseCarsPage/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
