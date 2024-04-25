@@ -50,12 +50,11 @@ const LandingPage: React.FC = () => {
                     </Grid>
                 </SectionBox>
             </Element>
-                <Element name='time'>
+                <Element name='time' id='time'>
                 < BasicDateTimeRangePicker/>
-                < VehiculeFleet />
-                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                
-                </Box>
+                </Element>
+                <Element name='fleet' id='fleet'>
+                    < VehiculeFleet />
                 </Element>
                 <Element name='aboutUs' id='about' >
                     <Typography variant="h2" gutterBottom id="about">
