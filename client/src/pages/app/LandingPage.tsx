@@ -4,6 +4,7 @@ import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
 import BasicDateTimeRangePicker from '../../components/calender';
 import VehiculeFleet from '../../components/vehiculeFleet';
+import AboutUs from '../../components/aboutUs';
 import { Link as ScrollLink } from 'react-scroll';
 
 interface SectionBoxProps {
@@ -51,6 +52,7 @@ const LandingPage: React.FC = () => {
             
                 < BasicDateTimeRangePicker/>
                 < VehiculeFleet />
+                <AboutUs/>
                 <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
                 
                 </Box>

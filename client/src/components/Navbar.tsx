@@ -1,5 +1,4 @@
 // Navbar.tsx
-
 import React from 'react';
 import { AppBar, Toolbar, MenuItem, Box } from '@mui/material';
 import { Link } from 'react-scroll';
