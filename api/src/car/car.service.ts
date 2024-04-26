@@ -5,6 +5,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Car } from "./entities/car.entity";
 import { Repository } from "typeorm";
 import { UsersService } from "src/users/users.service";
+import { User } from "src/shared/entities/user.entity";
+import { jwtDecode } from "jwt-decode";
+import { Request } from 'express';
 
 @Injectable()
 export class CarService {
@@ -12,6 +15,7 @@ export class CarService {
     @InjectRepository(Car)
     private readonly carRepository: Repository<Car>,
     private readonly usersService: UsersService,
+  
   ) {}
 
   async create(createCarInput: CreateCarInput): Promise<Car> {
@@ -65,6 +69,33 @@ export class CarService {
       return null;
     }
   }
+  async findAllById(id: number): Promise<Car[] | null> {
+    try {
+      const cars = await this.carRepository.find({
+        where: { owner: { id: id } },
+        relations: ["owner"]
+      });
+      console.log(cars) ;
+      return cars ;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+  async idFromRequest(request: Request): Promise <null | number>  {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    if (!(type === 'Bearer') ){
+        return null ; 
+    }else{
+        const payload = jwtDecode(token) ;
+        const id = parseInt(payload.sub) ; 
+        return id ; 
+    }
+  }
+  async findAllCarsById(id : number) : Promise< Car[] | null>{
+    return this.findAllById(id) ; 
+  }
+
 
   async update(id: number, updateCarInput: UpdateCarInput) {
     try {
