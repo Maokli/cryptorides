@@ -6,6 +6,7 @@ import { UpdateCarInput } from "./dto/update-car.input";
 import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
+import { FilterOptions } from "src/Rentalcar/dto/filterOptions";
 
 @Resolver(() => Car)
 export class CarResolver {
@@ -60,5 +61,11 @@ export class CarResolver {
   @UseGuards(JwtAuthGuard)
   async filteredCars(@Args("filter", { nullable: true }) filter: CarFilter) {
     return await this.carService.filterCars(filter);
+  }
+
+  @Query(() => FilterOptions)
+  @UseGuards(JwtAuthGuard)
+  async getAvailableFilterOptions() {
+    return await this.carService.getFilterOptions();
   }
 }

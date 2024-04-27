@@ -9,6 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import { Request } from 'express';
 import { Rentalcar } from "src/Rentalcar/entities/rentalcar.entity";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
+import { FilterOptions } from "src/Rentalcar/dto/filterOptions";
 
 @Injectable()
 export class CarService {
@@ -193,6 +194,19 @@ export class CarService {
     }
 
     return query.getMany();
+  }
+
+  async getFilterOptions(): Promise<FilterOptions> {
+    const carsInDb = await this.findAll();
+
+    const filterOptions = new FilterOptions();
+
+    // Fill in with unique existing values for each filter option
+    filterOptions.brands = [...new Set(carsInDb.map(c => c.brand))]
+    filterOptions.colors = [...new Set(carsInDb.map(c => c.color))]
+    filterOptions.locations = [...new Set(carsInDb.map(c => c.location))]
+
+    return filterOptions;
   }
 
   private addSearchToQuery(searchInput: string, query: SelectQueryBuilder<Car>): void {
