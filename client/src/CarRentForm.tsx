@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import MyHeader from "./components/header/header";
-import MyFooter from "./components/footer/footer";
 import PictureUpload from "./components/carRentForm/imageUpload";
 import InputAdornment from "@mui/material/InputAdornment";
 

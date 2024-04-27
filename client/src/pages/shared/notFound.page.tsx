@@ -1,6 +1,4 @@
-import React from "react";
 import Container from "@mui/material/Container";
-import Scarecrow from "../../public/Scarecrow.png";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";

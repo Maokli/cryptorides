@@ -23,6 +23,7 @@
     "react": "^18.2.0",
     "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-swipeable-views": "^0.14.0",
@@ -55,12 +56,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/react-datepicker": "^6.2.0",
     "@types/react-swipeable-views": "^0.13.5",
     "@types/react-swipeable-views-utils": "^0.13.7",
     "cross-env": "^7.0.3"
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/react-datepicker": "^6.2.0"
   }
 }
