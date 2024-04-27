@@ -32,16 +32,4 @@ export class RentalcarResolver {
     await this.rentalcarService.deleteRentalcarByCarId(carId);
     return `Removed car rentals for the carId ${carId}`;
   }
-
-  @Query(() => [Car])
-  @UseGuards(JwtAuthGuard)
-  async filteredCars(@Args("filter", { nullable: true }) filter: CarFilter) {
-    return await this.rentalcarService.filterCars(filter);
-  }
-
-  @Query(() => [Car])
-  @UseGuards(JwtAuthGuard)
-  async searchCars(@Args("searchInput") searchInput: string): Promise<Car[]> {
-    return await this.rentalcarService.searchCars(searchInput);
-  }
 }

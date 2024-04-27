@@ -15,8 +15,6 @@ import { CarService } from "../car/car.service";
 @Injectable()
 export class RentalCarService {
   constructor(
-    @InjectRepository(Car)
-    private readonly carrepository: Repository<Car>,
     @InjectRepository(Rentalcar)
     private readonly rentalcarRepository: Repository<Rentalcar>,
     private readonly carService: CarService,
@@ -97,83 +95,5 @@ export class RentalCarService {
     } catch (error) {
       throw error;
     }
-  }
-
-  async filterCars(filter: CarFilter): Promise<Car[]> {
-    let query = this.carrepository.createQueryBuilder("car");
-
-    if (filter.minPrice) {
-      query = query.andWhere("car.rentalPrice >= :minPrice", {
-        minPrice: filter.minPrice,
-      });
-    }
-
-    if (filter.maxPrice) {
-      query = query.andWhere("car.rentalPrice <= :maxPrice", {
-        maxPrice: filter.maxPrice,
-      });
-    }
-
-    if (filter.minDownPayment) {
-      query = query.andWhere("car.downPayment >= :minDownPayment", {
-        minDownPayment: filter.minDownPayment,
-      });
-    }
-
-    if (filter.maxDownPayment) {
-      query = query.andWhere("car.downPayment <= :maxDownPayment", {
-        maxDownPayment: filter.maxDownPayment,
-      });
-    }
-
-    // Filtrer les voitures déjà réservées pour la période spécifiée
-    if (filter.availabilityFrom && filter.availabilityTo) {
-      const reservedCarIds = await this.rentalcarRepository
-        .createQueryBuilder("rentalcar")
-        .select("DISTINCT rentalcar.carId")
-        .where(
-          "((:availabilityFrom BETWEEN rentalcar.reservedfrom AND rentalcar.reservedto) OR " +
-            "(:availabilityTo BETWEEN rentalcar.reservedfrom AND rentalcar.reservedto) OR " +
-            "(rentalcar.reservedfrom BETWEEN :availabilityFrom AND :availabilityTo) OR " +
-            "(rentalcar.reservedto BETWEEN :availabilityFrom AND :availabilityTo))",
-          {
-            availabilityFrom: filter.availabilityFrom,
-            availabilityTo: filter.availabilityTo,
-          },
-        )
-        .getRawMany();
-
-      if (reservedCarIds.length > 0) {
-        const reservedCarIdList = reservedCarIds.map((item) => item.carId);
-        query = query.andWhere("car.id NOT IN (:...reservedCarIdList)", {
-          reservedCarIdList,
-        });
-      }
-    }
-
-    return query.getMany();
-  }
-
-  async searchCars(searchInput: string): Promise<Car[]> {
-    const searchKeywords = searchInput.trim().toLowerCase().split(" ");
-
-    const query = this.carrepository.createQueryBuilder("car");
-    let searchQuery = query;
-
-    for (const keyword of searchKeywords) {
-      searchQuery = searchQuery
-        .orWhere("LOWER(car.brand) LIKE :keyword", { keyword: `%${keyword}%` })
-        .orWhere("LOWER(car.color) LIKE :keyword", { keyword: `%${keyword}%` })
-        .orWhere("LOWER(car.location) LIKE :keyword", {
-          keyword: `%${keyword}%`,
-        })
-        .orWhere("LOWER(car.title) LIKE :keyword", { keyword: `%${keyword}%` })
-        .orWhere("LOWER(car.fuelType) LIKE :keyword", {
-          keyword: `%${keyword}%`,
-        });
-    }
-
-    const results = await searchQuery.getMany();
-    return results;
   }
 }

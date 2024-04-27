@@ -21,4 +21,16 @@ export class CarFilter {
 
   @Field(() => Float, { nullable: true })
   maxDownPayment: number;
+
+  @Field(() => String, { nullable: true })
+  search: string;
+
+  @Field(() => String, { nullable: true })
+  location: string;
+
+  @Field(() => String, { nullable: true })
+  color: string;
+
+  @Field(() => String, { nullable: true })
+  brand: string;
 }
