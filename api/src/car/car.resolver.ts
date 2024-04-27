@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
+import { Resolver, Query, Mutation, Args, Int, Context } from "@nestjs/graphql";
 import { CarService } from "./car.service";
 import { Car } from "./entities/car.entity";
 import { CreateCarInput } from "./dto/create-car.input";
@@ -23,6 +23,11 @@ export class CarResolver {
   findAll() {
     return this.carService.findAll();
   }
+  @Query(() => [Car], { name: "carsById" })
+  @UseGuards(JwtAuthGuard)
+  async findAllById(@Args("id", { type: () => Int }) id: number) {
+    return await this.carService.findAllById(id);
+  }
 
   @Query(() => Car, { name: "car" })
   @UseGuards(JwtAuthGuard)
@@ -40,5 +45,13 @@ export class CarResolver {
   @UseGuards(JwtAuthGuard)
   removeCar(@Args("id", { type: () => Int }) id: number) {
     return this.carService.remove(id);
+  }
+  @Query(() => [Car]!, { name: "userCars" })
+  @UseGuards(JwtAuthGuard)
+  async findUserCars(@Context() context){
+    const { req } = context;
+    const id = await this.carService.idFromRequest(req) ;
+    const Cars = await this.carService.findAllCarsById(id); 
+    return Cars; 
   }
 }

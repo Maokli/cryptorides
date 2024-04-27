@@ -117,6 +117,7 @@ type Query {
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
+  userCars: [Car!]!
   users: [User!]!
 }
 
