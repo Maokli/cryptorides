@@ -176,4 +176,22 @@ export class RentalCarService {
     const results = await searchQuery.getMany();
     return results;
   }
+
+  async findOverdueCars(): Promise<Rentalcar[]> {
+    const currentDate = new Date();
+    return await this.rentalcarRepository.find({
+      where: {
+        reservedto: LessThanOrEqual(currentDate),
+      },
+    });
+  }
+
+  async updateCarLocation(id: number, location: string): Promise<Car> {
+    const car = await this.carrepository.findOneBy({id});
+    if (!car) {
+      throw new NotFoundException(`Car with ID ${id} not found`);
+    }
+    car.location = location;
+    return await this.carrepository.save(car);
+  }
 }

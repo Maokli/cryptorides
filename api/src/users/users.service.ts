@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
 import { CreateUserInput } from "./dto/create-user.input";
+import { UpdateUserInput } from "./dto/update-user.input";
 import { User } from "src/shared/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -44,9 +45,9 @@ export class UsersService {
     }
   }
 
-  /*** /
+  
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User> {
-    const user = await this.userRepository.findOne(id);
+    const user = await this.userRepository.findOneBy({id});
     if (!user) {
       throw new Error(`User with ID ${id} not found`);
     }
@@ -55,11 +56,11 @@ export class UsersService {
   }
 
   async remove(id: number): Promise<void> {
-    const user = await this.userRepository.findOne(id);
+    const user = await this.userRepository.findOneBy({id});
     if (!user) {
       throw new Error(`User with ID ${id} not found`);
     }
     await this.userRepository.remove(user);
   }
-  /** */
+  
 }
