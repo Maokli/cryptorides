@@ -12,6 +12,7 @@ import { ConfigModule } from "@nestjs/config";
 import { FileAssignmentModule } from "./file-assignment/file-assignment.module";
 import { FileAssignmentController } from "./file-assignment/file-assignment.controller";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
+import { HelpersModule } from './helpers/helpers.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { RentalcarModule } from "./Rentalcar/rentalcar.module";
     CarModule,
     FileAssignmentModule,
     AuthModule,
+    HelpersModule,
   ],
   controllers: [AppController, FileAssignmentController],
   providers: [AppService],
