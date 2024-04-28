@@ -15,7 +15,8 @@ export const useRequest = <T>(request: RequestFunction<T>): [boolean, T | undefi
                 setData(undefined); // clear the data from any previous runs
                 try {
                     const result = await request();
-                    await new Promise(resolve => setTimeout(resolve, 4000)); // Add a 4-second delay to see the spinner
+                    // Added a 4-second delay to see the spinner
+                    // await new Promise(resolve => setTimeout(resolve, 4000)); 
                     setData(result); // store the new data
                 } catch (error) {
                     console.error("Error fetching data : ", error);
