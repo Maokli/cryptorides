@@ -17,6 +17,7 @@ type Car {
   """Car Owner"""
   owner: User!
   rentalPrice: Float!
+  rentalrequests: [rentalRequest!]
   rentalscars: Rentalcar
   seatsNumber: Int!
   title: String!
@@ -87,18 +88,35 @@ type Mutation {
   deleteRentalcarByCarId(carId: Float!): String!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
+  removeNotification(id: Int!): Notification!
   signup(SignUpUserInput: SignUpUserInput!): User!
   updateCar(updateCarInput: UpdateCarInput!): Car!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): Notification!
+  updateStatusRentalRequest(requestid: Float!): String!
+}
+
+type Notification {
+  id: Int!
+  message: String!
+
+  """Car Owner"""
+  owner: User!
 }
 
 type Query {
+  TestAvailibilty(request: rentalRequestInput!): Boolean!
   car(id: Int!): Car!
   cars: [Car!]!
   filteredCars(filter: CarFilter): [Car!]!
+  getAllRentalsRequests: [rentalRequest!]!
+  getRentalRequests(requestid: Float!): rentalRequest!
+  notification(id: Int!): Notification!
+  payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   users: [User!]!
+  validateRentalrequest(request: rentalRequestInput!): rentalRequest!
 }
 
 type Rentalcar {
@@ -116,6 +134,12 @@ input SignUpUserInput {
   phoneNumber: String!
 }
 
+enum StatusRequest {
+  Approved
+  Paid
+  Waiting
+}
+
 input UpdateCarInput {
   brand: String
   color: String
@@ -131,12 +155,34 @@ input UpdateCarInput {
   title: String
 }
 
+input UpdateNotificationInput {
+  id: Int!
+}
+
 type User {
   FamilyName: String
   carsCreatedByUser: [Car!]
   email: String
   id: ID!
   name: String!
+  notifByUser: [Notification!]
   passwordHash: String!
   phoneNumber: String
+}
+
+type rentalRequest {
+  car: Car!
+  createdAt: String!
+  fromdate: DateTime!
+  id: Int!
+  ownerId: Float!
+  status: StatusRequest!
+  todate: DateTime!
+}
+
+input rentalRequestInput {
+  availabilityFrom: DateTime!
+  availabilityTo: DateTime!
+  carId: Int!
+  ownerId: Int!
 }

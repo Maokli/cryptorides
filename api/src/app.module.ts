@@ -10,6 +10,7 @@ import { UsersModule } from "./users/users.module";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { RentalcarModule } from "./Rentalcar/rentalcar.module";
     UsersModule,
     CarModule,
     AuthModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

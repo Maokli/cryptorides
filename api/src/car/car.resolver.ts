@@ -30,6 +30,10 @@ export class CarResolver {
     return this.carService.findOne(id);
   }
 
+  
+
+  
+
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
   updateCar(@Args("updateCarInput") updateCarInput: UpdateCarInput) {
