@@ -112,6 +112,7 @@ type Mutation {
 type Query {
   car(id: Int!): Car!
   cars: [Car!]!
+  carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [Car!]!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
