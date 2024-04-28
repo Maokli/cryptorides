@@ -28,7 +28,7 @@ const cars: Car[] = [
     color: "Blue",
     title: "Toyota Corolla",
     fuelType: "Petrol",
-    seats: 5,
+    seatsNumber: 5,
     rentalPrice: 50,
     downPayment: 1000,
     images: images
@@ -40,7 +40,7 @@ const cars: Car[] = [
     color: "Red",
     title: "Honda Civic",
     fuelType: "Petrol",
-    seats: 5,
+    seatsNumber: 5,
     rentalPrice: 60,
     downPayment: 1200,
     images: images
@@ -52,7 +52,7 @@ const cars: Car[] = [
     color: "Black",
     title: "Ford Mustang",
     fuelType: "Petrol",
-    seats: 4,
+    seatsNumber: 4,
     rentalPrice: 80,
     downPayment: 1500,
     images: images
@@ -64,7 +64,7 @@ const cars: Car[] = [
     color: "Silver",
     title: "Chevrolet Camaro",
     fuelType: "Petrol",
-    seats: 4,
+    seatsNumber: 4,
     rentalPrice: 85,
     downPayment: 1600,
     images: images
@@ -75,7 +75,7 @@ const cars: Car[] = [
     color: "Blue",
     title: "Toyota Corolla",
     fuelType: "Petrol",
-    seats: 5,
+    seatsNumber: 5,
     rentalPrice: 50,
     downPayment: 1000,
     images: images
@@ -87,7 +87,7 @@ const cars: Car[] = [
     color: "Red",
     title: "Honda Civic",
     fuelType: "Petrol",
-    seats: 5,
+    seatsNumber: 5,
     rentalPrice: 60,
     downPayment: 1200,
     images: images
@@ -99,7 +99,7 @@ const cars: Car[] = [
     color: "Black",
     title: "Ford Mustang",
     fuelType: "Petrol",
-    seats: 4,
+    seatsNumber: 4,
     rentalPrice: 80,
     downPayment: 1500,
     images: images
@@ -111,7 +111,7 @@ const cars: Car[] = [
     color: "Silver",
     title: "Chevrolet Camaro",
     fuelType: "Petrol",
-    seats: 4,
+    seatsNumber: 4,
     rentalPrice: 85,
     downPayment: 1600,
     images: images
