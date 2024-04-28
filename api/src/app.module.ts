@@ -9,6 +9,8 @@ import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
+import { FileAssignmentModule } from "./file-assignment/file-assignment.module";
+import { FileAssignmentController } from "./file-assignment/file-assignment.controller";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 import { NotificationModule } from './notification/notification.module';
 
@@ -32,10 +34,11 @@ import { NotificationModule } from './notification/notification.module';
     RentalcarModule,
     UsersModule,
     CarModule,
+    FileAssignmentModule,
     AuthModule,
     NotificationModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, FileAssignmentController],
   providers: [AppService],
 })
 export class AppModule {}

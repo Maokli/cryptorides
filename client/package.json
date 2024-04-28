@@ -18,6 +18,7 @@
     "@types/node": "^16.18.93",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
+    "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-datepicker": "^6.6.0",
@@ -30,7 +31,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=3333 && react-scripts start",
+    "start": "cross-env PORT=3333 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -55,7 +56,8 @@
   },
   "devDependencies": {
     "@types/react-swipeable-views": "^0.13.5",
-    "@types/react-swipeable-views-utils": "^0.13.7"
+    "@types/react-swipeable-views-utils": "^0.13.7",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
