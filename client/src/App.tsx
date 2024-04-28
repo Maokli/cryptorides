@@ -6,7 +6,6 @@ import { Route, Routes } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import NotFoundPage from './pages/shared/notFound.page';
-import LoadingSpinnerTestPage from './pages/shared/loading-spinner-test.page';
 
 const theme = createTheme({
   palette: {
@@ -50,7 +49,6 @@ function App() {
           <Route path='/' element={<h1>Home Page</h1>}/>
           <Route path='/login' element={<h1>Login Page</h1>}/>
           <Route path='/signup' element={<h1>Signup Page</h1>}/>
-          <Route path='/spinner-test' element={<LoadingSpinnerTestPage/>}></Route>
           <Route path="*" element={<NotFoundPage/>}></Route>
         </Routes>
       }
