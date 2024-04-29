@@ -9,6 +9,7 @@ import { CreateRentalcarInput } from "./dto/create-rentalcar.input";
 import { JwtModule } from "@nestjs/jwt";
 import { rentalRequestInput } from "./dto/rentalRequest.input";
 import { rentalRequest } from "./entities/rentalRequest.entity";
+import { UpdateRentalRequestInput } from "./dto/updateRentalRequest.input";
 
 @Resolver(() => Rentalcar)
 export class RentalcarResolver {
@@ -67,10 +68,10 @@ export class RentalcarResolver {
 
 
   @Mutation(() => String)
-  async updateStatusRentalRequest(@Args("requestid") requestid: number): Promise<string> {
+  async updateStatusRentalRequest(@Args("requestid") requestid: number,@Args("input") input: UpdateRentalRequestInput): Promise<string> {
     try {
-      await this.rentalcarService.updateRentalRequests(requestid);
-      return `Le statut de la demande de location avec l'ID ${requestid} a été mis à jour à "Paid".`;
+      await this.rentalcarService.updateRentalRequests(requestid,input);
+      return `Le statut de la demande de location avec l'ID ${requestid} a été mis à jour à ${input.newStatus}`;
     } catch (error) {
       throw new Error(`Une erreur est survenue lors de la mise à jour de la demande de location : ${error.message}`);
     }

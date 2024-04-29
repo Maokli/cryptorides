@@ -16,6 +16,7 @@ import { rentalRequest } from "./entities/rentalRequest.entity";
 import { NotificationService } from "src/notification/notification.service";
 import { CreateNotificationInput } from "src/notification/dto/create-notification.input";
 import { statusRequest } from "./enum/statusRequest.enum";
+import { UpdateRentalRequestInput } from "./dto/updateRentalRequest.input";
 
 @Injectable()
 export class RentalCarService {
@@ -192,6 +193,10 @@ export class RentalCarService {
   async testavailibilityCar(input: rentalRequestInput): Promise<boolean> {
 
     const { carId, availabilityFrom, availabilityTo } = input;
+
+    if (availabilityFrom >= availabilityTo) {
+      throw new Error("The start date must be before the end date");
+  }
     try {
       // Rechercher les locations qui chevauchent les dates mises par user
       const existingrentals = await this.rentalcarRepository
@@ -279,20 +284,23 @@ export class RentalCarService {
 
 
 
-  async updateRentalRequests(requestid): Promise<void> {
+  async updateRentalRequests(requestid,input:UpdateRentalRequestInput): Promise<void> {
     const rentalrequest = await this.getRentalRequestsById(requestid);
-    rentalrequest.status = statusRequest.Paid;
+    rentalrequest.status = input.newStatus;
     await this.rentalRequestRepository.save(rentalrequest);
 
   }
 
-
-//// est ce que paimement ca sera un nouveau moduleee
   async pay(requestid: number): Promise<string> {
     const payment = await this.callPaymentEngine();
 
     if (payment) {
-      await this.updateRentalRequests(requestid);
+
+      const input: UpdateRentalRequestInput = {
+        newStatus: statusRequest.Paid,
+    };
+
+      await this.updateRentalRequests(requestid,input);
       const rentalrequest = await this.getRentalRequestsById(requestid);
       const car = rentalrequest.car
       console.log(car)

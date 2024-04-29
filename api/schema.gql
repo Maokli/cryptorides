@@ -110,7 +110,7 @@ type Mutation {
   updateCar(updateCarInput: UpdateCarInput!): Car!
   updateFileAssignment(updateFileAssignmentInput: UpdateFileAssignmentInput!): FileAssignment!
   updateNotification(updateNotificationInput: UpdateNotificationInput!): Notification!
-  updateStatusRentalRequest(requestid: Float!): String!
+  updateStatusRentalRequest(input: UpdateRentalRequestInput!, requestid: Float!): String!
 }
 
 type Notification {
@@ -125,6 +125,8 @@ type Query {
   TestAvailibilty(request: rentalRequestInput!): Boolean!
   car(id: Int!): Car!
   cars: [Car!]!
+  carsById(id: Int!): [Car!]!
+  fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [Car!]!
   getAllRentalsRequests: [rentalRequest!]!
   getRentalRequests(requestid: Float!): rentalRequest!
@@ -155,6 +157,7 @@ input SignUpUserInput {
 
 enum StatusRequest {
   Approved
+  Cancelled
   Paid
   Waiting
 }
@@ -183,6 +186,10 @@ input UpdateFileAssignmentInput {
 
 input UpdateNotificationInput {
   id: Int!
+}
+
+input UpdateRentalRequestInput {
+  newStatus: StatusRequest!
 }
 
 type User {
