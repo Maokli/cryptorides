@@ -1,51 +1,34 @@
 /* eslint-disable prettier/prettier */
 import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-} from "@nestjs/websockets";
+  MessageBody,
+} from '@nestjs/websockets';
+import { Logger } from '@nestjs/common';
+import { Server, Socket } from 'socket.io';
+import { AddMessageDto } from './dto/add-message.dto';
 
-import { Server, Socket } from "socket.io";
+@WebSocketGateway({ cors: { origin: '*' } })
+export class ChatGateway {
+  @WebSocketServer()
+  server: Server;
 
-@WebSocketGateway()
-export class ChatGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
-  private readonly clients: Map<string, Socket> = new Map();
+  private logger = new Logger('ChatGateway');
 
-  @WebSocketServer() io: Server;
-
-  afterInit() {
-    console.log("Chat gateway initialized");
+  @SubscribeMessage('chat') // subscribe to chat event messages
+  handleMessage(@MessageBody() payload: AddMessageDto): AddMessageDto {
+    this.logger.log(`Message received: ${payload.author} - ${payload.content}`);
+    this.server.emit('chat', payload); // broadbast a message to all clients
+    return payload; // return the same payload data
+  }
+  // it will be handled when a client connects to the server
+  handleConnection(socket: Socket) {
+    this.logger.log(`Socket connected: ${socket.id}`);
   }
 
-  handleConnection(client: Socket ) {
-    console.log(`Client id: ${client.id} connected`);
-    this.clients.set(client.id, client);
-  }
-
-  handleDisconnect(client: Socket) {
-    console.log(`Client id: ${client.id} disconnected`);
-    this.clients.delete(client.id);
-  }
-
-  @SubscribeMessage("chat")
-  handleChat(client: Socket, message: any) {
-    const senderId = client.id;
-    const { recipientId, text } = message;
-
-    if (recipientId && this.clients.has(recipientId)) {
-      const recipient = this.clients.get(recipientId);
-      recipient.emit("chat", { senderId, text });
-    } else {
-      console.warn(`Recipient ${recipientId} not found or not connected`);
-    }
-  }
-
-  broadcastMessage(message: any): void {
-    this.io.emit("chat", message);
+  // it will be handled when a client disconnects from the server
+  handleDisconnect(socket: Socket) {
+    this.logger.log(`Socket disconnected: ${socket.id}`);
   }
 }

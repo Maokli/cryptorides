@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -11,6 +12,8 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 import { ChatGateway } from './chat/chat.gateway';
+import { ChatModule } from './chat/chat.module';
+import { ChatResolver  } from './chat/chat.resolver';
 
 @Module({
   imports: [
@@ -33,8 +36,9 @@ import { ChatGateway } from './chat/chat.gateway';
     UsersModule,
     CarModule,
     AuthModule,
+    ChatModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway],
+  providers: [AppService, ChatGateway, ChatResolver ],
 })
 export class AppModule {}
