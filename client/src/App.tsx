@@ -2,22 +2,21 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import CarGrid from './components/car-grid.component';
 import  BrowseCarsPage  from './pages/app/browse-cars.page';
-import { Route, Routes, redirect } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import LandingPage from './pages/app/LandingPage';
 import NotFoundPage from './pages/shared/notFound.page';
 import LoginForm  from  './components/loginForm';
 import SignUpForm  from './components/signupForm';
+import {Chat} from './components/chat';
 import Navbar  from './components/Navbar';
 import { ApolloProvider } from "@apollo/react-hooks";
 import client from './apolloclient'; 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css'; 
-import { Link } from 'react-scroll';
 
 const theme = createTheme({
   palette: {
@@ -61,6 +60,7 @@ function App() {
           <Route path='/cars' element={<BrowseCarsPage/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
+          <Route path="/chat" element={<Chat currentUser="yassmina" onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
         </Routes>
       </ApolloProvider>
