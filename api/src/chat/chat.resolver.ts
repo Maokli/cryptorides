@@ -1,16 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
-import { ChatService } from './chat.service';
-import { Message } from './entities/message.entity';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { GqlExecutionContext } from '@nestjs/graphql';
+//import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+//import { ChatService } from './chat.service';
+//import { Message } from './entities/message.entity';
+//import { UseGuards } from '@nestjs/common';
+//import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+//import { GqlExecutionContext } from '@nestjs/graphql';
 
-@Resolver()
+//@Resolver()
+/*
 export class ChatResolver {
   constructor(private readonly chatService: ChatService) {}
 
-  @Mutation(() => Message)
+ /* @Mutation(() => Message)
   @UseGuards(JwtAuthGuard)
   async createMessage(
     @Args('content') content: string,
@@ -34,3 +35,4 @@ export class ChatResolver {
     return token;
   }
 }
+*/

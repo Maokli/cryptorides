@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { User } from "src/shared/entities/user.entity";
-
+//import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+//import { ObjectType, Field, ID } from '@nestjs/graphql';
+//import { User } from "src/shared/entities/user.entity";
+/*
 @Entity()
 @ObjectType()
 export class Message {
@@ -34,3 +34,4 @@ export class Message {
   @Column()
   receiverId: number;
 }
+*/
