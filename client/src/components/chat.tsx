@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
-import { Button, TextField, Typography, Paper } from "@mui/material";
+import { Button, TextField, Typography, Paper , Box } from "@mui/material";
 import { createWebSocket } from "../webSockets/webSocket";
 interface Message {
   id: number;
@@ -73,31 +73,30 @@ export const Chat: React.FC<ChatProps> = ({ currentUser, onLogout }) => {
   };
 
   return (
-    <Paper>
-      <div>
-        <Typography variant="h6">Nest Chat App</Typography>
-        <Button variant="contained" onClick={handleLogout}>Logout</Button>
-      </div>
-      <div>
-        {messages.map((message, idx) => (
-          <Paper
-            key={idx}
-          >
-            <Typography variant="body1">{message.author}</Typography>
-            <Typography variant="body1">{message.body}</Typography>
-          </Paper>
-        ))}
-      </div>
-      <div>
-        <TextField
-          variant="outlined"
-          placeholder="Type message here"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleSendMessage}
-          fullWidth
-        />
-      </div>
-    </Paper>
+    <Paper sx={{ width: "80%", margin: "auto", padding: 2 }}>
+    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+      <Typography variant="h6">Nest Chat App</Typography>
+      <Button variant="contained" onClick={handleLogout}>Logout</Button>
+    </Box>
+    <div>
+      {messages.map((message, idx) => (
+        <Paper key={idx} sx={{ backgroundColor: "#E3F2FD",  padding: 1, mb: 1, width: "fit-content", maxWidth: "80%"  }}>
+          <Typography variant="body1">{message.author}</Typography>
+          <Typography variant="body1">{message.body}</Typography>
+          <Typography variant="body2" sx={{ color: "#9E9E9E" }}>{new Date().toLocaleTimeString()}</Typography>
+        </Paper>
+      ))}
+    </div>
+    <div>
+      <TextField
+        variant="outlined"
+        placeholder="Type message here"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleSendMessage}
+        fullWidth
+      />
+    </div>
+  </Paper>
   );
 };

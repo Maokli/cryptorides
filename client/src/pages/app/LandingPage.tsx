@@ -1,38 +1,76 @@
 import React, { ReactNode } from 'react';
 import Navbar from '../../components/Navbar';
-import AboutUs from '../../components/aboutUs';
 import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
 import BasicDateTimeRangePicker from '../../components/calender';
 import VehiculeFleet from '../../components/vehiculeFleet';
 import { Link as ScrollLink , Element } from 'react-scroll';
 import { Car } from '../../models/car.model';
-
-
+import LoginForm from '../../components/loginForm';
+import CarRentalConditions from '../../components/CarRentalConditions';
+import CustomerReviews from '../../components/CustomerReviews';
+import CompanyContacts from '../../components/CompanyContacts';
 const images = [
     {
         url:
             'https://i.ytimg.com/vi/1HAACt8gmE0/maxresdefault.jpg',
         },
       {
-        url:
-          'https://fdm.dk/sites/default/files/d6images/07-bpv-toyotagt86-002.jpg',
+        url:'https://image.similarpng.com/very-thumbnail/2020/09/Red-car-on-transparent-background-PNG.png'
     },{
         url : '../'
-    }
+    } , 
+
 ]
 const cars: Car[] = [
     {
       id: 1,
-      location: "New York",
-      brand: "Range",
-      color: "Blue",
+      location: "Ariana",
+      brand: "Range Rover",
+      color: "Black",
       title: "The Range",
       fuelType: "Petrol",
       seats: 5,
       rentalPrice: 500,
       downPayment: 1000,
-      images: images
+      images:[ {
+        url : 'https://i.pinimg.com/564x/e6/18/95/e61895017e0e7cc5f152f66983973b41.jpg' , 
+
+      } , 
+      {url : 'https://p7.hiclipart.com/preview/898/590/426/5bbe05178f45d.jpg'}
+    ]
+    }
+    , {
+        id: 2,
+        location: "Ariana",
+        brand: "Rolls Royce ",
+        color: "Blue",
+        title: "Rolls Royce Phantom",
+        fuelType: "Petrol",
+        seats: 5,
+        rentalPrice: 600,
+        downPayment: 1000,
+        images: [
+            {url : 'https://i.pinimg.com/736x/e4/9c/21/e49c21d695d2a6deb28047ea40df5dde.jpg'}, 
+            {url : 'https://w0.peakpx.com/wallpaper/775/215/HD-wallpaper-rolls-royce-ghost-black-edge-ford-gold-motor-mustang-original-phantom-roll.jpg'}
+        ]
+        
+    }
+    , 
+    {
+        id: 3,
+        location: "Ariana",
+        brand: "Range",
+        color: "Blue",
+        title: "The Range",
+        fuelType: "Petrol",
+        seats: 5,
+        rentalPrice: 500,
+        downPayment: 1000,
+        images:[
+            {url : 'https://p7.hiclipart.com/preview/617/294/471/2018-bmw-3-series-bmw-x5-car-bmw-1-series-bmw.jpg'}, 
+            {url : 'https://i.pinimg.com/736x/bc/26/f8/bc26f86570bd38c857eb255457d26632.jpg'}
+        ]
     }
 ]
 
@@ -87,65 +125,20 @@ const LandingPage: React.FC = () => {
                 <Element name='fleet' id='fleet'>
                     < VehiculeFleet cars={cars}/>
                 </Element>
-                <Element name='aboutUs' id='about' >
-                    <Typography variant="h2" gutterBottom id="about">
-                        <AboutUs/>
-                    </Typography>
-                    <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                        {/* Content for About Us section */}
-                    </Box>
-                </Element>
-                <Element name ="advantages" id="advantages">
-                    <Typography variant="h2" gutterBottom id="advantages">
-                        Advantages Section
-                    </Typography>
-                    <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                        {/* Content for Advantages section */}
-                    </Box>
-                </Element>
+               
                 <Element name ="rental-conditions" id="rental-conditions">
-                    <Typography variant="h2" gutterBottom id="rental-conditions">
-                        Rental Conditions Section
-                    </Typography>
-                    <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                        {/* Content for Rental Conditions section */}
-                    </Box>
+                    <CarRentalConditions/>                    
                 </Element>
                 <Element name ="reviews" id="reviews">
-                <Typography variant="h2" gutterBottom id="reviews">
-                    Reviews Section
-                </Typography>
-                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                    {/* Content for Reviews section */}
-                </Box>
+                <CustomerReviews/>
                 </Element>
 
-                <Element name ="news" id="news">
-
-                <Typography variant="h2" gutterBottom id="news">
-                    News Section
-                </Typography>
-                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                    {/* Content for News section */}
-                </Box>
-                </Element>
+             
 
                 <Element name ="contacts" id="contacts">
-
-                <Typography variant="h2" gutterBottom id="contacts">
-                    Contacts Section
-                </Typography>
-                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                    {/* Content for Contacts section */}
-                </Box>
+               <CompanyContacts/> 
                 </Element>
-
-                <Typography variant="h2" gutterBottom id="login">
-                    Login Section
-                </Typography>
-                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                    {/* Content for Login section */}
-                </Box>
+               
         </div>
     );
 };

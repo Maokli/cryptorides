@@ -11,6 +11,7 @@ import NotFoundPage from './pages/shared/notFound.page';
 import LoginForm  from  './components/loginForm';
 import SignUpForm  from './components/signupForm';
 import {Chat} from './components/chat';
+import CarRentalConditions from './components/CarRentalConditions';
 import Navbar  from './components/Navbar';
 import { ApolloProvider } from "@apollo/react-hooks";
 import client from './apolloclient'; 
@@ -60,8 +61,9 @@ function App() {
           <Route path='/cars' element={<BrowseCarsPage/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
-          <Route path="/chat" element={<Chat currentUser="yassmina" onLogout={() => {}} />} />
+          <Route path="/chat" element={<Chat currentUser="yassmina"  onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
+          <Route path="/conditions" element={<CarRentalConditions/>}></Route>
         </Routes>
       </ApolloProvider>
       {isLoggedIn && <MainAppWrapper />}
