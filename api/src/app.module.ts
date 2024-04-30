@@ -12,8 +12,6 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 import { ChatGateway } from './chat/chat.gateway';
-import { ChatModule } from './chat/chat.module';
-import { ChatResolver  } from './chat/chat.resolver';
 
 @Module({
   imports: [
@@ -36,9 +34,9 @@ import { ChatResolver  } from './chat/chat.resolver';
     UsersModule,
     CarModule,
     AuthModule,
-    ChatModule,
+   
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway, ChatResolver ],
+  providers: [AppService, ChatGateway ],
 })
 export class AppModule {}

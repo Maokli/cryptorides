@@ -2,7 +2,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "@nestjs/graphql";
 import { Car } from "../../car/entities/car.entity";
-import { Message } from "src/chat/entities/message.entity";
 @ObjectType()
 @Entity("UsersTable")
 export class User {
@@ -41,12 +40,4 @@ export class User {
   passwordHash: string;
 
 
-  // Define one-to-many relationships with messages
-  @OneToMany(() => Message, message => message.sender)
-  @Field(() => [Message])
-  sentMessages: Message[];
-
-  @OneToMany(() => Message, message => message.receiver)
-  @Field(() => [Message])
-  receivedMessages: Message[];
 }
