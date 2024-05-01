@@ -13,7 +13,7 @@ function MainAppWrapper() {
   
   return (
       <Routes>
-        <Route path="/" element={<Navigate to="/browse" replace />}></Route>
+        <Route path="/" element={<Navigate to="/" replace />}></Route>
         <Route path="/browse" element={<BrowseCarsPage />}></Route>
         <Route path="/add" element={<AddCarForm />}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
