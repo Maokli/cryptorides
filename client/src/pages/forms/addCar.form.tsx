@@ -121,7 +121,7 @@ const AddCarForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/graphql",
+        "http://localhost:3001/graphql",
         {
           query,
           variables,
@@ -145,7 +145,7 @@ const AddCarForm = () => {
         uploadData.append("elementType", "1");
 
         const ImageUploadResponse = await axios.post(
-          "http://localhost:3000/upload",
+          "http://localhost:3001/upload",
           uploadData,
           {
             headers: {

@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes, redirect } from 'react-router-d
 import BrowseCarsPage from './browse-cars.page';
 import { isAuthenticated } from '../../helpers/auth.helpers';
 import NotFoundPage from '../shared/notFound.page';
+import AddCarForm from '../forms/addCar.form';
 
 function MainAppWrapper() {
   useEffect(() => {
@@ -14,6 +15,7 @@ function MainAppWrapper() {
       <Routes>
         <Route path="/" element={<Navigate to="/browse" replace />}></Route>
         <Route path="/browse" element={<BrowseCarsPage />}></Route>
+        <Route path="/add" element={<AddCarForm />}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>
   )

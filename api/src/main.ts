@@ -16,6 +16,6 @@ async function bootstrap() {
   app.enableCors();
   app.use('/uploads', express.static('uploads'));
   
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

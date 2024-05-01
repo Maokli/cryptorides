@@ -11,10 +11,10 @@ export class CarFilter {
 
   @Field(() => Float, { nullable: true })
   @IsOptional()
-  minPrice: number = 50.0;
+  minPrice: number;
 
   @Field(() => Float, { nullable: true })
-  maxPrice: number = 5000.0;
+  maxPrice: number;
 
   @Field(() => Float, { nullable: true })
   minDownPayment: number;

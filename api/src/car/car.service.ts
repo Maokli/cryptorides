@@ -3,13 +3,18 @@ import { CreateCarInput } from "./dto/create-car.input";
 import { UpdateCarInput } from "./dto/update-car.input";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Car } from "./entities/car.entity";
-import { Repository, SelectQueryBuilder } from "typeorm";
+import { Brackets, Repository, SelectQueryBuilder } from "typeorm";
 import { UsersService } from "src/users/users.service";
 import { jwtDecode } from "jwt-decode";
 import { Request } from 'express';
 import { Rentalcar } from "src/Rentalcar/entities/rentalcar.entity";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
-import { FilterOptions } from "src/Rentalcar/dto/filterOptions";
+import { FilterOptions } from "./dto/filterOptions";
+import { FileAssignment } from "src/file-assignment/entities/file-assignment.entity";
+import { entityType } from "src/shared/enum/entityType.enum";
+import { CarWithImages } from "./dto/get-car-withImage-dto";
+import { fuelType } from "./enum/fuelType.enum";
+import { Image } from "./dto/image.model";
 
 @Injectable()
 export class CarService {
@@ -18,6 +23,8 @@ export class CarService {
     private readonly carRepository: Repository<Car>,
     @InjectRepository(Rentalcar)
     private readonly rentalcarRepository: Repository<Rentalcar>,
+    @InjectRepository(FileAssignment)
+    private readonly fileAssignmentRepository: Repository<FileAssignment>,
     private readonly usersService: UsersService,
   
   ) {}
@@ -139,7 +146,7 @@ export class CarService {
     }
   }
 
-  async filterCars(filter: CarFilter): Promise<Car[]> {
+  async filterCars(filter: CarFilter): Promise<CarWithImages[]> {
     let query = this.carRepository.createQueryBuilder("car");
 
     if (filter.minPrice) {
@@ -192,8 +199,40 @@ export class CarService {
     if(filter.search) {
       await this.addSearchToQuery(filter.search, query);
     }
+    console.log(query.getQuery());
+    const carsWithoutImages = await query.getMany();
+    const carsWithImages: CarWithImages[] = [];
 
-    return query.getMany();
+    for (let i = 0; i<carsWithoutImages.length; i++) {
+      const car = carsWithoutImages[i];
+      const carFileAssignments = await this.getCarPictures(car.id);
+      const images: Image[] = carFileAssignments.map(fa => {
+        return {
+          url: fa.fileUrl
+        }
+      })
+
+      const carWithImages: CarWithImages = {
+        id: car.id,
+        location: car.location,
+        brand: car.brand,
+        color: car.color,
+        title: car.title,
+        rentalPrice: car.rentalPrice,
+        downPayment: car.downPayment,
+        seatsNumber: car.seatsNumber,
+        fuelType: fuelType.Gas,
+        images: images
+      }
+
+      carsWithImages.push(carWithImages);
+      console.log(carWithImages)
+
+    }
+
+    console.log(carsWithImages)
+    // Add images
+    return carsWithImages;
   }
 
   async getFilterOptions(): Promise<FilterOptions> {
@@ -205,6 +244,8 @@ export class CarService {
     filterOptions.brands = [...new Set(carsInDb.map(c => c.brand))]
     filterOptions.colors = [...new Set(carsInDb.map(c => c.color))]
     filterOptions.locations = [...new Set(carsInDb.map(c => c.location))]
+    filterOptions.maxDailyRentalPrice = Math.max(...carsInDb.map(c => c.rentalPrice));
+    filterOptions.maxDownPayment = Math.max(...carsInDb.map(c => c.downPayment));
 
     return filterOptions;
   }
@@ -213,8 +254,9 @@ export class CarService {
     const searchKeywords = searchInput.trim().toLowerCase().split(" ");
 
     for (const keyword of searchKeywords) {
-      query = query
-        .orWhere("LOWER(car.brand) LIKE :keyword", { keyword: `%${keyword}%` })
+      query = query.andWhere(new Brackets(qb => {
+
+        qb = qb.orWhere("LOWER(car.brand) LIKE :keyword", { keyword: `%${keyword}%` })
         .orWhere("LOWER(car.color) LIKE :keyword", { keyword: `%${keyword}%` })
         .orWhere("LOWER(car.location) LIKE :keyword", {
           keyword: `%${keyword}%`,
@@ -223,6 +265,7 @@ export class CarService {
         .orWhere("LOWER(car.fuelType) LIKE :keyword", {
           keyword: `%${keyword}%`,
         });
+      }))
     }
   }
 
@@ -248,5 +291,9 @@ export class CarService {
           reservedCarIdList,
         });
       }
+  }
+
+  private async getCarPictures(carId: number) {
+    return await this.fileAssignmentRepository.find({where: {elementId: carId, elementType: entityType.Car}}) ;
   }
 }
