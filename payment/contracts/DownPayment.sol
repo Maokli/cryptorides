@@ -59,9 +59,9 @@ contract DownPayment {
         downPaymentMade = true;
     }
 
-    function returnDownPayment() public onlyRenter {
+    function returnDownPayment(uint256 currentDate) public onlyRenter {
         require(
-            block.timestamp >= endTime,
+            currentDate >= endTime,
             "Cannot return the down payment before the end of the rental period"
         );
         require(downPaymentMade, "Down payment not yet made");
