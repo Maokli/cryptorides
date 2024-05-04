@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNotificationInput } from './dto/create-notification.input';
 import { UpdateNotificationInput } from './dto/update-notification.input';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import{Notification} from './entities/notification.entity'
 import { Car } from 'src/car/entities/car.entity';
+import { statusNotification } from './enum/statusNotification.enum';
 
 @Injectable()
 export class NotificationService {
@@ -37,15 +38,24 @@ export class NotificationService {
     return `This action returns all notification`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notification`;
-  }
+  async update(updateNotificationInput: UpdateNotificationInput):Promise<String>{
+    const { ids } = updateNotificationInput;
 
-  update(id: number, updateNotificationInput: UpdateNotificationInput) {
-    return `This action updates a #${id} notification`;
-  }
+    for (const id of ids) {
+      const notification = await this.notificationRepository.findOne({
+        where: { id: id },
+        relations: ["owner"]
+      });
+      if (!notification) {
+        throw new NotFoundException(`Notification with ID ${id} not found`);
+      }
 
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+      notification.status = statusNotification.SEEN;
+      await this.notificationRepository.save(notification);
+      
+    }
+    return "Success All Notifications Status are now seen"
+
   }
 }
+

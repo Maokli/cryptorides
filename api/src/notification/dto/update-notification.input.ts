@@ -1,8 +1,7 @@
-import { CreateNotificationInput } from './create-notification.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateNotificationInput extends PartialType(CreateNotificationInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateNotificationInput{
+  @Field(() => [Int])
+  ids: number[];
 }

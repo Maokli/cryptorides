@@ -31,6 +31,11 @@ export class rentalRequest {
     @Column( {nullable: false})
 
     ownerId:Number;
+    
+    @Field(()=>Number)
+    @Column( {nullable: false})
+    renterId:Number;
+
 
     @Field(() => String)
     @CreateDateColumn({ type: "text" }) 

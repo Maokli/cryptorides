@@ -105,11 +105,10 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
   removeFileAssignment(id: Int!): FileAssignment!
-  removeNotification(id: Int!): Notification!
   signup(SignUpUserInput: SignUpUserInput!): User!
   updateCar(updateCarInput: UpdateCarInput!): Car!
   updateFileAssignment(updateFileAssignmentInput: UpdateFileAssignmentInput!): FileAssignment!
-  updateNotification(updateNotificationInput: UpdateNotificationInput!): Notification!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): String!
   updateStatusRentalRequest(input: UpdateRentalRequestInput!, requestid: Float!): String!
 }
 
@@ -119,6 +118,7 @@ type Notification {
 
   """Car Owner"""
   owner: User!
+  status: statusNotification!
 }
 
 type Query {
@@ -128,9 +128,9 @@ type Query {
   carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [Car!]!
-  getAllRentalsRequests: [rentalRequest!]!
+  getAllRentalsRequests(getAllRequest: getRentalRequestInput!): [rentalRequest!]!
   getRentalRequests(requestid: Float!): rentalRequest!
-  notification(id: Int!): Notification!
+  notification: [Notification!]!
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
@@ -185,7 +185,7 @@ input UpdateFileAssignmentInput {
 }
 
 input UpdateNotificationInput {
-  id: Int!
+  ids: [Int!]!
 }
 
 input UpdateRentalRequestInput {
@@ -203,12 +203,18 @@ type User {
   phoneNumber: String
 }
 
+input getRentalRequestInput {
+  userId: Int!
+  userRole: String!
+}
+
 type rentalRequest {
   car: Car!
   createdAt: String!
   fromdate: DateTime!
   id: Int!
   ownerId: Float!
+  renterId: Float!
   status: StatusRequest!
   todate: DateTime!
 }
@@ -218,4 +224,10 @@ input rentalRequestInput {
   availabilityTo: DateTime!
   carId: Int!
   ownerId: Int!
+  renterId: Int!
+}
+
+enum statusNotification {
+  NEW
+  SEEN
 }

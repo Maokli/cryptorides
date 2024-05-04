@@ -19,7 +19,7 @@ import { NotificationModule } from './notification/notification.module';
     TypeOrmModule.forRoot({
       type: "sqlite",
       database: "db/sql",
-      synchronize: true, // Sync entities with the database schema
+      synchronize: false, // Sync entities with the database schema
       entities: [__dirname + "/**/*.entity{.ts,.js}"], // Look for all entities
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({

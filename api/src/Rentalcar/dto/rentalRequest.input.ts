@@ -20,5 +20,16 @@ export class rentalRequestInput {
     @IsNotEmpty()
     ownerId: number;
 
+    @Field(() => Int)
+    @IsNotEmpty()
+    renterId: number;
+
+
+
+    
+  
+
+
+
 
 }

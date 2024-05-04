@@ -17,6 +17,7 @@ import { NotificationService } from "src/notification/notification.service";
 import { CreateNotificationInput } from "src/notification/dto/create-notification.input";
 import { statusRequest } from "./enum/statusRequest.enum";
 import { UpdateRentalRequestInput } from "./dto/updateRentalRequest.input";
+import { getRentalRequestInput } from "./dto/getRentalRequest.input";
 
 @Injectable()
 export class RentalCarService {
@@ -189,14 +190,13 @@ export class RentalCarService {
     return results;
   }
 
-
   async testavailibilityCar(input: rentalRequestInput): Promise<boolean> {
 
     const { carId, availabilityFrom, availabilityTo } = input;
 
     if (availabilityFrom >= availabilityTo) {
       throw new Error("The start date must be before the end date");
-  }
+    }
     try {
       // Rechercher les locations qui chevauchent les dates mises par user
       const existingrentals = await this.rentalcarRepository
@@ -225,20 +225,15 @@ export class RentalCarService {
     newrentalRequest.car = car;
     console.log(car);
     newrentalRequest.ownerId = input.ownerId;
-
+    newrentalRequest.renterId = input.renterId;
     return await this.rentalRequestRepository.save(newrentalRequest);
 
-
   }
-
 
   async validateRentalRequest(input: rentalRequestInput): Promise<rentalRequest> {
 
     let available = await this.testavailibilityCar(input);
-
-
     if (available == true) {
-
       //trouver car
       const car = await this.carRepository.findOne({ where: { id: input.carId } });
       const owner = car.owner;
@@ -246,11 +241,8 @@ export class RentalCarService {
       const createNotificationInput: CreateNotificationInput = {
         car: car
       };
-
       await this.notificationService.create(createNotificationInput);
       return newRentalRequest;
-
-
     }
     else {
       throw new NotFoundException('Car with ID ${input.carId} not Available');
@@ -258,20 +250,31 @@ export class RentalCarService {
 
   }
 
+  //to discuss
+  async getAll(input: getRentalRequestInput): Promise<rentalRequest[]> {
 
-
-  async getAll(): Promise<rentalRequest[]> {
-    return this.rentalRequestRepository.find({
-      relations: ["car"]
-    });
+    if (input.userRole === 'owner') {
+      return this.rentalRequestRepository.find({
+        where: {
+          ownerId: input.userId
+        },
+        relations: ["car"]
+      });
+    } else if (input.userRole === 'renter') {
+      return this.rentalRequestRepository.find({
+        where: {
+          renterId: input.userId
+        },
+        relations: ["car"]
+      });
+    } else {
+      throw new Error('Invalid userRole');
+    }
   }
-
 
   private async callPaymentEngine(): Promise<boolean> {
     return true;
   }
-
-
 
   async getRentalRequestsById(requestid): Promise<rentalRequest> {
     const rentalrequest = await this.rentalRequestRepository.findOne({
@@ -282,25 +285,27 @@ export class RentalCarService {
     return rentalrequest;
   }
 
-
-
-  async updateRentalRequests(requestid,input:UpdateRentalRequestInput): Promise<void> {
+  async updateRentalRequests(requestid, input: UpdateRentalRequestInput, user): Promise<void> {
     const rentalrequest = await this.getRentalRequestsById(requestid);
-    rentalrequest.status = input.newStatus;
-    await this.rentalRequestRepository.save(rentalrequest);
-
+    if (rentalrequest.ownerId == user) {
+      rentalrequest.status = input.newStatus;
+      await this.rentalRequestRepository.save(rentalrequest);
+    }
+    else {
+      throw new Error("You are not allowed to update the status of this rental request")
+    }
+    
   }
 
   async pay(requestid: number): Promise<string> {
     const payment = await this.callPaymentEngine();
-
     if (payment) {
-
       const input: UpdateRentalRequestInput = {
         newStatus: statusRequest.Paid,
-    };
-
-      await this.updateRentalRequests(requestid,input);
+      };
+      const rentalRequest = await this.getRentalRequestsById(requestid);
+      const ownerid = rentalRequest.ownerId;
+      await this.updateRentalRequests(requestid, input, ownerid);
       const rentalrequest = await this.getRentalRequestsById(requestid);
       const car = rentalrequest.car
       console.log(car)
@@ -309,9 +314,7 @@ export class RentalCarService {
         reservedto: rentalrequest.todate,
         carId: car.id,
       };
-
       await this.create(rentalCarInput);
-
       return 'Payment successful. Rental request is now paid, and car rental and smart contract are created.';
     } else {
       throw new Error('Payment failed. Please try again.');
