@@ -15,6 +15,7 @@ async function payDownPayment(contractAddress, artifacts) {
     from: renter,
     value: downPaymentValue,
   });
+  console.log("Down payment paid");
   
   // Return the transaction
   return tx;

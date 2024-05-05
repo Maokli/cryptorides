@@ -8,8 +8,9 @@ async function getBalance(address) {
   const balanceEther = web3.utils.fromWei(balanceWei, 'ether');
 
   console.log(`Balance of ${address}: ${balanceEther} Ether`);
+  
+console.log(global.downPaymentAddress);
 }
 
 // Replace with the address you want to check
 getBalance('0x1dF62f291b2E969fB0849d99D9Ce41e2F137006e');
-getBalance('0xACa94ef8bD5ffEE41947b4585a84BdA5a3d3DA6E');
