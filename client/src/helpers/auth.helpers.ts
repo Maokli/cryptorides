@@ -1,3 +1,4 @@
+import { redirect, redirectDocument } from "react-router-dom";
 import { isNullOrEmpty } from "./string.helpers";
 
 const TOKEN_KEY = "token";
@@ -18,4 +19,8 @@ export const isAuthenticated = () => {
   const token = getUserToken();
 
   return !isNullOrEmpty(token);
+}
+export const handleLogout = () => {
+  window.location.reload();
+  removeUserToken() ;
 }

@@ -5,7 +5,7 @@ import { Car } from "../models/car.model";
 
 export default function CarGrid(props: { cars: Car[] }) {
   return (
-    <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+    <Grid sx={{ flexGrow: 1 , pt : 10 , pl : 10 }} container spacing={2}>
       <Grid item xs={12}>
         <Grid container spacing={3}>
           {props.cars.map((car) => (

@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import Navbar from '../../components/Navbar';
 import AboutUs from '../../components/aboutUs';
 import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
@@ -50,8 +49,6 @@ const SectionBox: React.FC<SectionBoxProps> = ({ children }) => (
 const LandingPage: React.FC = () => {
     return (
         <div>
-
-            <Navbar />
             <Element name ="Home" id="home">
                 <SectionBox>
                     <Grid container spacing={2} sx={{ height: '100%' }}>

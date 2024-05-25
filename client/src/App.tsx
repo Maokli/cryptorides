@@ -55,8 +55,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <ToastContainer /> {/* Add ToastContainer here */}
       <ApolloProvider client={client}>
+      <Navbar /> 
         <Routes>
-          <Route path='/  ' element={<Navbar  />} />
           <Route path='/' element={<LandingPage />}/>
           <Route path='/cars' element={<BrowseCarsPage/>}/>
           <Route path='/login' element={<LoginForm />}/>

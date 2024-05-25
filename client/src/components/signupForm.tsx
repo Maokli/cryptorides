@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
-import Navbar from '../components/Navbar';
 import { SiGoogle, SiGithub } from 'react-icons/si';
 
 const SIGN_UP = gql`
@@ -51,7 +50,6 @@ const SignUpForm: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <Grid container spacing={2} sx={{ height: '100vh', alignItems: 'center' }}>
         <Grid item xs={12} md={6} sx={{ textAlign: 'center', marginBottom: '50px', paddingLeft: '20px' }}>
           <TypeAnimation

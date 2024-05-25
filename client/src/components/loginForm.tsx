@@ -3,11 +3,11 @@ import { useMutation, gql } from '@apollo/client';
 import { TextField, Button, Grid, Paper, Box } from '@mui/material'; // Removed Typography import
 import { isAuthenticated, setUserToken } from '../helpers/auth.helpers';
 import { useNavigate } from 'react-router-dom';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
-import Navbar from '../components/Navbar'; // Import the Navbar component
 import { NavLink } from 'react-router-dom'; // Import the NavLink component
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
@@ -38,6 +38,7 @@ const LoginForm: React.FC = () => {
       const { data } = await login({ variables: { email: formData.email, password: formData.password } });
       if (data && data.login && data.login.access_token) {
         setUserToken(data.login.access_token);
+        window.location.reload();
         navigate('/');
       }
     } catch (error) {
@@ -56,7 +57,6 @@ const LoginForm: React.FC = () => {
 
   return (
     <>
-      <Navbar /> {/* Add Navbar component */}
       <Grid container spacing={0} sx={{ height: '100vh', alignItems: 'center' }}>
         {/* Left Side - Welcome Text */}
         <Grid item xs={12} md={6} sx={{ textAlign: 'center', marginBottom: '50px', paddingLeft: '20px' }}>
