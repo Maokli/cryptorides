@@ -4,8 +4,9 @@ import AboutUs from '../../components/aboutUs';
 import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
 import BasicDateTimeRangePicker from '../../components/calender';
+import SendRentalRequestButton from '../../components/SendRentalRequestButton';
 import VehiculeFleet from '../../components/vehiculeFleet';
-import { Link as ScrollLink , Element } from 'react-scroll';
+import { Link as ScrollLink, Element } from 'react-scroll';
 import { Car } from '../../models/car.model';
 
 
@@ -13,26 +14,26 @@ const images = [
     {
         url:
             'https://i.ytimg.com/vi/1HAACt8gmE0/maxresdefault.jpg',
-        },
-      {
+    },
+    {
         url:
-          'https://fdm.dk/sites/default/files/d6images/07-bpv-toyotagt86-002.jpg',
-    },{
-        url : '../'
+            'https://fdm.dk/sites/default/files/d6images/07-bpv-toyotagt86-002.jpg',
+    }, {
+        url: '../'
     }
 ]
 const cars: Car[] = [
     {
-      id: 1,
-      location: "New York",
-      brand: "Range",
-      color: "Blue",
-      title: "The Range",
-      fuelType: "Petrol",
-      seats: 5,
-      rentalPrice: 500,
-      downPayment: 1000,
-      images: images
+        id: 1,
+        location: "New York",
+        brand: "Range",
+        color: "Blue",
+        title: "The Range",
+        fuelType: "Petrol",
+        seats: 5,
+        rentalPrice: 500,
+        downPayment: 1000,
+        images: images
     }
 ]
 
@@ -48,11 +49,16 @@ const SectionBox: React.FC<SectionBoxProps> = ({ children }) => (
 );
 
 const LandingPage: React.FC = () => {
+
+    function handleSuccess(data: any): void {}
+
+    function handleError(error: any): void {}
+
     return (
         <div>
 
             <Navbar />
-            <Element name ="Home" id="home">
+            <Element name="Home" id="home">
                 <SectionBox>
                     <Grid container spacing={2} sx={{ height: '100%' }}>
                         <Grid item xs={12} md={6} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
@@ -81,46 +87,57 @@ const LandingPage: React.FC = () => {
                     </Grid>
                 </SectionBox>
             </Element>
-                <Element name='time' id='time'>
-                < BasicDateTimeRangePicker/>
-                </Element>
-                <Element name='fleet' id='fleet'>
-                    < VehiculeFleet cars={cars}/>
-                </Element>
-                <Element name='aboutUs' id='about' >
-                    <Typography variant="h2" gutterBottom id="about">
-                        <AboutUs/>
-                    </Typography>
-                    <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                        {/* Content for About Us section */}
-                    </Box>
-                </Element>
-                <Element name ="advantages" id="advantages">
-                    <Typography variant="h2" gutterBottom id="advantages">
-                        Advantages Section
-                    </Typography>
-                    <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                        {/* Content for Advantages section */}
-                    </Box>
-                </Element>
-                <Element name ="rental-conditions" id="rental-conditions">
-                    <Typography variant="h2" gutterBottom id="rental-conditions">
-                        Rental Conditions Section
-                    </Typography>
-                    <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                        {/* Content for Rental Conditions section */}
-                    </Box>
-                </Element>
-                <Element name ="reviews" id="reviews">
+
+            <SendRentalRequestButton
+                carId={1} 
+                availabilityFrom={new Date()} 
+                availabilityTo={new Date()} 
+                ownerId={1} 
+                renterId={1} 
+                onSuccess={handleSuccess}
+                onError={handleError}
+            />
+
+            <Element name='time' id='time'>
+                < BasicDateTimeRangePicker />
+            </Element>
+            <Element name='fleet' id='fleet'>
+                < VehiculeFleet cars={cars} />
+            </Element>
+            <Element name='aboutUs' id='about' >
+                <Typography variant="h2" gutterBottom id="about">
+                    <AboutUs />
+                </Typography>
+                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
+                    {/* Content for About Us section */}
+                </Box>
+            </Element>
+            <Element name="advantages" id="advantages">
+                <Typography variant="h2" gutterBottom id="advantages">
+                    Advantages Section
+                </Typography>
+                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
+                    {/* Content for Advantages section */}
+                </Box>
+            </Element>
+            <Element name="rental-conditions" id="rental-conditions">
+                <Typography variant="h2" gutterBottom id="rental-conditions">
+                    Rental Conditions Section
+                </Typography>
+                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
+                    {/* Content for Rental Conditions section */}
+                </Box>
+            </Element>
+            <Element name="reviews" id="reviews">
                 <Typography variant="h2" gutterBottom id="reviews">
                     Reviews Section
                 </Typography>
                 <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
                     {/* Content for Reviews section */}
                 </Box>
-                </Element>
+            </Element>
 
-                <Element name ="news" id="news">
+            <Element name="news" id="news">
 
                 <Typography variant="h2" gutterBottom id="news">
                     News Section
@@ -128,9 +145,9 @@ const LandingPage: React.FC = () => {
                 <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
                     {/* Content for News section */}
                 </Box>
-                </Element>
+            </Element>
 
-                <Element name ="contacts" id="contacts">
+            <Element name="contacts" id="contacts">
 
                 <Typography variant="h2" gutterBottom id="contacts">
                     Contacts Section
@@ -138,14 +155,14 @@ const LandingPage: React.FC = () => {
                 <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
                     {/* Content for Contacts section */}
                 </Box>
-                </Element>
+            </Element>
 
-                <Typography variant="h2" gutterBottom id="login">
-                    Login Section
-                </Typography>
-                <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
-                    {/* Content for Login section */}
-                </Box>
+            <Typography variant="h2" gutterBottom id="login">
+                Login Section
+            </Typography>
+            <Box sx={{ height: '200vh', backgroundColor: '#f0f0f0' }}>
+                {/* Content for Login section */}
+            </Box>
         </div>
     );
 };

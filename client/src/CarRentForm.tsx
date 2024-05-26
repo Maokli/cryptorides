@@ -121,7 +121,7 @@ const CarRentalForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/graphql",
+        "http://localhost:3001/graphql",
         {
           query,
           variables,
