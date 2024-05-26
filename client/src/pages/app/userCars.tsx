@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { Car } from '../../models/car.model';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { getUserToken } from '../../helpers/auth.helpers';
+import { Box, Typography } from '@mui/material';
+import axios from 'axios';
 
-const GetUserCars = gql`
+const query = `
   query GetUserCars {
     userCars {
         id , 
@@ -38,29 +40,45 @@ const images = [
   ];
 
 function BrowseUserCars() {
+  const [userCars, setUserCars] = useState<Car[]>([]);
+  const fetchData = async () => {
     const token = getUserToken();
-    const { loading, error, data } = useQuery(GetUserCars, {
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+    console.log(token) ; 
+    const response = await axios.post(
+      "http://localhost:3001/graphql",
+      {
+        query , 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-    });
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
-    let userCars: Car[] = data.userCars;
-
+      }
+    );
+    let userCars: Car[] = response.data.data.userCars;
     const uc = (userCars: any[]) => {
-        return userCars.map((car: any) => ({
-            ...car,
-            seats: 0 , 
-            images : images       
-        }));
-       }
+      return userCars.map((car: any) => ({
+          ...car,
+          seats: 0 , 
+          images : images       
+      }));
+     }
+     console.log(uc(userCars)) ; 
+     setUserCars(uc(userCars)) ; 
+    console.log(response.data.userCars) ; 
+    if (response.data.Loading) return <p>Loading...</p>;
+    if (response.data.error) return <p>Error: {response.data.error.message}</p>;
+
+    }
+    fetchData() ; 
+
     return (
-        <CarGrid cars={uc(userCars)}></CarGrid>
+      <>
+      <Box sx={{pt : 3 , pl : 3}}>
+        <Typography variant="h3">My Cars : </Typography>
+        <CarGrid cars={userCars}></CarGrid>
+      </Box>
+      </>
     );
 }
 
