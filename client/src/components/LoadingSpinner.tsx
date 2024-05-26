@@ -16,7 +16,20 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isAuthorized }) => {
   return (
     <>
       {isLoading && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+        <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        }}
+        >
           <BallTriangle
             height={100}
             width={100}
