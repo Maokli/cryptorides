@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 
 export const notifySuccess = () => {
+  // we should make toaster success notif for other successes than the login
   toast.success("Login successful", {
     position: "bottom-right",
     autoClose: 3000,
@@ -13,7 +14,7 @@ export const notifySuccess = () => {
 };
 
 export const notifyError = () => {
-  // aren't there other error (apart from login errors)?? -> To be discussed
+  // aren't there other error (apart from login errors)
   toast.error("Login failed. Please try again.", {
     position: "bottom-right",
     autoClose: 3000,

@@ -28,6 +28,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isAuthorized }) => {
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          zIndex: 100
         }}
         >
           <BallTriangle

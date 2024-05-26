@@ -25,13 +25,13 @@ class AxiosWithInterceptor {
 
     this.instance.interceptors.response.use(
       (response: any) => {
-        setTimeout(() => setIsLoading(false), 100); 
-        notifySuccess();
+        setTimeout(() => setIsLoading(false), 1000); 
+        //notifySuccess();
         return response;
       },
       (error: any) => {
         setTimeout(() => setIsLoading(false), 100); 
-        notifyError();
+        //notifyError();
         return Promise.reject(error);
       }
     );
