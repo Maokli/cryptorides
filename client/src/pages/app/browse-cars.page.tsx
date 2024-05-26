@@ -3,12 +3,13 @@ import CarGrid from '../../components/car-grid.component';
 import { Car } from '../../models/car.model';
 import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
-import { Container, Grid } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import axios from 'axios';
 import { getUserToken } from '../../helpers/auth.helpers';
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
+import CarDetailsCard from '../../components/car-details-card.component';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -97,9 +98,9 @@ function BrowseCarsPage() {
       </Grid>
       <Grid item xs={8}>
         <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
+            container
+            justifyContent="center"
+            alignItems="center"
           >
             <Grid item width={"70%"}>
               <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />

@@ -4,6 +4,7 @@ import BrowseCarsPage from './browse-cars.page';
 import { isAuthenticated } from '../../helpers/auth.helpers';
 import NotFoundPage from '../shared/notFound.page';
 import AddCarForm from '../forms/addCar.form';
+import CarDetailsPage from './car-details.page';
 
 function MainAppWrapper() {
   useEffect(() => {
@@ -18,6 +19,7 @@ function MainAppWrapper() {
         <Route path="/" element={<Navigate to="/browse" replace />}></Route>
         <Route path="/browse" element={<BrowseCarsPage />}></Route>
         <Route path="/add" element={<AddCarForm />}></Route>
+        <Route path="/details/:id" element={<CarDetailsPage />}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>
   )
