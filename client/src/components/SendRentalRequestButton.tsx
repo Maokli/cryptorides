@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, CircularProgress } from '@mui/material';
-import axios from 'axios';
+import axios from '../helpers/axios.helpers';
 import { getUserToken } from '../helpers/auth.helpers';
 
 interface SendRentalRequestButtonProps {
@@ -22,10 +22,8 @@ const SendRentalRequestButton: React.FC<SendRentalRequestButtonProps> = ({
     onSuccess,
     onError
   }) => {
-    const [isLoading, setIsLoading] = useState(false);
   
     const handleClick = async () => {
-      setIsLoading(true);
   
       try {
         const token = getUserToken();
@@ -53,7 +51,7 @@ const SendRentalRequestButton: React.FC<SendRentalRequestButtonProps> = ({
           }
         };
   
-        const response = await axios.post(
+        const response = await axios.instance.post(
           "http://localhost:3001/graphql",
           { query, variables },
           {
@@ -67,8 +65,6 @@ const SendRentalRequestButton: React.FC<SendRentalRequestButtonProps> = ({
         onSuccess(data);
       } catch (error) {
         onError(error);
-      } finally {
-        setIsLoading(false);
       }
     };
   
@@ -77,10 +73,7 @@ const SendRentalRequestButton: React.FC<SendRentalRequestButtonProps> = ({
         onClick={handleClick}
         variant="contained"
         color="primary"
-        disabled={isLoading}
-      >
-        {isLoading ? <CircularProgress size={24} /> : 'Send Rental Request'}
-      </Button>
+      ></Button>
     );
   };
   

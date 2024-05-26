@@ -6,7 +6,6 @@ import { Grid } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import { getUserToken } from '../../helpers/auth.helpers';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
-import SendRentalRequestButton from '../../components/SendRentalRequestButton';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
