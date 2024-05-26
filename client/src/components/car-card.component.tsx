@@ -42,7 +42,7 @@ export default function CarCard(props: {car: Car}) {
               </Typography>
             </Icon>
             <Typography color="text.secondary">
-                {props.car.seats} People
+                {props.car.seatsNumber} People
             </Typography>
           </Stack>
           <Stack spacing={0.5} direction="row" alignItems="center" color="secondary">

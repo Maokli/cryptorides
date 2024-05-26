@@ -28,7 +28,7 @@ export default function FancyCarCard(props: {car: Car}) {
                 <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
                     <Stack direction="row" alignItems="center">
                         <PeopleIcon sx={{ color: 'white' }} />
-                        <Typography sx={{ color: 'white' }}> {props.car.seats} seats </Typography>
+                        <Typography sx={{ color: 'white' }}> {props.car.seatsNumber} seats </Typography>
                     </Stack>
                 </Stack>
                 <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
