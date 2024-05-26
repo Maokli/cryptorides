@@ -88,16 +88,6 @@ const LandingPage: React.FC = () => {
                 </SectionBox>
             </Element>
 
-            <SendRentalRequestButton
-                carId={1} 
-                availabilityFrom={new Date()} 
-                availabilityTo={new Date()} 
-                ownerId={1} 
-                renterId={1} 
-                onSuccess={handleSuccess}
-                onError={handleError}
-            />
-
             <Element name='time' id='time'>
                 < BasicDateTimeRangePicker />
             </Element>

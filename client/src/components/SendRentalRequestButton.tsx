@@ -30,15 +30,18 @@ const SendRentalRequestButton: React.FC<SendRentalRequestButtonProps> = ({
       try {
         const token = getUserToken();
         const query = `
-          query ValidateRentalrequest($input: rentalRequestInput!) {
-            validateRentalrequest(input: $input) {
-              carId
-              availabilityFrom
-              availabilityTo
-              ownerId
-              renterId
-            }
+        query ValidateRentalrequest($input: rentalRequestInput!) {
+          validateRentalrequest(request: $input) {
+            id
+            fromdate
+            todate
+            status
+            ownerId
+            renterId
+            createdAt
+            car {id}
           }
+        }
         `;
         const variables = {
           input: {

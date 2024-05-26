@@ -9,6 +9,7 @@ import { getUserToken } from '../../helpers/auth.helpers';
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
+import SendRentalRequestButton from '../../components/SendRentalRequestButton';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -25,6 +26,15 @@ const useDebouncedFilters = (filters: CarFilters, delay: number) => {
 
   return debouncedFilters;
 };
+
+function handleSuccess(data: any): void {
+  console.log("wooolyeeey!!!",data);
+ }
+
+function handleError(error: any): void { 
+  console.log("snif snif",error);
+}
+
 
 function BrowseCarsPage() {
   const initialFilters: CarFilters = {
@@ -70,7 +80,7 @@ function BrowseCarsPage() {
         "http://localhost:3001/graphql",
         {
           query,
-          variables: {filter: filters},
+          variables: { filter: filters },
         },
         {
           headers: {
@@ -97,17 +107,27 @@ function BrowseCarsPage() {
       </Grid>
       <Grid item xs={8}>
         <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-          >
-            <Grid item width={"70%"}>
-              <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
-            </Grid>
+          container
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item width={"70%"}>
+            <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
+          </Grid>
         </Grid>
         <CarGrid cars={cars}></CarGrid>
+        <SendRentalRequestButton
+          carId={1}
+          availabilityFrom={new Date('2023-03-01T00:00:00.000Z')}
+          availabilityTo={new Date('2023-03-31T23:59:59.999Z')}
+          ownerId={1}
+          renterId={1}
+          onSuccess={handleSuccess}
+          onError={handleError}
+        />
       </Grid>
     </Grid>
+
   );
 }
 
