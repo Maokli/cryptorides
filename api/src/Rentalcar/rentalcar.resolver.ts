@@ -55,11 +55,12 @@ export class RentalcarResolver {
   }
 
   @Query(() => rentalRequest)
+  @UseGuards(JwtAuthGuard)
   async validateRentalrequest(@Args("request") request: rentalRequestInput): Promise<rentalRequest> {
     return await this.rentalcarService.validateRentalRequest(request);
   }
   @Query(() => [rentalRequest])
-  async getAllRentalsRequests(@Args("getAllRequest")getRentalRequest:getRentalRequestInput): Promise<rentalRequest[]> {
+  async getAllRentalsRequests(@Args("getAllRequest") getRentalRequest: getRentalRequestInput): Promise<rentalRequest[]> {
     return this.rentalcarService.getAll(getRentalRequest);
   }
   @Query(() => rentalRequest)
@@ -70,26 +71,26 @@ export class RentalcarResolver {
 
   @Mutation(() => String)
   @UseGuards(JwtAuthGuard)
-  async updateStatusRentalRequest(@Args("requestid") requestid: number,@Args("input") input: UpdateRentalRequestInput,
-  @Context() context: any,
-): Promise<string> {
+  async updateStatusRentalRequest(@Args("requestid") requestid: number, @Args("input") input: UpdateRentalRequestInput,
+    @Context() context: any,
+  ): Promise<string> {
     try {
       const userId = context.req.user.userId;
       console.log(userId)
-      await this.rentalcarService.updateRentalRequests(requestid,input,userId);
+      await this.rentalcarService.updateRentalRequests(requestid, input, userId);
       return `Le statut de la demande de location avec l'ID ${requestid} a été mis à jour à ${input.newStatus}`;
     } catch (error) {
       throw new Error(`Une erreur est survenue lors de la mise à jour de la demande de location : ${error.message}`);
     }
   }
 
-  
-    @Query( ()=> String)
-    @UseGuards(JwtAuthGuard)
-    async payProcess(@Args("request")requestid:number):Promise<String>{
-      return this.rentalcarService.pay(requestid);
-    }
-  
+
+  @Query(() => String)
+  @UseGuards(JwtAuthGuard)
+  async payProcess(@Args("request") requestid: number): Promise<String> {
+    return this.rentalcarService.pay(requestid);
+  }
+
 
 
 }

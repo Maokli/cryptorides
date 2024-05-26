@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
-import { Car } from '../../models/car.model';
 import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
-import { Container, Grid } from '@mui/material';
-import axios from 'axios';
+import { Box, Container, Grid } from '@mui/material';
+import axios from '../../helpers/axios.helpers';
 import { getUserToken } from '../../helpers/auth.helpers';
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
+import CarDetailsCard from '../../components/car-details-card.component';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -25,6 +23,7 @@ const useDebouncedFilters = (filters: CarFilters, delay: number) => {
 
   return debouncedFilters;
 };
+
 
 function BrowseCarsPage() {
   const initialFilters: CarFilters = {
@@ -66,11 +65,11 @@ function BrowseCarsPage() {
     `;
 
     try {
-      const response = await axios.post(
+      const response = await axios.instance.post(
         "http://localhost:3001/graphql",
         {
           query,
-          variables: {filter: filters},
+          variables: { filter: filters },
         },
         {
           headers: {
@@ -97,9 +96,9 @@ function BrowseCarsPage() {
       </Grid>
       <Grid item xs={8}>
         <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
+            container
+            justifyContent="center"
+            alignItems="center"
           >
             <Grid item width={"70%"}>
               <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
@@ -108,6 +107,7 @@ function BrowseCarsPage() {
         <CarGrid cars={cars}></CarGrid>
       </Grid>
     </Grid>
+
   );
 }
 
