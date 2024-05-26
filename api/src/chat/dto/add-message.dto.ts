@@ -7,8 +7,9 @@ export class AddMessageDto {
   author: string;
 
   @Field()
-  content: string;
-
+  body: string;
+  @Field()
+  recipientId: string;
   @Field()
   createdAt: Date;
 }
