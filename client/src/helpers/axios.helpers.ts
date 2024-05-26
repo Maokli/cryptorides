@@ -3,7 +3,7 @@ import { isAuthenticated, getUserToken } from './auth.helpers';
 import { toast } from 'react-toastify';
 
 const notifySuccess = () => {
-  toast.success("Request successful", {
+  toast.success("Successfully fetched", {
     position: "bottom-right",
     autoClose: 3000,
     hideProgressBar: false,
