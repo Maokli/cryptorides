@@ -29,10 +29,10 @@ export class CarResolver {
   findAll() {
     return this.carService.findAll();
   }
-  @Query(() => [Car], { name: "carsById" })
+  @Query(() => [CarWithImages], { name: "carsById" })
   @UseGuards(JwtAuthGuard)
   async findAllById(@Args("id", { type: () => Int }) id: number) {
-    return await this.carService.findAllById(id);
+    return await this.carService.findAllByOwnerId(id);
   }
   @Query(() => CarWithImages, { name: "car" })
   @UseGuards(JwtAuthGuard)
