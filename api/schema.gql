@@ -168,7 +168,6 @@ type Query {
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
-  searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   userCars: [Car!]!
   users: [User!]!
