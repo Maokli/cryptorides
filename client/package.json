@@ -45,8 +45,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm run start:client",
-    "start:client": "react-scripts start",
+    "start": "export PORT=3333 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -68,11 +67,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/react-swipeable-views": "^0.13.5",
-    "@types/react-swipeable-views-utils": "^0.13.7",
-    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

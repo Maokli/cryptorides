@@ -5,6 +5,9 @@ import { CreateCarInput } from "./dto/create-car.input";
 import { UpdateCarInput } from "./dto/update-car.input";
 import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { CarFilter } from "src/Rentalcar/dto/car.filter";
+import { FilterOptions } from "./dto/filterOptions";
+import { CarWithImages } from "./dto/get-car-withImage-dto";
 
 @Resolver(() => Car)
 export class CarResolver {
@@ -28,19 +31,16 @@ export class CarResolver {
   async findAllById(@Args("id", { type: () => Int }) id: number) {
     return await this.carService.findAllById(id);
   }
-
   @Query(() => Car, { name: "car" })
   @UseGuards(JwtAuthGuard)
   findOne(@Args("id", { type: () => Int }) id: number) {
     return this.carService.findOne(id);
   }
-
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
   updateCar(@Args("updateCarInput") updateCarInput: UpdateCarInput) {
     return this.carService.update(updateCarInput.id, updateCarInput);
   }
-
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
   removeCar(@Args("id", { type: () => Int }) id: number) {
@@ -53,5 +53,17 @@ export class CarResolver {
     const id = await this.carService.idFromRequest(req) ;
     const Cars = await this.carService.findAllCarsById(id); 
     return Cars; 
+  }
+
+  @Query(() => [CarWithImages])
+  @UseGuards(JwtAuthGuard)
+  async filteredCars(@Args("filter", { nullable: true }) filter: CarFilter) {
+    return await this.carService.filterCars(filter);
+  }
+
+  @Query(() => FilterOptions, {name: "availableFilters"})
+  @UseGuards(JwtAuthGuard)
+  async getAvailableFilterOptions() {
+    return await this.carService.getFilterOptions();
   }
 }
