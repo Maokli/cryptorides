@@ -17,6 +17,7 @@ type Car {
   """Car Owner"""
   owner: User!
   rentalPrice: Float!
+  rentalrequests: [rentalRequest!]
   rentalscars: Rentalcar
   seatsNumber: Int!
   title: String!
@@ -25,10 +26,31 @@ type Car {
 input CarFilter {
   availabilityFrom: DateTime
   availabilityTo: DateTime
+  brand: String
+  color: String
+  location: String
   maxDownPayment: Float
-  maxPrice: Float = 5000
+  maxPrice: Float
   minDownPayment: Float
-  minPrice: Float = 50
+  minPrice: Float
+  search: String
+}
+
+type CarWithImages {
+  brand: String!
+  color: String!
+  downPayment: Float!
+
+  """Fuel type enum : Gas, Diesel, Electric ..."""
+  fuelType: FuelType!
+
+  """Unique id of the car"""
+  id: Int!
+  images: [Image!]
+  location: String!
+  rentalPrice: Float!
+  seatsNumber: Int!
+  title: String!
 }
 
 input CreateCarInput {
@@ -79,10 +101,22 @@ type FileAssignment {
   id: Int!
 }
 
+type FilterOptions {
+  brands: [String!]!
+  colors: [String!]!
+  locations: [String!]!
+  maxDailyRentalPrice: Float!
+  maxDownPayment: Float!
+}
+
 enum FuelType {
   Diesel
   Electric
   Gas
+}
+
+type Image {
+  url: String!
 }
 
 type LoginResponse {
@@ -107,19 +141,37 @@ type Mutation {
   signup(SignUpUserInput: SignUpUserInput!): User!
   updateCar(updateCarInput: UpdateCarInput!): Car!
   updateFileAssignment(updateFileAssignmentInput: UpdateFileAssignmentInput!): FileAssignment!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): String!
+  updateStatusRentalRequest(input: UpdateRentalRequestInput!, requestid: Float!): String!
+}
+
+type Notification {
+  id: Int!
+  message: String!
+
+  """Car Owner"""
+  owner: User!
+  status: statusNotification!
 }
 
 type Query {
+  availableFilters: FilterOptions!
+  TestAvailibilty(request: rentalRequestInput!): Boolean!
   car(id: Int!): Car!
   cars: [Car!]!
   carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
+  filteredCars(filter: CarFilter): [CarWithImages!]!
   filteredCars(filter: CarFilter): [Car!]!
+  getAllRentalsRequests(getAllRequest: getRentalRequestInput!): [rentalRequest!]!
+  getRentalRequests(requestid: Float!): rentalRequest!
+  notification: [Notification!]!
+  payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
-  searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   userCars: [Car!]!
   users: [User!]!
+  validateRentalrequest(request: rentalRequestInput!): rentalRequest!
 }
 
 type Rentalcar {
@@ -130,11 +182,19 @@ type Rentalcar {
 }
 
 input SignUpUserInput {
+  confirmPassword: String!
   email: String!
   familyName: String!
   name: String!
   password: String!
   phoneNumber: String!
+}
+
+enum StatusRequest {
+  Approved
+  Cancelled
+  Paid
+  Waiting
 }
 
 input UpdateCarInput {
@@ -159,12 +219,50 @@ input UpdateFileAssignmentInput {
   id: Int!
 }
 
+input UpdateNotificationInput {
+  ids: [Int!]!
+}
+
+input UpdateRentalRequestInput {
+  newStatus: StatusRequest!
+}
+
 type User {
   FamilyName: String
   carsCreatedByUser: [Car!]
   email: String
   id: ID!
   name: String!
+  notifByUser: [Notification!]
   passwordHash: String!
   phoneNumber: String
+}
+
+input getRentalRequestInput {
+  userId: Int!
+  userRole: String!
+}
+
+type rentalRequest {
+  car: Car!
+  createdAt: String!
+  fromdate: DateTime!
+  id: Int!
+  ownerId: Float!
+  renterId: Float!
+  status: StatusRequest!
+  todate: DateTime!
+}
+
+input rentalRequestInput {
+  availabilityFrom: DateTime!
+  availabilityTo: DateTime!
+  carId: Int!
+  ownerId: Int!
+  renterId: Int!
+}
+
+enum statusNotification {
+  NEW
+  SEEN
 }

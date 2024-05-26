@@ -7,20 +7,33 @@ import {
 import { CarFilter } from "./dto/car.filter";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Car } from "../car/entities/car.entity";
-import { LessThanOrEqual, MoreThanOrEqual, Repository } from "typeorm";
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from "typeorm";
 import { Rentalcar } from "./entities/rentalcar.entity";
 import { CreateRentalcarInput } from "./dto/create-rentalcar.input";
 import { CarService } from "../car/car.service";
+import { rentalRequestInput } from "./dto/rentalRequest.input";
+import { rentalRequest } from "./entities/rentalRequest.entity";
+import { NotificationService } from "src/notification/notification.service";
+import { CreateNotificationInput } from "src/notification/dto/create-notification.input";
+import { statusRequest } from "./enum/statusRequest.enum";
+import { UpdateRentalRequestInput } from "./dto/updateRentalRequest.input";
+import { getRentalRequestInput } from "./dto/getRentalRequest.input";
 
 @Injectable()
 export class RentalCarService {
   constructor(
     @InjectRepository(Car)
-    private readonly carrepository: Repository<Car>,
+    private readonly carRepository: Repository<Car>,
+
     @InjectRepository(Rentalcar)
     private readonly rentalcarRepository: Repository<Rentalcar>,
+
+    @InjectRepository(rentalRequest)
+    private readonly rentalRequestRepository: Repository<rentalRequest>,
+
     private readonly carService: CarService,
-  ) {}
+    private readonly notificationService: NotificationService
+  ) { }
 
   async create(input: CreateRentalcarInput): Promise<Rentalcar> {
     try {
@@ -100,7 +113,7 @@ export class RentalCarService {
   }
 
   async filterCars(filter: CarFilter): Promise<Car[]> {
-    let query = this.carrepository.createQueryBuilder("car");
+    let query = this.carRepository.createQueryBuilder("car");
 
     if (filter.minPrice) {
       query = query.andWhere("car.rentalPrice >= :minPrice", {
@@ -133,9 +146,9 @@ export class RentalCarService {
         .select("DISTINCT rentalcar.carId")
         .where(
           "((:availabilityFrom BETWEEN rentalcar.reservedfrom AND rentalcar.reservedto) OR " +
-            "(:availabilityTo BETWEEN rentalcar.reservedfrom AND rentalcar.reservedto) OR " +
-            "(rentalcar.reservedfrom BETWEEN :availabilityFrom AND :availabilityTo) OR " +
-            "(rentalcar.reservedto BETWEEN :availabilityFrom AND :availabilityTo))",
+          "(:availabilityTo BETWEEN rentalcar.reservedfrom AND rentalcar.reservedto) OR " +
+          "(rentalcar.reservedfrom BETWEEN :availabilityFrom AND :availabilityTo) OR " +
+          "(rentalcar.reservedto BETWEEN :availabilityFrom AND :availabilityTo))",
           {
             availabilityFrom: filter.availabilityFrom,
             availabilityTo: filter.availabilityTo,
@@ -157,7 +170,7 @@ export class RentalCarService {
   async searchCars(searchInput: string): Promise<Car[]> {
     const searchKeywords = searchInput.trim().toLowerCase().split(" ");
 
-    const query = this.carrepository.createQueryBuilder("car");
+    const query = this.carRepository.createQueryBuilder("car");
     let searchQuery = query;
 
     for (const keyword of searchKeywords) {
@@ -176,4 +189,136 @@ export class RentalCarService {
     const results = await searchQuery.getMany();
     return results;
   }
+
+  async testavailibilityCar(input: rentalRequestInput): Promise<boolean> {
+
+    const { carId, availabilityFrom, availabilityTo } = input;
+
+    if (availabilityFrom >= availabilityTo) {
+      throw new Error("The start date must be before the end date");
+    }
+    try {
+      // Rechercher les locations qui chevauchent les dates mises par user
+      const existingrentals = await this.rentalcarRepository
+        .createQueryBuilder('rental')
+        .where('(rental.carId = :carId)', { carId })
+        .andWhere('(rental.reservedfrom <= :availabilityTo AND rental.reservedto >= :availabilityFrom)', { availabilityFrom, availabilityTo })
+        .getCount();
+
+      // Si aucune location ne chevauche les dates spécifiées, la voiture est disponible
+      if (existingrentals === 0) {
+        return true;
+      }
+
+      return false;
+
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async createRentalRequest(input: rentalRequestInput, car: Car): Promise<rentalRequest> {
+
+    const newrentalRequest = new rentalRequest();
+    newrentalRequest.fromdate = input.availabilityFrom;
+    newrentalRequest.todate = input.availabilityTo;
+    newrentalRequest.car = car;
+    console.log(car);
+    newrentalRequest.ownerId = input.ownerId;
+    newrentalRequest.renterId = input.renterId;
+    return await this.rentalRequestRepository.save(newrentalRequest);
+
+  }
+
+  async validateRentalRequest(input: rentalRequestInput): Promise<rentalRequest> {
+
+    let available = await this.testavailibilityCar(input);
+    if (available == true) {
+      //trouver car
+      const car = await this.carRepository.findOne({ where: { id: input.carId } });
+      const owner = car.owner;
+      const newRentalRequest = await this.createRentalRequest(input, car);
+      const createNotificationInput: CreateNotificationInput = {
+        car: car
+      };
+      await this.notificationService.create(createNotificationInput);
+      return newRentalRequest;
+    }
+    else {
+      throw new NotFoundException('Car with ID ${input.carId} not Available');
+    }
+
+  }
+
+  //to discuss
+  async getAll(input: getRentalRequestInput): Promise<rentalRequest[]> {
+
+    if (input.userRole === 'owner') {
+      return this.rentalRequestRepository.find({
+        where: {
+          ownerId: input.userId
+        },
+        relations: ["car"]
+      });
+    } else if (input.userRole === 'renter') {
+      return this.rentalRequestRepository.find({
+        where: {
+          renterId: input.userId
+        },
+        relations: ["car"]
+      });
+    } else {
+      throw new Error('Invalid userRole');
+    }
+  }
+
+  private async callPaymentEngine(): Promise<boolean> {
+    return true;
+  }
+
+  async getRentalRequestsById(requestid): Promise<rentalRequest> {
+    const rentalrequest = await this.rentalRequestRepository.findOne({
+      where: { id: requestid },
+      relations: ["car"]
+    });
+
+    return rentalrequest;
+  }
+
+  async updateRentalRequests(requestid, input: UpdateRentalRequestInput, user): Promise<void> {
+    const rentalrequest = await this.getRentalRequestsById(requestid);
+    if (rentalrequest.ownerId == user) {
+      rentalrequest.status = input.newStatus;
+      await this.rentalRequestRepository.save(rentalrequest);
+    }
+    else {
+      throw new Error("You are not allowed to update the status of this rental request")
+    }
+    
+  }
+
+  async pay(requestid: number): Promise<string> {
+    const payment = await this.callPaymentEngine();
+    if (payment) {
+      const input: UpdateRentalRequestInput = {
+        newStatus: statusRequest.Paid,
+      };
+      const rentalRequest = await this.getRentalRequestsById(requestid);
+      const ownerid = rentalRequest.ownerId;
+      await this.updateRentalRequests(requestid, input, ownerid);
+      const rentalrequest = await this.getRentalRequestsById(requestid);
+      const car = rentalrequest.car
+      console.log(car)
+      const rentalCarInput: CreateRentalcarInput = {
+        reservedfrom: rentalrequest.fromdate,
+        reservedto: rentalrequest.todate,
+        carId: car.id,
+      };
+      await this.create(rentalCarInput);
+      return 'Payment successful. Rental request is now paid, and car rental and smart contract are created.';
+    } else {
+      throw new Error('Payment failed. Please try again.');
+    }
+  }
+
 }

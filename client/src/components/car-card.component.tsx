@@ -13,9 +13,9 @@ import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Car } from '../models/car.model';
 
 export default function CarCard(props: {car: Car}) {
-
+  console.log(props.car.images)
   return (
-    <Card sx={{ maxWidth: 400, paddingY: 2, boxShadow: 2 }}>
+    <Card sx={{ width: 400, paddingY: 2, boxShadow: 2 }}>
       <CardHeader
         title={props.car.title}
       />
