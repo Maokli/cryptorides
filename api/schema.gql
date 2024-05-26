@@ -155,19 +155,19 @@ type Notification {
 }
 
 type Query {
-  availableFilters: FilterOptions!
   TestAvailibilty(request: rentalRequestInput!): Boolean!
+  availableFilters: FilterOptions!
   car(id: Int!): Car!
   cars: [Car!]!
   carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [CarWithImages!]!
-  filteredCars(filter: CarFilter): [Car!]!
   getAllRentalsRequests(getAllRequest: getRentalRequestInput!): [rentalRequest!]!
   getRentalRequests(requestid: Float!): rentalRequest!
   notification: [Notification!]!
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
+  searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   userCars: [Car!]!
   users: [User!]!

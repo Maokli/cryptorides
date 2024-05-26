@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { TextField, Button, Grid, Paper, Box } from '@mui/material'; // Removed Typography import
+import { TextField, Button, Grid, Paper, Box } from '@mui/material'; 
 import { isAuthenticated, setUserToken } from '../helpers/auth.helpers';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
-import Navbar from '../components/Navbar'; // Import the Navbar component
-import { NavLink } from 'react-router-dom'; // Import the NavLink component
+import Navbar from '../components/Navbar'; 
+import { NavLink } from 'react-router-dom'; 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
     login(loginUserInput: { email: $email, password: $password }) {
