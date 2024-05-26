@@ -9,6 +9,7 @@ import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
 import { User } from "../../shared/entities/user.entity";
 import { fuelType } from "../enum/fuelType.enum";
 import { Rentalcar } from "../../Rentalcar/entities/rentalcar.entity";
+import { rentalRequest } from "src/Rentalcar/entities/rentalRequest.entity";
 
 @ObjectType()
 @Entity("CarsTable")
@@ -59,4 +60,9 @@ export class Car {
   @Field(() => Rentalcar, { nullable: true })
   @OneToMany(() => Rentalcar, (rentalcar) => rentalcar.car)
   rentalscars: Rentalcar[];
+  
+
+  @Field(()=>[rentalRequest], {nullable:true})
+  @OneToMany(() =>rentalRequest , (rentalrequest) => rentalrequest.car)
+  rentalrequests: rentalRequest[];
 }
