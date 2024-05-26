@@ -10,15 +10,18 @@ import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule } from "@nestjs/config";
+import { FileAssignmentModule } from "./file-assignment/file-assignment.module";
+import { FileAssignmentController } from "./file-assignment/file-assignment.controller";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 import { ChatGateway } from './chat/chat.gateway';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: "sqlite",
       database: "db/sql",
-      synchronize: true, // Sync entities with the database schema
+      synchronize: false, // Sync entities with the database schema
       entities: [__dirname + "/**/*.entity{.ts,.js}"], // Look for all entities
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -33,10 +36,11 @@ import { ChatGateway } from './chat/chat.gateway';
     RentalcarModule,
     UsersModule,
     CarModule,
+    FileAssignmentModule,
     AuthModule,
-   
+    NotificationModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, ChatGateway ],
+  controllers: [AppController, FileAssignmentController],
+  providers: [AppService , ChatGateway ],
 })
 export class AppModule {}

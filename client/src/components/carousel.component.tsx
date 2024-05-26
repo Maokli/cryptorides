@@ -51,7 +51,7 @@ function Carousel(props: {images: Image[]}) {
                   maxWidth: 400,
                   overflow: 'hidden',
                   width: '100%',
-                  backgroundColor: 'transparent', // Make the background transparent
+                  objectFit: 'cover'
                 }}
                 src={step.url}
                 alt={step.url}

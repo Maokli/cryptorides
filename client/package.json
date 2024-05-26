@@ -22,6 +22,7 @@
     "@types/node": "^16.18.93",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
+    "axios": "^1.6.8",
     "@types/react-toastr": "^3.0.10",
     "dayjs": "^1.11.10",
     "graphql": "^16.8.1",
@@ -47,8 +48,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm run start:client",
-    "start:client": "react-scripts start",
+    "start": "export PORT=3333 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
