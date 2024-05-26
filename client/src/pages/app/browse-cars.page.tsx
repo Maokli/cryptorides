@@ -4,7 +4,6 @@ import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
 import { Grid } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
-//import axiosHelper from '../../helpers/axios.helpers';
 import { getUserToken } from '../../helpers/auth.helpers';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
 
