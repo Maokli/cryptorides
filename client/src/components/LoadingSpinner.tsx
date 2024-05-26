@@ -27,12 +27,12 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isAuthorized }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
         }}
         >
           <BallTriangle
-            height={100}
-            width={100}
+            height={300}
+            width={300}
             radius={5}
             color="#3563e9"
             ariaLabel="ball-triangle-loading"
