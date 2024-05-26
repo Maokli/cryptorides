@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
-import { Car } from '../../models/car.model';
 import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
-import { Container, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import axios from 'axios';
 import { getUserToken } from '../../helpers/auth.helpers';
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
 import SendRentalRequestButton from '../../components/SendRentalRequestButton';
 
@@ -26,14 +23,6 @@ const useDebouncedFilters = (filters: CarFilters, delay: number) => {
 
   return debouncedFilters;
 };
-
-function handleSuccess(data: any): void {
-  console.log("wooolyeeey!!!",data);
- }
-
-function handleError(error: any): void { 
-  console.log("snif snif",error);
-}
 
 
 function BrowseCarsPage() {
@@ -116,15 +105,6 @@ function BrowseCarsPage() {
           </Grid>
         </Grid>
         <CarGrid cars={cars}></CarGrid>
-        <SendRentalRequestButton
-          carId={1}
-          availabilityFrom={new Date('2023-03-01T00:00:00.000Z')}
-          availabilityTo={new Date('2023-03-31T23:59:59.999Z')}
-          ownerId={1}
-          renterId={1}
-          onSuccess={handleSuccess}
-          onError={handleError}
-        />
       </Grid>
     </Grid>
 
