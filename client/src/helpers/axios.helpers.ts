@@ -28,13 +28,6 @@ class AxiosWithInterceptor {
         setTimeout(() => setIsLoading(false), 100); 
         notifySuccess();
         return response;
-        /*
-        setTimeout(() => {
-          setIsLoading(false);
-          notifySuccess();
-          return response;
-        }, 2000); // Simulating a 2-second delay
-        */
       },
       (error: any) => {
         setTimeout(() => setIsLoading(false), 100); 
