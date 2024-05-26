@@ -31,19 +31,16 @@ export class CarResolver {
   async findAllById(@Args("id", { type: () => Int }) id: number) {
     return await this.carService.findAllById(id);
   }
-
   @Query(() => Car, { name: "car" })
   @UseGuards(JwtAuthGuard)
   findOne(@Args("id", { type: () => Int }) id: number) {
     return this.carService.findOne(id);
   }
-
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
   updateCar(@Args("updateCarInput") updateCarInput: UpdateCarInput) {
     return this.carService.update(updateCarInput.id, updateCarInput);
   }
-
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
   removeCar(@Args("id", { type: () => Int }) id: number) {
