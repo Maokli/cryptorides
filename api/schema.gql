@@ -17,6 +17,7 @@ type Car {
   """Car Owner"""
   owner: User!
   rentalPrice: Float!
+  rentalrequests: [rentalRequest!]
   rentalscars: Rentalcar
   seatsNumber: Int!
   title: String!
@@ -107,19 +108,36 @@ type Mutation {
   signup(SignUpUserInput: SignUpUserInput!): User!
   updateCar(updateCarInput: UpdateCarInput!): Car!
   updateFileAssignment(updateFileAssignmentInput: UpdateFileAssignmentInput!): FileAssignment!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): String!
+  updateStatusRentalRequest(input: UpdateRentalRequestInput!, requestid: Float!): String!
+}
+
+type Notification {
+  id: Int!
+  message: String!
+
+  """Car Owner"""
+  owner: User!
+  status: statusNotification!
 }
 
 type Query {
+  TestAvailibilty(request: rentalRequestInput!): Boolean!
   car(id: Int!): Car!
   cars: [Car!]!
   carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [Car!]!
+  getAllRentalsRequests(getAllRequest: getRentalRequestInput!): [rentalRequest!]!
+  getRentalRequests(requestid: Float!): rentalRequest!
+  notification: [Notification!]!
+  payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   userCars: [Car!]!
   users: [User!]!
+  validateRentalrequest(request: rentalRequestInput!): rentalRequest!
 }
 
 type Rentalcar {
@@ -135,6 +153,13 @@ input SignUpUserInput {
   name: String!
   password: String!
   phoneNumber: String!
+}
+
+enum StatusRequest {
+  Approved
+  Cancelled
+  Paid
+  Waiting
 }
 
 input UpdateCarInput {
@@ -159,12 +184,50 @@ input UpdateFileAssignmentInput {
   id: Int!
 }
 
+input UpdateNotificationInput {
+  ids: [Int!]!
+}
+
+input UpdateRentalRequestInput {
+  newStatus: StatusRequest!
+}
+
 type User {
   FamilyName: String
   carsCreatedByUser: [Car!]
   email: String
   id: ID!
   name: String!
+  notifByUser: [Notification!]
   passwordHash: String!
   phoneNumber: String
+}
+
+input getRentalRequestInput {
+  userId: Int!
+  userRole: String!
+}
+
+type rentalRequest {
+  car: Car!
+  createdAt: String!
+  fromdate: DateTime!
+  id: Int!
+  ownerId: Float!
+  renterId: Float!
+  status: StatusRequest!
+  todate: DateTime!
+}
+
+input rentalRequestInput {
+  availabilityFrom: DateTime!
+  availabilityTo: DateTime!
+  carId: Int!
+  ownerId: Int!
+  renterId: Int!
+}
+
+enum statusNotification {
+  NEW
+  SEEN
 }
