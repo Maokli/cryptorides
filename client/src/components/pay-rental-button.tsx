@@ -1,37 +1,114 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import { gql, useMutation } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
+import { Button, CircularProgress } from '@mui/material';
+import axios from 'axios';
+import { getUserToken } from '../helpers/auth.helpers';
 
-interface PayRentalButtonProps {
+interface PayButtonProps {
   requestId: number;
+  onSuccess: (data: any) => void;
+  onError: (error: any) => void;
 }
 
-const PAY_RENTAL_MUTATION = gql`
-  mutation PayRental($requestId: Int!) {
-    payProcess(request: $requestId)
-  }
-`;
+const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
 
-const PayRentalButton: React.FC<PayRentalButtonProps> = ({ requestId }) => {
-  const [payRental] = useMutation(PAY_RENTAL_MUTATION, {
-    variables: { requestId },
-    onError: (error) => {
-      console.error('Error during payment:', error);
-    },
-    onCompleted: (data) => {
-      console.log('Payment completed:', data);
-    },
-  });
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      try {
+        const token = getUserToken();
+        const checkStatusQuery = `
+          query CheckPaymentStatus($requestId: Float!) {
+            getRentalRequests(requestid: $requestId) {
+              id
+              status
+            }
+          }
+        `;
+        const checkStatusVariables = { requestId: parseFloat(requestId.toString()) };
 
-  const handlePaymentClick = () => {
-    payRental();
+        const checkStatusResponse = await axios.post(
+          "http://localhost:3001/graphql",
+          {
+            query: checkStatusQuery,
+            variables: checkStatusVariables
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (checkStatusResponse.data.errors) {
+          throw new Error(checkStatusResponse.data.errors[0].message);
+        }
+
+        const rentalRequest = checkStatusResponse.data.data.getRentalRequests;
+        if (rentalRequest.status === "Paid") {
+          setPaymentStatus("already paid");
+        } else {
+          setPaymentStatus(null);
+        }
+      } catch (error) {
+        console.error("Error checking payment status:", error);
+      }
+    };
+
+    checkPaymentStatus();
+  }, [requestId]);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+
+    try {
+      const token = getUserToken();
+      // Step 2: Execute payment process
+      const payProcessMutation = `
+        query PayProcess($requestId: Float!) {
+          payProcess(request: $requestId)
+        }
+      `;
+      const payProcessVariables = { requestId: parseFloat(requestId.toString()) };
+
+      const payResponse = await axios.post(
+        "http://localhost:3001/graphql",
+        {
+          query: payProcessMutation,
+          variables: payProcessVariables
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (payResponse.data.errors) {
+        throw new Error(payResponse.data.errors[0].message);
+      }
+
+      onSuccess(payResponse.data.data.payProcess);
+    } catch (error) {
+      console.error("Payment error:", error);
+      onError(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Button variant="contained" color="primary" onClick={handlePaymentClick}>
-      Pay Rental
+    <Button
+      onClick={handleClick}
+      variant="contained"
+      color="primary"
+      disabled={isLoading || paymentStatus === "already paid"}
+    >
+      {isLoading ? <CircularProgress size={24} /> : paymentStatus === "already paid" ? 'Already Paid' : 'Pay Now'}
     </Button>
   );
 };
 
-export default PayRentalButton;
+export default PayButton;

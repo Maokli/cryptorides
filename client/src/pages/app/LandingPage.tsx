@@ -7,6 +7,7 @@ import BasicDateTimeRangePicker from '../../components/calender';
 import VehiculeFleet from '../../components/vehiculeFleet';
 import { Link as ScrollLink , Element } from 'react-scroll';
 import { Car } from '../../models/car.model';
+import PayButton from '../../components/pay-rental-button';
 
 
 const images = [
@@ -139,7 +140,7 @@ const LandingPage: React.FC = () => {
                     {/* Content for Contacts section */}
                 </Box>
                 </Element>
-
+        
                 <Typography variant="h2" gutterBottom id="login">
                     Login Section
                 </Typography>
