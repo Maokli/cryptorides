@@ -13,6 +13,7 @@ export const notifySuccess = () => {
 };
 
 export const notifyError = () => {
+  // aren't there other error (apart from login errors)?? -> To be discussed
   toast.error("Login failed. Please try again.", {
     position: "bottom-right",
     autoClose: 3000,

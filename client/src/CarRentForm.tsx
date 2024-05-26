@@ -94,7 +94,7 @@ const CarRentalForm = () => {
         fuelType
         location
         rentalPrice
-        seatsNumber
+        seats
         title
         owner {
           id
@@ -111,7 +111,7 @@ const CarRentalForm = () => {
         title: carData.title,
         rentalPrice: parseInt(carData.rentalPrice),
         downPayment: parseInt(carData.downPayment),
-        seatsNumber: parseInt(carData.numberOfSeats),
+        seats: parseInt(carData.numberOfSeats),
         fuelType: carData.fuelType,
         ownerId: ownerId,
       },

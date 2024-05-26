@@ -41,7 +41,7 @@ export default function CarCard(props: {car: Car}) {
               </Typography>
             </Icon>
             <Typography color="text.secondary">
-                {props.car.seatsNumber} People
+                {props.car.seats} People
             </Typography>
           </Stack>
           <Stack spacing={0.5} direction="row" alignItems="center" color="secondary">
