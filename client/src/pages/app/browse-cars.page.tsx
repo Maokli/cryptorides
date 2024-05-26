@@ -1,125 +1,113 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
-import { Car } from '../../models/car.model';
+import { CarFilters } from '../../models/car-filters.model';
+import CarFiltersComponent from '../../components/car-filters.component';
+import { Box, Container, Grid } from '@mui/material';
+import axios from '../../helpers/axios.helpers';
+import { getUserToken } from '../../helpers/auth.helpers';
+import CenterCarFiltersComponent from '../../components/center-car-filters.component';
+import CarDetailsCard from '../../components/car-details-card.component';
 
-const images = [
-  {
-    url:
-      'https://www.turbo.fr/sites/default/files/migration/test/field_image/000000005301416.jpg',
-  },
-  {
-    url:
-      'https://fdm.dk/sites/default/files/d6images/07-bpv-toyotagt86-002.jpg',
-  },
-  {
-    url:
-      'https://www.topspeed.sk/userfiles/articles/10-12/11605/1481385478-toyota.gt86.jpg',
-  },
-  {
-    url:
-      'https://editorial.pxcrush.net/carsales/general/editorial/161214_toyota_86_gt_ii_01-j01q.jpg?width=1024&height=682',
-  },
-];
-const cars: Car[] = [
-  {
-    id: 1,
-    location: "New York",
-    brand: "Toyota",
-    color: "Blue",
-    title: "Toyota Corolla",
-    fuelType: "Petrol",
-    seats: 5,
-    rentalPrice: 50,
-    downPayment: 1000,
-    images: images
-  },
-  {
-    id: 2,
-    location: "Los Angeles",
-    brand: "Honda",
-    color: "Red",
-    title: "Honda Civic",
-    fuelType: "Petrol",
-    seats: 5,
-    rentalPrice: 60,
-    downPayment: 1200,
-    images: images
-  },
-  {
-    id: 3,
-    location: "Miami",
-    brand: "Ford",
-    color: "Black",
-    title: "Ford Mustang",
-    fuelType: "Petrol",
-    seats: 4,
-    rentalPrice: 80,
-    downPayment: 1500,
-    images: images
-  },
-  {
-    id: 4,
-    location: "Chicago",
-    brand: "Chevrolet",
-    color: "Silver",
-    title: "Chevrolet Camaro",
-    fuelType: "Petrol",
-    seats: 4,
-    rentalPrice: 85,
-    downPayment: 1600,
-    images: images
-  },{
-    id: 5,
-    location: "New York",
-    brand: "Toyota",
-    color: "Blue",
-    title: "Toyota Corolla",
-    fuelType: "Petrol",
-    seats: 5,
-    rentalPrice: 50,
-    downPayment: 1000,
-    images: images
-  },
-  {
-    id: 6,
-    location: "Los Angeles",
-    brand: "Honda",
-    color: "Red",
-    title: "Honda Civic",
-    fuelType: "Petrol",
-    seats: 5,
-    rentalPrice: 60,
-    downPayment: 1200,
-    images: images
-  },
-  {
-    id: 7,
-    location: "Miami",
-    brand: "Ford",
-    color: "Black",
-    title: "Ford Mustang",
-    fuelType: "Petrol",
-    seats: 4,
-    rentalPrice: 80,
-    downPayment: 1500,
-    images: images
-  },
-  {
-    id: 8,
-    location: "Chicago",
-    brand: "Chevrolet",
-    color: "Silver",
-    title: "Chevrolet Camaro",
-    fuelType: "Petrol",
-    seats: 4,
-    rentalPrice: 85,
-    downPayment: 1600,
-    images: images
-  },
-];
+const useDebouncedFilters = (filters: CarFilters, delay: number) => {
+  const [debouncedFilters, setDebouncedFilters] = useState(filters);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedFilters(filters);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [filters, delay]);
+
+  return debouncedFilters;
+};
+
+
 function BrowseCarsPage() {
+  const initialFilters: CarFilters = {
+    availabilityFrom: null,
+    availabilityTo: null,
+    minPrice: null,
+    maxPrice: null,
+    minDownPayment: null,
+    maxDownPayment: null,
+    search: null,
+    location: null,
+    color: null,
+    brand: null
+  }
+  const [filters, setFilters] = useState(initialFilters);
+  const [cars, setCars] = useState([])
+
+  // improves UX and perf as we don't fetch on each filter change
+  // source: https://www.dhiwise.com/post/ultimate-guide-to-implementing-react-debounce-effectively
+  const debouncedFilters = useDebouncedFilters(filters, 500);
+
+  const getCarsWithFilters = async () => {
+    const query = `
+      query filteredCars ($filter: CarFilter)
+      {
+        filteredCars(filter: $filter) {
+          id,
+          location,
+          brand,
+          color,
+          title,
+          fuelType,
+          seatsNumber,
+          rentalPrice,
+          downPayment,
+          images {url}
+        }
+      }
+    `;
+
+    try {
+      const response = await axios.instance.post(
+        "http://localhost:3001/graphql",
+        {
+          query,
+          variables: { filter: filters },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getUserToken()}`,
+          },
+        }
+      );
+
+      setCars(response.data.data.filteredCars);
+    }
+    catch {
+      console.log("error")
+    }
+  }
+
+  useEffect(() => {
+    getCarsWithFilters();
+  }, [debouncedFilters]);
+
   return (
-    <CarGrid cars={cars}></CarGrid>
+    <Grid container spacing={2}>
+      <Grid item xs={2.5}>
+        <CarFiltersComponent filters={filters} setFilters={setFilters} />
+      </Grid>
+      <Grid item xs={8}>
+        <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item width={"70%"}>
+              <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
+            </Grid>
+        </Grid>
+        <CarGrid cars={cars}></CarGrid>
+      </Grid>
+    </Grid>
+
   );
 }
 

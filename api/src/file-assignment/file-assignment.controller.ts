@@ -24,8 +24,8 @@ export class FileAssignmentController {
   @UseInterceptors(FilesInterceptor('files', 4, { storage }))
   async uploadFile(@UploadedFiles() files, @Body() body) {
     const fileAssignments = await Promise.all(files.map(async (file) => {
-      const fileUrl = join('http://localhost:3000', file.path);
-
+      const fileUrl = `http://localhost:3001/${file.path}`;
+      console.log(fileUrl)
       const fileAssignment = await this.fileAssignmentService.create({
         fileUrl,
         elementId: body.elementId,

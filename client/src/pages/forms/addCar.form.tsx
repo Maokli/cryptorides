@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import MyHeader from "./components/header/header";
-import MyFooter from "./components/footer/footer";
-import PictureUpload from "./components/carRentForm/imageUpload";
+import PictureUpload from "../../components/carRentForm/imageUpload";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import axios from "axios";
 import { Button, Grid, Container, Box, TextField } from "@mui/material";
 
-const CarRentalForm = () => {
+const AddCarForm = () => {
   const [carData, setCarData] = useState({
     picture1: null as File | null,
     picture2: null as File | null,
@@ -121,7 +119,7 @@ const CarRentalForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/graphql",
+        "http://localhost:3001/graphql",
         {
           query,
           variables,
@@ -145,7 +143,7 @@ const CarRentalForm = () => {
         uploadData.append("elementType", "1");
 
         const ImageUploadResponse = await axios.post(
-          "http://localhost:3000/upload",
+          "http://localhost:3001/upload",
           uploadData,
           {
             headers: {
@@ -363,4 +361,4 @@ const CarRentalForm = () => {
   );
 };
 
-export default CarRentalForm;
+export default AddCarForm;
