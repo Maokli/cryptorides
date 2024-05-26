@@ -23,6 +23,7 @@ const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   return debouncedFilters;
 };
 
+
 function BrowseCarsPage() {
   const initialFilters: CarFilters = {
     availabilityFrom: null,
@@ -67,7 +68,7 @@ function BrowseCarsPage() {
         "http://localhost:3001/graphql",
         {
           query,
-          variables: {filter: filters},
+          variables: { filter: filters },
         },
         {
           headers: {
@@ -94,17 +95,18 @@ function BrowseCarsPage() {
       </Grid>
       <Grid item xs={8}>
         <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-          >
-            <Grid item width={"70%"}>
-              <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
-            </Grid>
+          container
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item width={"70%"}>
+            <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
+          </Grid>
         </Grid>
         <CarGrid cars={cars}></CarGrid>
       </Grid>
     </Grid>
+
   );
 }
 
