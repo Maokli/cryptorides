@@ -54,7 +54,7 @@ export class CarResolver {
   async findUserCars(@Context() context){
     const { req } = context;
     const id = await UserIdFromToken(req.headers['authorization']) ;
-    const Cars = await this.carService.findAllById(id); 
+    const Cars = await this.carService.findAllByOwnerId(id); 
     return Cars; 
   }
 
