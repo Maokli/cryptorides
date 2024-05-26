@@ -8,10 +8,13 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
 import { FilterOptions } from "./dto/filterOptions";
 import { CarWithImages } from "./dto/get-car-withImage-dto";
+import { UserIdFromToken } from "src/helpers/token.helpers";
 
 @Resolver(() => Car)
 export class CarResolver {
-  constructor(private readonly carService: CarService) {}
+  constructor(
+    private readonly carService: CarService , 
+  ) {}
 
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
@@ -50,8 +53,8 @@ export class CarResolver {
   @UseGuards(JwtAuthGuard)
   async findUserCars(@Context() context){
     const { req } = context;
-    const id = await this.carService.idFromRequest(req) ;
-    const Cars = await this.carService.findAllCarsByOwnerId(id); 
+    const id = await UserIdFromToken(req.headers['authorization']) ;
+    const Cars = await this.carService.findAllCarsById(id); 
     return Cars; 
   }
 
