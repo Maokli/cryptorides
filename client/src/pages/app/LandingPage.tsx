@@ -4,7 +4,6 @@ import AboutUs from '../../components/aboutUs';
 import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
 import BasicDateTimeRangePicker from '../../components/calender';
-import SendRentalRequestButton from '../../components/SendRentalRequestButton';
 import VehiculeFleet from '../../components/vehiculeFleet';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Car } from '../../models/car.model';
@@ -24,16 +23,16 @@ const images = [
 ]
 const cars: Car[] = [
     {
-        id: 1,
-        location: "New York",
-        brand: "Range",
-        color: "Blue",
-        title: "The Range",
-        fuelType: "Petrol",
-        seats: 5,
-        rentalPrice: 500,
-        downPayment: 1000,
-        images: images
+      id: 1,
+      location: "New York",
+      brand: "Range",
+      color: "Blue",
+      title: "The Range",
+      fuelType: "Petrol",
+      seatsNumber: 5,
+      rentalPrice: 500,
+      downPayment: 1000,
+      images: images
     }
 ]
 
