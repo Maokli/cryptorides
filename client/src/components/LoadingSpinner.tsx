@@ -27,7 +27,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isAuthorized }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
           zIndex: 100
         }}
         >
