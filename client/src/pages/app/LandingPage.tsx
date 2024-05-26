@@ -7,7 +7,6 @@ import BasicDateTimeRangePicker from '../../components/calender';
 import VehiculeFleet from '../../components/vehiculeFleet';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Car } from '../../models/car.model';
-import PayButton from '../../components/pay-rental-button';
 
 
 const images = [
@@ -24,16 +23,16 @@ const images = [
 ]
 const cars: Car[] = [
     {
-      id: 1,
-      location: "New York",
-      brand: "Range",
-      color: "Blue",
-      title: "The Range",
-      fuelType: "Petrol",
-      seatsNumber: 5,
-      rentalPrice: 500,
-      downPayment: 1000,
-      images: images
+        id: 1,
+        location: "New York",
+        brand: "Range",
+        color: "Blue",
+        title: "The Range",
+        fuelType: "Petrol",
+        seatsNumber: 5,
+        rentalPrice: 500,
+        downPayment: 1000,
+        images: images
     }
 ]
 
@@ -49,10 +48,6 @@ const SectionBox: React.FC<SectionBoxProps> = ({ children }) => (
 );
 
 const LandingPage: React.FC = () => {
-
-    function handleSuccess(data: any): void {}
-
-    function handleError(error: any): void {}
 
     return (
         <div>
