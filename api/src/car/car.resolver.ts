@@ -32,7 +32,7 @@ export class CarResolver {
   @Query(() => [Car], { name: "carsById" })
   @UseGuards(JwtAuthGuard)
   async findAllById(@Args("id", { type: () => Int }) id: number) {
-    return await this.carService.findAllByOwnerId(id);
+    return await this.carService.findAllById(id);
   }
   @Query(() => CarWithImages, { name: "car" })
   @UseGuards(JwtAuthGuard)
