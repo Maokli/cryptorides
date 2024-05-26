@@ -7,7 +7,7 @@ import { isAuthenticated, handleLogout   } from '../helpers/auth.helpers';
 
 const Navbar: React.FC = () => {
   return (
-    <AppBar position="fixed" style={{ background: '#000000' }}>
+    <AppBar position="static" style={{ background: '#000000' }}>
       <Toolbar>
         <Link  to="home" spy={true} smooth={true} offset={-70} duration={500} style={{ cursor: 'pointer', flexGrow: 1 }}>
           <img src={logo} alt="Crypto Rides Logo" style={{ height: 70 }} />
