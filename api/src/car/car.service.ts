@@ -73,10 +73,29 @@ export class CarService {
       throw error;
     }
   }
-  async findOneById(id: number): Promise<Car | null> {
+  async findOneById(id: number): Promise<CarWithImages | null> {
     try {
       const car = await this.carRepository.findOneBy({ id });
-      return car;
+      const carFileAssignments = await this.getCarPictures(car.id);
+      const images: Image[] = carFileAssignments.map(fa => {
+        return {
+          url: fa.fileUrl
+        }
+      })
+
+      const carWithImages: CarWithImages = {
+        id: car.id,
+        location: car.location,
+        brand: car.brand,
+        color: car.color,
+        title: car.title,
+        rentalPrice: car.rentalPrice,
+        downPayment: car.downPayment,
+        seatsNumber: car.seatsNumber,
+        fuelType: car.fuelType,
+        images: images
+      }
+      return carWithImages;
     } catch (error) {
       return null;
     }
@@ -220,7 +239,7 @@ export class CarService {
         rentalPrice: car.rentalPrice,
         downPayment: car.downPayment,
         seatsNumber: car.seatsNumber,
-        fuelType: fuelType.Gas,
+        fuelType: car.fuelType,
         images: images
       }
 

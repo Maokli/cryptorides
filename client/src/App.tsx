@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import CarGrid from './components/car-grid.component';
 import  BrowseCarsPage  from './pages/app/browse-cars.page';
-import { Route, Routes, redirect } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import LandingPage from './pages/app/LandingPage';
