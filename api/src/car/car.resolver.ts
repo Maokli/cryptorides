@@ -51,7 +51,7 @@ export class CarResolver {
   async findUserCars(@Context() context){
     const { req } = context;
     const id = await this.carService.idFromRequest(req) ;
-    const Cars = await this.carService.findAllCarsById(id); 
+    const Cars = await this.carService.findAllCarsByOwnerId(id); 
     return Cars; 
   }
 

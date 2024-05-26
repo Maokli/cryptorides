@@ -154,7 +154,7 @@ export class CarService {
         return id ; 
     }
   }
-  async findAllCarsById(id : number) : Promise< CarWithImages[] | null>{
+  async findAllCarsByOwnerId(id : number) : Promise< CarWithImages[] | null>{
     return this.findAllById(id) ; 
   }
 
