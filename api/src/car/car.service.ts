@@ -144,19 +144,6 @@ export class CarService {
       return null;
     }
   }
-  async idFromRequest(request: Request): Promise <null | number>  {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    if (!(type === 'Bearer') ){
-        return null ; 
-    }else{
-        const payload = jwtDecode(token) ;
-        const id = parseInt(payload.sub) ; 
-        return id ; 
-    }
-  }
-  async findAllCarsByOwnerId(id : number) : Promise< CarWithImages[] | null>{
-    return this.findAllById(id) ; 
-  }
 
 
   async update(id: number, updateCarInput: UpdateCarInput) {
