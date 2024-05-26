@@ -6,6 +6,7 @@ import NotFoundPage from '../shared/notFound.page';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AddCarForm from '../forms/addCar.form';
 import CarDetailsPage from './car-details.page';
+import BrowseUserCars from './userCars';
 
 function MainAppWrapper() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -26,6 +27,7 @@ function MainAppWrapper() {
         <Route path="/" element={<Navigate to="/browse" replace />}></Route>
         <Route path="/browse" element={<BrowseCarsPage />}></Route>
         <Route path="/add" element={<AddCarForm />}></Route>
+        <Route path='/publishedcars' element={<BrowseUserCars/>}/>
         <Route path="/details/:id" element={<CarDetailsPage />}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>

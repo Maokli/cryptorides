@@ -59,7 +59,6 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage />}/>
           <Route path='/cars' element={<BrowseCarsPage/>}/>
-          <Route path='/Urcars' element={<BrowseUserCars/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
           <Route path="/notfound" element={<NotFoundPage/>}></Route>

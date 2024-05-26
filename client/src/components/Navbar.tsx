@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
           <Link to="contacts" spy={true} smooth={true} offset={-70} duration={500} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Contacts</Link>
           {isAuthenticated() ? (
             <>
-              <NavLink to="/Urcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Cars</NavLink>
+              <NavLink to="/publishedcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Cars</NavLink>
               <button onClick={handleLogout} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button></>
           ) : (
             <>
