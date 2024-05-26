@@ -100,7 +100,7 @@ export class CarService {
       return null;
     }
   }
-  async findAllById(id: number): Promise<CarWithImages[] | null> {
+  async findAllByOwnerId(id: number): Promise<CarWithImages[] | null> {
     try {
       const cars = await this.carRepository.find({
         where: { owner: { id: id } },
