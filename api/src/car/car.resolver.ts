@@ -5,10 +5,13 @@ import { CreateCarInput } from "./dto/create-car.input";
 import { UpdateCarInput } from "./dto/update-car.input";
 import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { UserIdFromToken } from "src/helpers/token.helpers";
 
 @Resolver(() => Car)
 export class CarResolver {
-  constructor(private readonly carService: CarService) {}
+  constructor(
+    private readonly carService: CarService , 
+  ) {}
 
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
@@ -47,7 +50,7 @@ export class CarResolver {
   @UseGuards(JwtAuthGuard)
   async findUserCars(@Context() context){
     const { req } = context;
-    const id = await this.carService.idFromRequest(req) ;
+    const id = await UserIdFromToken(req.headers['authorization']) ;
     const Cars = await this.carService.findAllCarsById(id); 
     return Cars; 
   }
