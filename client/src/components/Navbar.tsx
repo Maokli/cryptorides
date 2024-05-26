@@ -22,7 +22,9 @@ const Navbar: React.FC = () => {
           <NavLink to="/cars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Cars</NavLink>
           <Link to="contacts" spy={true} smooth={true} offset={-70} duration={500} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Contacts</Link>
           {isAuthenticated() ? (
-            <button onClick={handleLogout} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button>
+            <>
+              <NavLink to="/Urcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Cars</NavLink>
+              <button onClick={handleLogout} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button></>
           ) : (
             <>
                 <NavLink to="/login" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Login</NavLink>

@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css'; 
 import { Link } from 'react-scroll';
+import BrowseUserCars from './pages/app/userCars';
 
 const theme = createTheme({
   palette: {
@@ -59,6 +60,7 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage />}/>
           <Route path='/cars' element={<BrowseCarsPage/>}/>
+          <Route path='/Urcars' element={<BrowseUserCars/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
           <Route path="/notfound" element={<NotFoundPage/>}></Route>

@@ -65,7 +65,6 @@ export class CarService {
       const car = await this.carRepository.findOneBy({ id });
       return car;
     } catch (error) {
-      console.error(error);
       return null;
     }
   }
@@ -75,10 +74,8 @@ export class CarService {
         where: { owner: { id: id } },
         relations: ["owner"]
       });
-      console.log(cars) ;
       return cars ;
     } catch (error) {
-      console.error(error);
       return null;
     }
   }
