@@ -157,7 +157,7 @@ type Notification {
 type Query {
   TestAvailibilty(request: rentalRequestInput!): Boolean!
   availableFilters: FilterOptions!
-  car(id: Int!): Car!
+  car(id: Int!): CarWithImages!
   cars: [Car!]!
   carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
@@ -167,6 +167,7 @@ type Query {
   notification: [Notification!]!
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
+  searchCars(searchInput: String!): [Car!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   userCars: [Car!]!

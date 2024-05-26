@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
-import { Grid } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import { getUserToken } from '../../helpers/auth.helpers';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
+import CarDetailsCard from '../../components/car-details-card.component';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -95,13 +96,13 @@ function BrowseCarsPage() {
       </Grid>
       <Grid item xs={8}>
         <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Grid item width={"70%"}>
-            <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
-          </Grid>
+            container
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item width={"70%"}>
+              <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
+            </Grid>
         </Grid>
         <CarGrid cars={cars}></CarGrid>
       </Grid>

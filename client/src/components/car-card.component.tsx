@@ -11,9 +11,10 @@ import PlaceIcon from '@mui/icons-material/Place';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Car } from '../models/car.model';
+import { useNavigate } from 'react-router-dom';
 
 export default function CarCard(props: {car: Car}) {
-  console.log(props.car.images)
+  const navigate = useNavigate();
   return (
     <Card sx={{ width: 400, paddingY: 2, boxShadow: 2 }}>
       <CardHeader
@@ -68,7 +69,10 @@ export default function CarCard(props: {car: Car}) {
               <Typography component="span" color="text.secondary" variant='subtitle1' gutterBottom> deposit</Typography>
             </Typography>
           </Stack>
-          <Button variant='contained'>View Details</Button>
+          <Button variant='contained' 
+            onClick={() => navigate(`/details/${props.car.id}`)}>
+              View Details
+          </Button>
         </Stack>
       </CardActions>
     </Card>
