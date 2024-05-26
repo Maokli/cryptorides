@@ -29,7 +29,7 @@ const cars: Car[] = [
       color: "Blue",
       title: "The Range",
       fuelType: "Petrol",
-      seats: 5,
+      seatsNumber: 5,
       rentalPrice: 500,
       downPayment: 1000,
       images: images

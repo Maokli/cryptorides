@@ -13,7 +13,7 @@ export interface Car {
 
   fuelType: string;
 
-  seats: number;
+  seatsNumber: number;
 
   rentalPrice: number;
 
