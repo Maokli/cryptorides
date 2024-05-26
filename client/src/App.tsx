@@ -7,6 +7,7 @@ import { Route, Routes} from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import LandingPage from './pages/app/LandingPage';
+import AgreementPage from './pages/app/Agreement.page';
 import NotFoundPage from './pages/shared/notFound.page';
 import LoginForm  from  './components/loginForm';
 import SignUpForm  from './components/signupForm';
@@ -64,6 +65,7 @@ function App() {
           <Route path="/chat" element={<Chat  onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
           <Route path="/conditions" element={<CarRentalConditions/>}></Route>
+          <Route path="/agreement" element={<AgreementPage/>}></Route>
         </Routes>
       </ApolloProvider>
       {isLoggedIn && <MainAppWrapper />}
