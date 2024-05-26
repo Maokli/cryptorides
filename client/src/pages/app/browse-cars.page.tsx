@@ -7,8 +7,8 @@ import { Container, Grid } from '@mui/material';
 import axios from 'axios';
 import { getUserToken } from '../../helpers/auth.helpers';
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
+import CenterCarFiltersComponent from '../../components/center-car-filters.component';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -96,24 +96,15 @@ function BrowseCarsPage() {
         <CarFiltersComponent filters={filters} setFilters={setFilters} />
       </Grid>
       <Grid item xs={8}>
-        <form>
-          <TextField
-            id="search-bar"
-            className="text"
-            onInput={(e) => {
-              const newFilters = {...filters}
-              newFilters.search = (e.target as HTMLInputElement).value;
-              setFilters(newFilters);
-            }}
-            label="Enter a city name"
-            variant="outlined"
-            placeholder="Search..."
-            size="small"
-          />
-          <IconButton type="submit" aria-label="search">
-            <SearchIcon style={{ fill: "blue" }} />
-          </IconButton>
-        </form>
+        <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+          >
+            <Grid item width={"70%"}>
+              <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
+            </Grid>
+        </Grid>
         <CarGrid cars={cars}></CarGrid>
       </Grid>
     </Grid>

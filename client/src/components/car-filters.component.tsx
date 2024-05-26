@@ -79,13 +79,6 @@ export default function CarFiltersComponent(props: {filters: CarFilters, setFilt
     setFilters(newFilters);
   };
 
-  const handleDateRangeChange = (newValue: DateRange<Dayjs>) => {
-    const newFilters = {...filters};
-    newFilters.availabilityFrom = newValue[0]?.toDate() ??  null;
-    newFilters.availabilityTo = newValue[1]?.toDate() ??  null;
-    setFilters(newFilters);
-  }
-
   const handlePriceRangeChange = (event: Event, newValue: number | number[], property: "Daily Rental" | "Down Payment") => {
     const newFilters = {...filters};
     const newValueArray = newValue as number[];
@@ -147,14 +140,6 @@ export default function CarFiltersComponent(props: {filters: CarFilters, setFilt
               })
             }
           </RadioGroup>
-        </FormControl>
-        <FormControl margin="dense">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateRangePicker 
-              localeText={{ start: 'Availabilty From', end: 'Availabilty TO' }}
-              onChange={handleDateRangeChange}
-              />
-            </LocalizationProvider>
         </FormControl>
         <FormControl>
           <FormLabel id="daily-rental-price-range">Daily Rental Price Range</FormLabel>
