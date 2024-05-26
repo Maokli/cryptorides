@@ -6,6 +6,7 @@ import { CreateFileAssignmentInput } from './dto/create-file-assignment.input';
 import { UpdateFileAssignmentInput } from './dto/update-file-assignment.input';
 import { join } from 'path';
 import * as fs from 'fs';
+import { entityType } from 'src/shared/enum/entityType.enum';
 
 @Injectable()
 export class FileAssignmentService {
@@ -30,6 +31,10 @@ export class FileAssignmentService {
   }
   findAll() {
     return `This action returns all fileAssignment`;
+  }
+
+  async findAllByCarId(carId: number) {
+    return await this.fileAssignmentRepository.find({where: {elementId: carId, elementType: entityType.Car}}) ;
   }
 
   findOne(id: number) {
