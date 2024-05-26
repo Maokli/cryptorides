@@ -46,7 +46,7 @@ export class CarResolver {
   removeCar(@Args("id", { type: () => Int }) id: number) {
     return this.carService.remove(id);
   }
-  @Query(() => [Car]!, { name: "userCars" })
+  @Query(() => [CarWithImages]!, { name: "userCars" })
   @UseGuards(JwtAuthGuard)
   async findUserCars(@Context() context){
     const { req } = context;

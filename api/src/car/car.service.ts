@@ -100,13 +100,46 @@ export class CarService {
       return null;
     }
   }
-  async findAllById(id: number): Promise<Car[] | null> {
+  async findAllById(id: number): Promise<CarWithImages[] | null> {
     try {
       const cars = await this.carRepository.find({
         where: { owner: { id: id } },
         relations: ["owner"]
       });
-      return cars ;
+    
+      const carsWithoutImages = cars ; 
+      const carsWithImages: CarWithImages[] = [];
+  
+      for (let i = 0; i<carsWithoutImages.length; i++) {
+        const car = carsWithoutImages[i];
+        const carFileAssignments = await this.getCarPictures(car.id);
+        const images: Image[] = carFileAssignments.map(fa => {
+          return {
+            url: fa.fileUrl
+          }
+        })
+  
+        const carWithImages: CarWithImages = {
+          id: car.id,
+          location: car.location,
+          brand: car.brand,
+          color: car.color,
+          title: car.title,
+          rentalPrice: car.rentalPrice,
+          downPayment: car.downPayment,
+          seatsNumber: car.seatsNumber,
+          fuelType: car.fuelType,
+          images: images
+        }
+  
+        carsWithImages.push(carWithImages);
+        console.log(carWithImages)
+  
+      }
+  
+      console.log(carsWithImages)
+    
+      return carsWithImages ;
     } catch (error) {
       return null;
     }
@@ -121,7 +154,7 @@ export class CarService {
         return id ; 
     }
   }
-  async findAllCarsById(id : number) : Promise< Car[] | null>{
+  async findAllCarsById(id : number) : Promise< CarWithImages[] | null>{
     return this.findAllById(id) ; 
   }
 
