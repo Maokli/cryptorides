@@ -39,7 +39,7 @@ const CarDetailsCard = (props: {car: Car}) => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="text.secondary">Capacity</Typography>
-                        <Typography variant="body1">{props.car.seats} Person</Typography>
+                        <Typography variant="body1">{props.car.seatsNumber} Person</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="text.secondary">Fuel Type</Typography>
