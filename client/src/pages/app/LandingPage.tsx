@@ -6,7 +6,6 @@ import BasicDateTimeRangePicker from '../../components/calender';
 import VehiculeFleet from '../../components/vehiculeFleet';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Car } from '../../models/car.model';
-import LoginForm from '../../components/loginForm';
 import CarRentalConditions from '../../components/CarRentalConditions';
 import CustomerReviews from '../../components/CustomerReviews';
 import CompanyContacts from '../../components/CompanyContacts';
@@ -90,8 +89,7 @@ const LandingPage: React.FC = () => {
 
     return (
         <div>
-
-            <Navbar />
+            <Navbar/>
             <Element name="Home" id="home">
                 <SectionBox>
                     <Grid container spacing={2} sx={{ height: '100%' }}>
@@ -127,20 +125,15 @@ const LandingPage: React.FC = () => {
             <Element name='fleet' id='fleet'>
                 < VehiculeFleet cars={cars} />
             </Element>
-
             <Element name="rental-conditions" id="rental-conditions">
                 <CarRentalConditions />
             </Element>
             <Element name="reviews" id="reviews">
                 <CustomerReviews />
             </Element>
-
-
-
             <Element name="contacts" id="contacts">
                 <CompanyContacts />
             </Element>
-
         </div>
     );
 };
