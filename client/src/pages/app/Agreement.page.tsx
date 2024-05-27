@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import Sidebar from '../../components/sidebar';
-import { Chat } from '../../components/chat';
+import {Chat} from '../../components/chat';
 import { useParams } from 'react-router-dom';
 import axios from '../../helpers/axios.helpers';
 import AgreementRightSide from '../../components/agreement-right-side';
 
 const AgreementPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [rentalRequest, setRentalRequest] = useState(null);
+  const [rentalRequest, setRentalRequest] = useState<any>(null);
 
   useEffect(() => {
     if (!id) {
@@ -86,7 +86,9 @@ const AgreementPage: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           <Box height="100%" padding={2}>
-            <Chat onLogout={() => { }} />
+            {rentalRequest && (
+              <Chat recipientId={rentalRequest.ownerId} onLogout={() => { }} />
+            )}
           </Box>
         </Grid>
         <Grid item xs={4}>

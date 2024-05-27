@@ -20,11 +20,11 @@ const SystemMessage: Message = {
 
 interface ChatProps {
   onLogout: () => void;
+  recipientId: string;
 }
 
-export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
+export const Chat: React.FC<ChatProps> = ({ onLogout, recipientId }) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [recipientId, setRecipientId] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([SystemMessage]);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -85,8 +85,7 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
   const handleSendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter" || inputValue.trim().length === 0 || !socket) return;
 
-    const trimmedRecipientId = recipientId.trim();
-    const recipientIdNumber = parseInt(trimmedRecipientId, 10);
+    const recipientIdNumber = parseInt(recipientId, 10);
 
     if (isNaN(recipientIdNumber)) {
       console.error("Invalid recipient ID:", recipientId);
@@ -148,13 +147,6 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
         ))}
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <TextField
-          variant="outlined"
-          placeholder="Recipient's ID"
-          value={recipientId}
-          onChange={(e) => setRecipientId(e.target.value)}
-          fullWidth
-        />
         <TextField
           variant="outlined"
           placeholder="Type message here"

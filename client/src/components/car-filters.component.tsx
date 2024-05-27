@@ -1,4 +1,4 @@
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Slider, Stack } from "@mui/material";
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Slider, Stack, Typography } from "@mui/material";
 import { CarFilters } from "../models/car-filters.model";
 import React, { useEffect, useState } from "react";
 import { isNullOrEmpty } from "../helpers/string.helpers";
@@ -56,8 +56,8 @@ export default function CarFiltersComponent(props: {filters: CarFilters, setFilt
     getAvailableFilterOptions();
   }, [])
 
-  const handleRadioSelectChanged = (event: React.MouseEvent, property: "location" | "color" | "brand") => {
-    const newValue = (event.target as HTMLInputElement).value;
+  const handleRadioSelectChanged = (event: React.ChangeEvent<HTMLInputElement>, property: "location" | "color" | "brand") => {
+    const newValue = event.target.value;
     console.log(newValue)
     console.log(filters[property])
     const newFilters = {...filters}
@@ -66,9 +66,10 @@ export default function CarFiltersComponent(props: {filters: CarFilters, setFilt
     } else {
       newFilters[property] = newValue;
     }
-
+  
     setFilters(newFilters);
   };
+  
 
   const handlePriceRangeChange = (event: Event, newValue: number | number[], property: "Daily Rental" | "Down Payment") => {
     const newFilters = {...filters};
@@ -85,72 +86,67 @@ export default function CarFiltersComponent(props: {filters: CarFilters, setFilt
 
     setFilters(newFilters);
   };
-
-  return <Stack spacing={2} padding={3}>
-          <FormControl>
-          <FormLabel id="brand-radio-buttons-group">Brand</FormLabel>
-          <RadioGroup
-            aria-labelledby="brand-radio-buttons-group"
-            name="brand-radio-buttons-group"
-            value={filters.brand}
-            onClick={(event) => handleRadioSelectChanged(event, "brand")}
-          >
-            {
-              !isNullOrEmpty(brands) && brands.map(brand => {
-                return <FormControlLabel value={brand} control={<Radio />} label={brand} />
-              })
-            }
-          </RadioGroup>
-        </FormControl>
-        <FormControl>
-          <FormLabel id="location-radio-buttons-group">Location</FormLabel>
-          <RadioGroup
-            aria-labelledby="location-radio-buttons-group"
-            name="location-radio-buttons-group"
-            value={filters.location}
-            onClick={(event) => handleRadioSelectChanged(event, "location")}
-          >
-            {
-              !isNullOrEmpty(locations) && locations.map(location => {
-                return <FormControlLabel value={location} control={<Radio />} label={location} />
-              })
-            }
-          </RadioGroup>
-        </FormControl>
-        <FormControl margin="normal">
-          <FormLabel id="color-radio-buttons-group">Color</FormLabel>
-          <RadioGroup
-            aria-labelledby="color-radio-buttons-group"
-            name="color-radio-buttons-group"
-            value={filters.color}
-            onClick={(event) => handleRadioSelectChanged(event, "color")}
-          >
-            {
-              !isNullOrEmpty(colors) && colors.map(color => {
-                return <FormControlLabel value={color} control={<Radio />} label={color} />
-              })
-            }
-          </RadioGroup>
-        </FormControl>
-        <FormControl>
-          <FormLabel id="daily-rental-price-range">Daily Rental Price Range</FormLabel>
-            <Slider
-              value={[filters.minPrice ?? 0, filters.maxPrice ?? 0]}
-              onChange={(event, newValue) => handlePriceRangeChange(event, newValue, "Daily Rental")}
-              valueLabelDisplay="auto"
-              max={maxDailyRentalPrice}
-              getAriaValueText={(value) => `${value} TND`}
-            />
-        </FormControl>
-        <FormControl>
-          <FormLabel color="secondary" id="daily-rental-price-range">Down Payment Price Range</FormLabel>
-            <Slider
-              value={[filters.minDownPayment ?? 0, filters.maxDownPayment ?? 0]}
-              onChange={(event, newValue) => handlePriceRangeChange(event, newValue, "Down Payment")}
-              valueLabelDisplay="auto"
-              max={maxDownPayment}
-              getAriaValueText={(value) => `${value} TND`}
-            />
-        </FormControl>
-      </Stack>
-}
+  return (
+    <Stack spacing={2} padding={3} sx={{ fontFamily: 'Roboto', backgroundColor: 'black', color: 'white'  , width : '250px'}} >
+      <Typography variant="h6" sx={{ fontFamily: 'Verdana', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF', marginTop: '10px', marginBottom: '5px' }}>Filters</Typography>
+      <FormControl sx={{ backgroundColor: '#0e0c0d', padding: '20px', borderRadius: '8px' , borderBlockColor: '#5D5B5B' }}>
+        <Typography variant="subtitle1" sx={{ fontFamily:  'Verdana', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF' }}>Brand</Typography>
+        <RadioGroup
+          name="brand-radio-buttons-group"
+          value={filters.brand}
+          onChange={(event) => handleRadioSelectChanged(event, "brand")}
+        >
+          {!isNullOrEmpty(brands) && brands.map((brand: string) => (
+            <FormControlLabel key={brand} value={brand} control={<Radio />} label={brand.toUpperCase()} sx={{ color: 'white', fontSize: '14px', fontFamily: 'Roboto, sans-serif' }} />
+          ))}
+        </RadioGroup>
+      </FormControl>
+      <FormControl sx={{ backgroundColor: '#0e0c0d', padding: '20px', borderRadius: '8px' , borderBlockColor: '#5D5B5B' }}>
+        <Typography variant="subtitle1" sx={{ fontFamily: 'Verdana', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF' }}>Location</Typography>
+        <RadioGroup
+          name="location-radio-buttons-group"
+          value={filters.location}
+          onChange={(event) => handleRadioSelectChanged(event, "location")}
+        >
+          {!isNullOrEmpty(locations) && locations.map((location: string) => (
+            <FormControlLabel key={location} value={location} control={<Radio />} label={location.toUpperCase()} sx={{ color: 'white', fontSize: '14px', fontFamily: 'Roboto, sans-serif' }} />
+          ))}
+        </RadioGroup>
+      </FormControl>
+      <FormControl sx={{ backgroundColor: '#0e0c0d', padding: '20px', borderRadius: '8px' , borderBlockColor: '#5D5B5B' }}>
+        <Typography variant="subtitle1" sx={{ fontFamily: 'Verdana', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF' }}>Color</Typography>
+        <RadioGroup
+          name="color-radio-buttons-group"
+          value={filters.color}
+          onChange={(event) => handleRadioSelectChanged(event, "color")}
+        >
+          {!isNullOrEmpty(colors) && colors.map((color: string) => (
+            <FormControlLabel key={color} value={color} control={<Radio />} label={color.toUpperCase()} sx={{ color: 'white', fontSize: '14px', fontFamily: 'Roboto, sans-serif' }} />
+          ))}
+        </RadioGroup>
+      </FormControl>
+      <FormControl sx={{ backgroundColor: '#0e0c0d', padding: '20px', borderRadius: '8px' , borderBlockColor: '#5D5B5B' }}>
+        <Typography variant="subtitle1" sx={{ fontFamily: 'Verdana', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF' }}>Daily Rental Price Range</Typography>
+        <Slider
+          value={[filters.minPrice ?? 0, filters.maxPrice ?? 0]}
+          onChange={(event, newValue) => handlePriceRangeChange(event, newValue, "Daily Rental")}
+          valueLabelDisplay="auto"
+          max={maxDailyRentalPrice}
+          getAriaValueText={(value) => `${value} TND`}
+          sx={{ color: 'white' }}
+        />
+      </FormControl>
+      <FormControl sx={{ backgroundColor: '#0e0c0d', padding: '20px', borderRadius: '8px' , borderBlockColor: '#5D5B5B' }}>
+        <Typography variant="subtitle1" sx={{ fontFamily: 'Verdana', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF' }}>Down Payment Price Range</Typography>
+        <Slider
+          value={[filters.minDownPayment ?? 0, filters.maxDownPayment ?? 0]}
+          onChange={(event, newValue) => handlePriceRangeChange(event, newValue, "Down Payment")}
+          valueLabelDisplay="auto"
+          max={maxDownPayment}
+          getAriaValueText={(value) => `${value} TND`}
+          sx={{ color: 'white' }}
+          />
+          </FormControl>
+          </Stack>
+          );
+          }
