@@ -48,6 +48,9 @@ type CarWithImages {
   id: Int!
   images: [Image!]
   location: String!
+
+  """Unique id of the car owner"""
+  ownerId: Int!
   rentalPrice: Float!
   seatsNumber: Int!
   title: String!
@@ -167,7 +170,6 @@ type Query {
   notification: [Notification!]!
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
-  searchCars(searchInput: String!): [Car!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
   userCars: [Car!]!
