@@ -40,10 +40,12 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
 
   useEffect(() => {
     const fetchUserId = async () => {
-      const userId= await getUserIdFromToken() as string ;
-     
+      try {
+        const userId = (await getUserIdFromToken()) as string;
         setCurrentUserId(userId);
-    
+      } catch (error) {
+        console.error("Failed to fetch user ID:", error);
+      }
     };
 
     fetchUserId();
@@ -68,7 +70,7 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
     });
 
     socket.on("chat", (newMessage: Message) => {
-      console.log("New message added", newMessage);
+      console.log("New message added:", newMessage);
       setMessages((previousMessages) => [...previousMessages, newMessage]);
     });
 
@@ -83,12 +85,31 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
   const handleSendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter" || inputValue.trim().length === 0 || !socket) return;
 
+    const trimmedRecipientId = recipientId.trim();
+    const recipientIdNumber = parseInt(trimmedRecipientId, 10);
+
+    if (isNaN(recipientIdNumber)) {
+      console.error("Invalid recipient ID:", recipientId);
+      return;
+    }
+
     console.log("Sending private message to recipient:", recipientId);
+
+    const newMessage: Message = {
+      id: Date.now(), 
+      body: inputValue.trim(),
+      author: currentUserId!,
+      authorName: "You", 
+    };
+
+    // Add the sent message to the local state
+    setMessages((previousMessages) => [...previousMessages, newMessage]);
 
     socket.emit("privateMessage", {
       body: inputValue.trim(),
-      recipientId: parseInt(recipientId.trim(), 10), // Convert recipientId to an integer
+      recipientId: recipientIdNumber,
     });
+
     setInputValue("");
   };
 
@@ -105,17 +126,17 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
         <Typography variant="h6">Nest Chat App</Typography>
         <Button variant="contained" onClick={handleLogout}>Logout</Button>
       </Box>
-      <div>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "60vh", overflowY: "scroll" }}>
         {messages.map((message, idx) => (
           <Paper
             key={idx}
             sx={{
-              backgroundColor: "#E3F2FD",
+              backgroundColor: message.author === currentUserId ? "#E3F2FD" : "#F3E5F5",
               padding: 1,
               mb: 1,
               width: "fit-content",
               maxWidth: "80%",
-              alignSelf: currentUserId && message.author === currentUserId ? "flex-start" : "flex-end",
+              alignSelf: message.author === currentUserId ? "flex-end" : "flex-start",
             }}
           >
             <Typography variant="body1">{message.authorName}</Typography>
@@ -125,8 +146,8 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
             </Typography>
           </Paper>
         ))}
-      </div>
-      <div>
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <TextField
           variant="outlined"
           placeholder="Recipient's ID"
@@ -142,7 +163,7 @@ export const Chat: React.FC<ChatProps> = ({ onLogout }) => {
           onKeyDown={handleSendMessage}
           fullWidth
         />
-      </div>
+      </Box>
     </Paper>
   );
 };
