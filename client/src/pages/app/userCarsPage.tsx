@@ -17,7 +17,8 @@ const query = `
         title , 
         fuelType , 
         rentalPrice , 
-        downPayment 
+        downPayment,
+        images {url}
     }
   }
 `;

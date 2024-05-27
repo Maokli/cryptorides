@@ -5,6 +5,7 @@ import { Chat } from '../../components/chat';
 import { useParams } from 'react-router-dom';
 import axios from '../../helpers/axios.helpers';
 import AgreementRightSide from '../../components/agreement-right-side';
+import { getUserIdFromToken } from '../../services/account.service';
 
 const AgreementPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -59,6 +60,22 @@ const AgreementPage: React.FC = () => {
     fetchRentalRequest();
   }, [id]);
 
+  const [currentUserId, setCurrentUserId] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const userId = (await getUserIdFromToken()) as string;
+        setCurrentUserId(parseInt(userId));
+        console.log("User ID:", userId);
+      } catch (error) {
+        console.error("Failed to fetch user ID:", error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   const handleStatusUpdate = async (newStatus: 'Approved' | 'Denied') => {
     try {
       const mutation = `
@@ -72,7 +89,7 @@ const AgreementPage: React.FC = () => {
         input: { newStatus }
       };
 
-      await axios.instance.post("http://localhost:3001/graphql", { mutation, variables });
+      await axios.instance.post("", { query: mutation, variables });
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -86,7 +103,9 @@ const AgreementPage: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           <Box height="100%" padding={2}>
-            <Chat onLogout={() => { }} />
+            {rentalRequest && (
+              <Chat recipientId={currentUserId === (rentalRequest as any).ownerId ? (rentalRequest as any).renterId : (rentalRequest as any).ownerId} onLogout={() => { }} />
+            )}
           </Box>
         </Grid>
         <Grid item xs={4}>

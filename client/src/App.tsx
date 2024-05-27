@@ -64,7 +64,6 @@ function App() {
           <Route path='/' element={<LandingPage />}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
-          <Route path="/chat" element={<Chat  onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
           <Route path="/addCar" element={<AddCarForm/>}></Route>
           <Route path="/conditions" element={<CarRentalConditions/>}></Route>
