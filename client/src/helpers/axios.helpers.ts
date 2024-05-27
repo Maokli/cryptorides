@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { isAuthenticated, getUserToken } from './auth.helpers';
 import { toast } from 'react-toastify';
 
@@ -51,10 +51,10 @@ const notifyAuthenticationError = () => {
 };
 
 class AxiosWithInterceptor {
-  instance: any;
+  instance: AxiosInstance;
 
   constructor() {
-    this.instance = axios.create();
+    this.instance = axios.create({baseURL: "http://localhost:3001/graphql"});
   }
 
   addInterceptors(setIsLoading: (isLoading: boolean) => void) {
@@ -79,7 +79,7 @@ class AxiosWithInterceptor {
       },
       (error: any) => {
         setTimeout(() => setIsLoading(false), 100);
-
+        console.log(error);
         if (!error.response) {
           notifyGeneralError();
         } else if (!error.response.data) {

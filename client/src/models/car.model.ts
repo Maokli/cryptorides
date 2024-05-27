@@ -3,6 +3,8 @@ import { Image } from "./image.model";
 export interface Car {
   id: number;
 
+  ownerId: number;
+
   location: string;
 
   brand: string;

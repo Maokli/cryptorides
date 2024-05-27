@@ -1,12 +1,9 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Slider, Stack } from "@mui/material";
 import { CarFilters } from "../models/car-filters.model";
 import React, { useEffect, useState } from "react";
-import { DateRange, DateRangePicker, LocalizationProvider } from "@mui/x-date-pickers-pro";
-import { Dayjs } from "dayjs";
 import { isNullOrEmpty } from "../helpers/string.helpers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { getUserToken } from "../helpers/auth.helpers";
-import axios from "axios";
+import axios from "../helpers/axios.helpers";
 
 
 export default function CarFiltersComponent(props: {filters: CarFilters, setFilters: React.Dispatch<React.SetStateAction<CarFilters>>}) {
@@ -32,15 +29,9 @@ export default function CarFiltersComponent(props: {filters: CarFilters, setFilt
     `;
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/graphql",
+      const response = await axios.instance.post("",
         {
           query,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getUserToken()}`,
-          },
         }
       );
 
