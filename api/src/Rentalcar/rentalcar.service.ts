@@ -23,6 +23,7 @@ import { FileAssignment } from "src/file-assignment/entities/file-assignment.ent
 import { entityType } from "src/shared/enum/entityType.enum";
 import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
 import { Image } from "src/car/dto/image.model";
+import { request } from "http";
 
 @Injectable()
 export class RentalCarService {
@@ -283,7 +284,41 @@ export class RentalCarService {
     return rentalRequests.map(rentalRequest => this.mapRentalRequestToDto(rentalRequest))
   }
 
-  private async callPaymentEngine(): Promise<boolean> {
+  private async callPaymentEngine(requestid:number): Promise<boolean> {
+    const rentalrequest = await this.rentalRequestRepository.findOne({where: { id: requestid },
+      relations: ["car"]
+    });
+
+    const ownerWallet = "0xACa94ef8bD5ffEE41947b4585a84BdA5a3d3DA6E";
+    const renterWallet = "0x1dF62f291b2E969fB0849d99D9Ce41e2F137006e";
+    
+    const car = rentalrequest.car;
+  
+    const downPayment = car.downPayment;
+    const rentalPrice = car.rentalPrice;
+  
+    const differenceInDays = (rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24);
+    const rentalPeriod = Math.floor((rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24));
+  
+    const response = await fetch('http://your-api-url', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        renter: renterWallet,
+        owner: ownerWallet,
+        rentalPeriod: rentalPeriod,
+        downPaymentAmount: downPayment,
+        rentAmount: rentalPrice,
+      }),
+    });
+  
+    if (!response.ok) {
+      console.error('Error calling payment engine:', response.statusText);
+      return false;
+    }
+    
     return true;
   }
 
@@ -309,7 +344,7 @@ export class RentalCarService {
   }
 
   async pay(requestid: number): Promise<string> {
-    const payment = await this.callPaymentEngine();
+    const payment = await this.callPaymentEngine(requestid);
     if (payment) {
       const input: UpdateRentalRequestInput = {
         newStatus: statusRequest.Paid,
