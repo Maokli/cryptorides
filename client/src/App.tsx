@@ -17,7 +17,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css'; 
 import { Link } from 'react-scroll';
-import BrowseUserCars from './pages/app/userCars';
+import BrowseUserCars from './pages/app/userCarsPage';
 
 const theme = createTheme({
   palette: {
