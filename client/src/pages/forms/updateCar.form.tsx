@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import axios from "../../helpers/axios.helpers";
 import PictureUpload from "../../components/carRentForm/imageUpload";
+import { useNavigate, useParams } from "react-router-dom";
+import BackButton from "../../components/backButton.component";
 
 interface CarData {
   picture1: File | null;
@@ -25,7 +27,9 @@ interface CarData {
 }
 
 const UpdateCarForm = () => {
-  const carId = parseInt(localStorage.getItem("carId") ??"");
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const carId = parseInt(id ?? "");
   
   const [carData, setCarData] = useState<CarData>({
     picture1: null,
@@ -232,6 +236,7 @@ const UpdateCarForm = () => {
 
           await Promise.all(deleteImagePromises);
           console.log("Deleted images:", deletedImages);
+          navigate("/publishedcars");
         }
       } else {
         console.error("Error updating car:", response.data.errors);
@@ -251,6 +256,7 @@ const UpdateCarForm = () => {
         bgcolor: "background.paper",
       }}
     >
+      <BackButton to="/publishedCars"/>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {imageUrls.map((url, index) => (
