@@ -152,7 +152,7 @@ type Query {
   availableFilters: FilterOptions!
   car(id: Int!): CarWithImages!
   cars: [Car!]!
-  carsById(id: Int!): [Car!]!
+  carsById(id: Int!): [CarWithImages!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [CarWithImages!]!
   getAllRentalsRequests(getAllRequest: getRentalRequestInput!): [rentalRequest!]!
@@ -162,7 +162,7 @@ type Query {
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
   user(email: String!): User!
-  userCars: [Car!]!
+  userCars: [CarWithImages!]!
   users: [User!]!
   validateRentalrequest(request: rentalRequestInput!): rentalRequest!
 }
@@ -175,7 +175,6 @@ type Rentalcar {
 }
 
 input SignUpUserInput {
-  confirmPassword: String!
   email: String!
   familyName: String!
   name: String!

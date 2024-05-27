@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Navbar from '../../components/Navbar';
+import AboutUs from '../../components/aboutUs';
 import { Typography, Box, Grid, Paper, Button } from '@mui/material';
 import landing from '../../assets/images/landing.png';
 import BasicDateTimeRangePicker from '../../components/calender';
@@ -92,8 +92,7 @@ const LandingPage: React.FC = () => {
 
     return (
         <div>
-            <Navbar/>
-            <Element name="Home" id="home">
+            <Element name ="Home" id="home">
                 <SectionBox>
                     <Grid container spacing={2} sx={{ height: '100%' }}>
                         <Grid item xs={12} md={6} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
