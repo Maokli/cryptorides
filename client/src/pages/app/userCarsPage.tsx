@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import CarGrid from '../../components/car-grid.component';
 import { getUserToken } from '../../helpers/auth.helpers';
 import { Box, Typography } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import debouncedFilters from './browse-cars.page'
+import OwnerCarGrid from '../../components/owner-car-grid.component';
 const query = `
   query GetUserCars {
     userCars {
@@ -54,7 +54,7 @@ function BrowseUserCars() {
     <>
       <Box sx={{ pt: 3, pl: 3 }}>
         <Typography variant="h3">My Cars : </Typography>
-        <CarGrid cars={userCars}></CarGrid>
+        <OwnerCarGrid cars={userCars}></OwnerCarGrid>
       </Box>
     </>
   );
