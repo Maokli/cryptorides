@@ -37,7 +37,7 @@ function MainAppWrapper() {
         <Route path="/details/:id" element={<CarDetailsPage />}></Route>
         <Route path="/agreement/:id" element={<AgreementPage />}></Route>
         <Route path="/rentalRequests/" element={<RentalRequestsPage />}></Route>
-        <Route path="/update" element={<UpdateCarForm/>}></Route>
+        <Route path="/update/:id" element={<UpdateCarForm/>}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>
     </>

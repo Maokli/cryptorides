@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import CarGrid from '../../components/car-grid.component';
 import { getUserToken } from '../../helpers/auth.helpers';
 import { Box, Button, Typography } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import debouncedFilters from './browse-cars.page';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import OwnerCarGrid from '../../components/owner-car-grid.component';
 
 const query = `
   query GetUserCars {
@@ -63,7 +63,7 @@ function BrowseUserCars() {
           Add Car
         </Button>
       </Box>
-      <CarGrid cars={userCars}></CarGrid>
+      <OwnerCarGrid cars={userCars}></OwnerCarGrid>
     </>
   );
 }

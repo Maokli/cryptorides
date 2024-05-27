@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { CreateCarInput } from "./dto/create-car.input";
 import { UpdateCarInput } from "./dto/update-car.input";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -29,10 +29,10 @@ export class CarService {
   
   ) {}
 
-  async create(createCarInput: CreateCarInput): Promise<Car> {
+  async create(createCarInput: CreateCarInput, currentUserId: number): Promise<Car> {
     try {
       const { ownerId, ...carData } = createCarInput;
-      const owner = await this.usersService.findOneById(ownerId);
+      const owner = await this.usersService.findOneById(currentUserId);
       if (!owner) {
         throw new NotFoundException(`Owner with ID ${ownerId} not found`);
       }
@@ -73,6 +73,7 @@ export class CarService {
       throw error;
     }
   }
+
   async findOneById(id: number): Promise<CarWithImages | null> {
     try {
       const car = await this.carRepository.findOne({ where: {id: id}, relations: {owner: true} });
@@ -101,10 +102,11 @@ export class CarService {
       return null;
     }
   }
-  async findAllByOwnerId(id: number): Promise<CarWithImages[] | null> {
+
+  async findAllByOwnerId(currentUserId: number): Promise<CarWithImages[] | null> {
     try {
       const cars = await this.carRepository.find({
-        where: { owner: { id: id } },
+        where: { owner: { id: currentUserId } },
         relations: ["owner"]
       });
     
@@ -133,13 +135,9 @@ export class CarService {
           images: images,
           ownerId: car.owner.id
         }
-  
+
         carsWithImages.push(carWithImages);
-        console.log(carWithImages)
-  
       }
-  
-      console.log(carsWithImages)
     
       return carsWithImages ;
     } catch (error) {
@@ -148,11 +146,15 @@ export class CarService {
   }
 
 
-  async update(id: number, updateCarInput: UpdateCarInput) {
+  async update(id: number, updateCarInput: UpdateCarInput, currentUserId: number) {
     try {
       const carToUpdate = await this.findOne(id);
       if (!carToUpdate) {
         throw new NotFoundException(`Car with ID ${id} not found`);
+      }
+
+      if(carToUpdate.owner.id != currentUserId) {
+        throw new UnauthorizedException("Not your car to update")
       }
 
       await this.carRepository.update(id, updateCarInput);
@@ -168,7 +170,7 @@ export class CarService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number, currentUserId: number) {
     try {
       const carToRemove = await this.carRepository.findOne({
         where: { id },
@@ -176,6 +178,9 @@ export class CarService {
       });
       if (!carToRemove) {
         throw new NotFoundException(`Car with ID ${id} not found`);
+      }
+      if (carToRemove.owner.id != currentUserId) {
+        throw new UnauthorizedException(`Not your car to delete`);
       }
 
       await this.carRepository.delete(id);
