@@ -1,4 +1,5 @@
 import { isNullOrEmpty } from "./string.helpers";
+import { jwtDecode } from "jwt-decode";
 
 const TOKEN_KEY = "token";
 
@@ -20,6 +21,12 @@ export const isAuthenticated = () => {
   return !isNullOrEmpty(token);
 }
 
-export const getLoggedInUserId = () => {
-  
-}
+export const getIdFromToken = (token: string): string | null => {
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.sub ?? null;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+};

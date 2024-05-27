@@ -59,7 +59,7 @@ export class RentalCarService {
       });
       if (existingReservations.length > 0) {
         throw new ConflictException(
-          `Car with ID ${carId} is already reserved for the specified period`,
+          `Car with ID ${carId} is already paid for the specified period`,
         );
       }
       const rentalcar = this.rentalcarRepository.create({

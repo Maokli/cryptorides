@@ -1,9 +1,9 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {getUserToken} from './helpers/auth.helpers'; 
 
-// Create a new instance of the ApolloClient with a custom link
 const client = new ApolloClient({
   link: onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
@@ -17,12 +17,10 @@ const client = new ApolloClient({
       toast.error(`Network Error: ${networkError.message}`);
     }
   }).concat(createHttpLink({ uri: 'http://localhost:3001/graphql' })),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization: `Bearer ${getUserToken()}` // Include the token in the request headers
+  }
 });
 
-// Render the ToastContainer at the root of your application
-// (This assumes that the ToastContainer is rendered in your root component)
-
-
-// Export the ApolloClient instance
 export default client;

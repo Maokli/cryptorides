@@ -7,14 +7,18 @@ import { Route, Routes } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
 import LandingPage from './pages/app/LandingPage';
+import AgreementPage from './pages/app/Agreement.page';
 import NotFoundPage from './pages/shared/notFound.page';
 import LoginForm  from  './components/loginForm';
 import SignUpForm  from './components/signupForm';
+import {Chat} from './components/chat';
+import CarRentalConditions from './components/CarRentalConditions';
 import Navbar  from './components/Navbar';
 import { ApolloProvider } from "@apollo/react-hooks";
 import client from './apolloclient'; 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddCarForm from './pages/forms/addCar.form';
 import './index.css'; 
 
 const theme = createTheme({
@@ -56,10 +60,13 @@ function App() {
         <Routes>
           <Route path='/  ' element={<Navbar  />} />
           <Route path='/' element={<LandingPage />}/>
-          <Route path='/cars' element={<BrowseCarsPage/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
+          <Route path="/chat" element={<Chat  onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
+          <Route path="addCar" element={<AddCarForm/>}></Route>
+          <Route path="/conditions" element={<CarRentalConditions/>}></Route>
+          <Route path="/agreement" element={<AgreementPage/>}></Route>
         </Routes>
       </ApolloProvider>
       {isLoggedIn && <MainAppWrapper />}
