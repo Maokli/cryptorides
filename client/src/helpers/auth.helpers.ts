@@ -23,4 +23,7 @@ export const isAuthenticated = () => {
 export const handleLogout = () => {
   window.location.reload();
   removeUserToken() ;
+
+export const getLoggedInUserId = () => {
+  
 }

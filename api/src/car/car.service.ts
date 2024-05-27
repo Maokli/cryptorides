@@ -75,7 +75,7 @@ export class CarService {
   }
   async findOneById(id: number): Promise<CarWithImages | null> {
     try {
-      const car = await this.carRepository.findOneBy({ id });
+      const car = await this.carRepository.findOne({ where: {id: id}, relations: {owner: true} });
       const carFileAssignments = await this.getCarPictures(car.id);
       const images: Image[] = carFileAssignments.map(fa => {
         return {
@@ -85,6 +85,7 @@ export class CarService {
 
       const carWithImages: CarWithImages = {
         id: car.id,
+        ownerId: car.owner.id,
         location: car.location,
         brand: car.brand,
         color: car.color,
@@ -252,6 +253,7 @@ export class CarService {
 
       const carWithImages: CarWithImages = {
         id: car.id,
+        ownerId: null,
         location: car.location,
         brand: car.brand,
         color: car.color,

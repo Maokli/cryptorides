@@ -3,18 +3,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Carousel from './carousel.component';
-import { Button, Icon, Stack , Box } from '@mui/material';
-import PlaceIcon from '@mui/icons-material/Place';
+import { Box, Stack } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Car } from '../models/car.model';
-import blueCar from '../assets/images/blueRange.png';
-import FlashAutoIcon from '@mui/icons-material/FlashAuto';
-import SpeedIcon from '@mui/icons-material/Speed' ; 
-
-
-
-
 
 export default function FancyCarCard(props: {car: Car}) {
     return (
@@ -41,4 +33,5 @@ export default function FancyCarCard(props: {car: Car}) {
               </CardContent>
         </Card>
         </Box>
-)};
+    );
+}

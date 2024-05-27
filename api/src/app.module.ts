@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -12,6 +13,7 @@ import { ConfigModule } from "@nestjs/config";
 import { FileAssignmentModule } from "./file-assignment/file-assignment.module";
 import { FileAssignmentController } from "./file-assignment/file-assignment.controller";
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
+import { ChatGateway } from './chat/chat.gateway';
 import { NotificationModule } from './notification/notification.module';
 
 @Module({
@@ -39,6 +41,6 @@ import { NotificationModule } from './notification/notification.module';
     NotificationModule,
   ],
   controllers: [AppController, FileAssignmentController],
-  providers: [AppService],
+  providers: [AppService , ChatGateway ],
 })
 export class AppModule {}

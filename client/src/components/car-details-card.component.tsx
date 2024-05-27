@@ -1,20 +1,20 @@
 // src/components/CarCard.js
 import React, { useState } from 'react';
-import { Card, CardContent, CardMedia, Typography, Button, Box, Grid, IconButton } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Card, CardContent, Typography, Button, Box, Grid, IconButton } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import mercedes from '../assets/images/mercedes.png'
 import { Car } from '../models/car.model';
 import RentCarModal from './rent-car-modal.component';
 
 const CarDetailsCard = (props: {car: Car}) => {
     const [open, setOpen] = useState(false);
+    
     const onRentCar = () => {
         setOpen(true);
     }
+
     return (
         <Card sx={{ display: 'flex', flexDirection: 'column', height: "inherit"}}>
-            <RentCarModal open={open} setOpen={setOpen} downPayment={props.car.downPayment} rentalPrice={props.car.rentalPrice}/>
+            <RentCarModal open={open} setOpen={setOpen} car={props.car} />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {props.car.title}

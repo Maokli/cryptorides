@@ -4,7 +4,7 @@ import { Car } from '../../models/car.model';
 import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
 import { Box, Container, Grid } from '@mui/material';
-import axios from 'axios';
+import axios from '../../helpers/axios.helpers';
 import { getUserToken } from '../../helpers/auth.helpers';
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
@@ -23,6 +23,7 @@ function CarDetailsPage() {
       {
         car(id: $id) {
           id,
+          ownerId,
           location,
           brand,
           color,
@@ -37,16 +38,10 @@ function CarDetailsPage() {
     `;
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/graphql",
+      const response = await axios.instance.post("",
         {
           query,
           variables: {id: id},
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getUserToken()}`,
-          },
         }
       );
       console.log(response);
