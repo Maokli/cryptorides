@@ -175,7 +175,6 @@ type Rentalcar {
 }
 
 input SignUpUserInput {
-  confirmPassword: String!
   email: String!
   familyName: String!
   name: String!

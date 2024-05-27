@@ -1,50 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
-import { getLoggedInUserId, getUserToken } from '../../helpers/auth.helpers';
+import { getIdFromToken, getUserToken } from '../../helpers/auth.helpers';
 import { Box, Divider, Typography } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import debouncedFilters from './browse-cars.page'
 import RentalRequestsList from '../../components/rentalRequest-list';
 import { RentalRequest } from '../../models/renatalrequest.model';
-import { green } from '@mui/material/colors';
 const query = `
   query getAllRentalsRequests($input: getRentalRequestInput!) {
     getAllRentalsRequests(getAllRequest: $input) {
-        id
+        id , 
+        fromdate , 
+        todate ,  
+        car {
+            id , 
+            brand 
+        }
     }
   }
 `;
-// mock data for renterrequests and ownerrequests
-const x: RentalRequest[] = [
-    {
-        ownerId: 2,
-        id: 0,
-        fromdate: new Date(),
-        todate: new Date(),
-        renterId: 1,
-        createdAt: new Date(),
-        car: {
-            images: [{ url: "https://images.unsplash.com/photo-1564135624576-c5c88640f235" }],
-            id: 0,
-            ownerId: 0,
-            location: '',
-            brand: '',
-            color: '',
-            title: '',
-            fuelType: '',
-            seatsNumber: 0,
-            rentalPrice: 0,
-            downPayment: 0
-        }
-    }
 
-]
 function BrowseUserRentalRequests() {
     const [renterrequests, setrenterrequest] = useState([]);
     const [ownerrequests, setownerrequest] = useState([]);
     const fetchdataAsowner = async () => {
-        const userId = getLoggedInUserId();
         const token = getUserToken();
+        const userId = getIdFromToken(token as string);
         let variables = {
             input: {
                 userId: userId,
@@ -74,8 +55,8 @@ function BrowseUserRentalRequests() {
 
     }
     const fetchdataAsRenter = async () => {
-        const userId = getLoggedInUserId();
         const token = getUserToken();
+        const userId = getIdFromToken(token as string);
         let variables = {
             input: {
                 userId: userId,
@@ -104,11 +85,12 @@ function BrowseUserRentalRequests() {
 
     }
     useEffect(() => {
-        fetchdataAsRenter();
+        fetchdataAsowner();
     }, [debouncedFilters]);
     useEffect(() => {
         fetchdataAsRenter();
     }, [debouncedFilters]);
+    console.log(renterrequests, ownerrequests) ; 
     return (
         <Box sx={{ display: 'flex', height: '100vh' }}>
             <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>

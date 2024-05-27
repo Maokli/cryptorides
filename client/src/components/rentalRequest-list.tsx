@@ -15,34 +15,32 @@ export default function RentalRequestsList(props: { rentalrequest: RentalRequest
     }
 
     return (
-        <>       
+        <>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {props.rentalrequest.map((rentalrequest) => (
                     <ListItem key={rentalrequest.id}>
-                        <ListItemAvatar>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src={rentalrequest.car.images[0].url}
-                            />
-                        </ListItemAvatar>
+
+
+
                         <ListItemText
-                            primary={rentalrequest.car.brand}
                             secondary={
                                 <React.Fragment>
                                     <Typography
-                                        sx={{ display: 'inline' }}
+                                        sx={{ display: 'block' }} // Use block display to make it appear on a new line
                                         component="span"
                                         variant="body2"
                                         color="text.primary"
                                     >
-
+                                        {rentalrequest.car.brand}
                                     </Typography>
-                                    {" —From " + rentalrequest.fromdate + " to " + rentalrequest.todate }
+                                    {"From " + rentalrequest.fromdate + " to " + rentalrequest.todate}
                                 </React.Fragment>
                             }
                         />
                         <Divider variant="inset" component="li" />
                     </ListItem>
+
+
                 ))}
             </List>
         </>
