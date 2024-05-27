@@ -65,16 +65,10 @@ function BrowseCarsPage() {
     `;
 
     try {
-      const response = await axios.instance.post(
-        "http://localhost:3001/graphql",
+      const response = await axios.instance.post("",
         {
           query,
           variables: { filter: filters },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getUserToken()}`,
-          },
         }
       );
 

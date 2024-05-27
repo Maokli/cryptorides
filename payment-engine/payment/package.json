@@ -1,0 +1,19 @@
+{
+    "name": "payment",
+    "version": "0.0.1",
+    "engines": {
+        "node": "11.6.x",
+        "npm": "6.5.x"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2",
+        "dotenv": "^16.4.5",
+        "rimraf": "^5.0.5",
+        "truffle": "^5.11.5"
+    },
+    "scripts": {
+        "start": "rimraf ./build && truffle migrate --reset --compile-all && npx truffle exec ./scripts/monitorContract.js",
+        "migrate": "rimraf ./build && truffle migrate --reset --compile-all",
+        "monitor": "npx truffle exec ./scripts/monitorContract.js"
+    }
+}

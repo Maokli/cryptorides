@@ -9,6 +9,9 @@ export class CarWithImages {
   @Field(() => Int, { description: "Unique id of the car" })
   id: number;
 
+  @Field(() => Int, { description: "Unique id of the car owner" })
+  ownerId: number;
+
   @Field({ nullable: false })
   location: string;
 

@@ -24,6 +24,7 @@ const images = [
 const cars: Car[] = [
     {
       id: 1,
+      ownerId: 0, // preview purposes model
       location: "New York",
       brand: "Range",
       color: "Blue",

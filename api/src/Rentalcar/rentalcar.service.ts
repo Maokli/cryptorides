@@ -223,11 +223,9 @@ export class RentalCarService {
     newrentalRequest.fromdate = input.availabilityFrom;
     newrentalRequest.todate = input.availabilityTo;
     newrentalRequest.car = car;
-    console.log(car);
     newrentalRequest.ownerId = input.ownerId;
     newrentalRequest.renterId = input.renterId;
     return await this.rentalRequestRepository.save(newrentalRequest);
-
   }
 
   async validateRentalRequest(input: rentalRequestInput): Promise<rentalRequest> {
