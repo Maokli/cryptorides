@@ -19,7 +19,3 @@ export const isAuthenticated = () => {
 
   return !isNullOrEmpty(token);
 }
-
-export const getLoggedInUserId = () => {
-  
-}

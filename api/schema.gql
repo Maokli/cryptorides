@@ -156,7 +156,7 @@ type Query {
   carsById(id: Int!): [Car!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [CarWithImages!]!
-  getAllRentalsRequests(getAllRequest: getRentalRequestInput!): [rentalRequest!]!
+  getAllRentalsRequests(getRentalRequestInput: getRentalRequestInput!): [rentalRequestDto!]!
   getRentalRequests(requestid: Float!): rentalRequest!
   notification: [Notification!]!
   payProcess(request: Float!): String!
@@ -245,6 +245,17 @@ type rentalRequest {
   ownerId: Float!
   renterId: Float!
   status: StatusRequest!
+  todate: DateTime!
+}
+
+type rentalRequestDto {
+  car: CarWithImages!
+  createdAt: DateTime!
+  fromdate: DateTime!
+  id: Int!
+  ownerId: Float!
+  renterId: Float!
+  status: String!
   todate: DateTime!
 }
 
