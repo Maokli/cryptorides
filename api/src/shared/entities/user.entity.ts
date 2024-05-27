@@ -27,6 +27,18 @@ export class User {
   @Column({ length: 50, nullable: true })
   phoneNumber: string;
 
+  @Field({ nullable: true })
+  @Column({ length: 50, nullable: true })
+  state: string; 
+
+  @Field({ nullable: true })
+  @Column({ length: 50, nullable: true })
+  city: string; 
+
+  @Field()
+  @Column({ length: 50, nullable: true })
+  WalletID: string;
+
   @Field(() => [Car], { nullable: true })
   @OneToMany(() => Car, (car) => car.owner)
   carsCreatedByUser: Car[];
