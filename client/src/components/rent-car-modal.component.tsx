@@ -119,6 +119,7 @@ export default function RentCarModal(props: { open: boolean, setOpen: React.Disp
       const response = await axios.instance.post("http://localhost:3001/graphql", { query, variables });
       const rentalRequest = response.data.data.validateRentalrequest;
 
+
       navigate(`/agreement/${rentalRequest.id}`);
     }
     catch (e) {

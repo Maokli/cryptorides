@@ -29,7 +29,6 @@ function MainAppWrapper() {
     <>
       <LoadingSpinner isAuthorized={isAuthorized} />
       <Routes>
-        <Route path="/" element={<Navigate to="/browse" replace />}></Route>
         <Route path="/browse" element={<BrowseCarsPage />}></Route>
         <Route path="/add" element={<AddCarForm />}></Route>
         <Route path='/publishedcars' element={<BrowseUserCars/>}/>
