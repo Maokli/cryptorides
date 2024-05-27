@@ -34,8 +34,8 @@ export class NotificationService {
 
   }
 
-  findAll() {
-    return `This action returns all notification`;
+  findAllNewByOwnerId(ownerId: number) {
+    return this.notificationRepository.find({where: {owner: {id: ownerId}, status: statusNotification.NEW}});
   }
 
   async update(updateNotificationInput: UpdateNotificationInput):Promise<String>{
