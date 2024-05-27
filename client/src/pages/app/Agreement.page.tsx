@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import Sidebar from '../../components/sidebar';
 import { Chat } from '../../components/chat';
 import { useParams } from 'react-router-dom';
@@ -19,25 +19,28 @@ const AgreementPage: React.FC = () => {
     const fetchRentalRequest = async () => {
       try {
         const query = `
-          query GetRentalRequest($requestid: Float!) {
-            getRentalRequests(requestid: $requestid) {
-              id
-              status
-              fromdate
-              todate
-              ownerId
-              renterId
-              createdAt
-              car {
-                id
-                make
-                model
-                year
-                rentalPrice
-                downPayment
-              }
+        query GetRentalRequest($requestid: Float!) {
+          getRentalRequests(requestid: $requestid) {
+            id
+            status
+            fromdate
+            todate
+            ownerId
+            renterId
+            createdAt
+            car {
+              id,
+              location,
+              brand,
+              color,
+              title,
+              fuelType,
+              seatsNumber,
+              rentalPrice,
+              downPayment,
             }
           }
+        }
         `;
 
         const variables = { requestid: parseFloat(id) };
@@ -70,7 +73,6 @@ const AgreementPage: React.FC = () => {
       };
 
       await axios.instance.post("http://localhost:3001/graphql", { mutation, variables });
-      // Optionally, update the state or display a success message
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -78,15 +80,21 @@ const AgreementPage: React.FC = () => {
 
   return (
     <Box display="flex" height="100vh">
-      <Sidebar />
-      <Box flexGrow={1} display="flex" flexDirection="column">
-        <Box flexGrow={1} padding={2}>
-          <Chat onLogout={() => {}} />
-        </Box>
-        {rentalRequest && (
-          <AgreementRightSide rentalRequest={rentalRequest} onStatusUpdate={handleStatusUpdate} />
-        )}
-      </Box>
+      <Grid container>
+        <Grid item xs={2}>
+          <Sidebar />
+        </Grid>
+        <Grid item xs={6}>
+          <Box height="100%" padding={2}>
+            <Chat onLogout={() => { }} />
+          </Box>
+        </Grid>
+        <Grid item xs={4}>
+          {rentalRequest && (
+            <AgreementRightSide rentalRequest={rentalRequest} onStatusUpdate={handleStatusUpdate} />
+          )}
+        </Grid>
+      </Grid>
     </Box>
   );
 };

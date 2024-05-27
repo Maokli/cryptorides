@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Button, Typography, Card, CardContent } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { getUserIdFromToken } from '../services/account.service';
 import PayButton from './pay-rental-button';
+import CarCard from './car-card.component';
 
 const statusColors = {
-    Waiting: 'yellow',
+    Waiting: 'orange',
     Approved: 'blue',
     Paid: 'green',
     Cancelled: 'red'
@@ -20,11 +21,16 @@ interface AgreementRightSideProps {
         renterId: number;
         car: {
             id: number;
-            make: string;
-            model: string;
-            year: number;
+            brand: string;
+            location: string;
+            fuelType: string;
             rentalPrice: number;
             downPayment: number;
+            ownerId: number;
+            color: string;
+            seatsNumber : number;
+            images : any;
+            title: string;
         };
     };
     onStatusUpdate: (newStatus: 'Approved' | 'Denied') => void;
@@ -46,8 +52,8 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
         <Box padding={2}>
             <Box display="flex" alignItems="center" mb={2}>
                 <Box
-                    width={10}
-                    height={10}
+                    width={15}
+                    height={15}
                     borderRadius="50%"
                     bgcolor={statusColors[rentalRequest.status]}
                     mr={1}
@@ -56,26 +62,17 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
             </Box>
             {isOwner ? (
                 <Box mb={2}>
-                    <Button variant="contained" color="primary" onClick={handleApprove} style={{ marginRight: '8px' }}>
+                    <Button variant="contained" onClick={handleApprove} style={{ marginRight: '8px', backgroundColor: '#00DB1E' }}>
                         Approve Request
                     </Button>
-                    <Button variant="contained" color="secondary" onClick={handleDeny}>
+                    <Button variant="contained" onClick={handleDeny} style={{ marginRight: '8px', backgroundColor: '#F31C1D' }}>
                         Deny Request
                     </Button>
                 </Box>
             ) : (
                 <PayButton requestId={rentalRequest.id} onSuccess={() => { }} onError={() => { }} />
             )}
-            <Card>
-                <CardContent>
-                    <Typography variant="h6">Car Details</Typography>
-                    <Typography>Make: {rentalRequest.car.make}</Typography>
-                    <Typography>Model: {rentalRequest.car.model}</Typography>
-                    <Typography>Year: {rentalRequest.car.year}</Typography>
-                    <Typography>Rental Price: {rentalRequest.car.rentalPrice} TND</Typography>
-                    <Typography>Down Payment: {rentalRequest.car.downPayment} TND</Typography>
-                </CardContent>
-            </Card>
+            <CarCard car={rentalRequest.car}></CarCard>
         </Box>
     );
 };

@@ -11,7 +11,12 @@ import { Image } from '../models/image.model';
 function Carousel(props: {images: Image[]}) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = props.images.length;
+  const images = props.images || []; // Handling empty array case
+  const maxSteps = images.length;
+
+  if (maxSteps === 0) {
+    return null;
+  }
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
