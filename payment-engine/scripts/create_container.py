@@ -12,13 +12,13 @@ def create_instance(renter,owner,rentalPeriod,downPaymentAmount,rentAmount):
         container_id, stderr = P.communicate()
         print(stderr.decode())
         if P.returncode == 0:
-            return container_id.decode().strip(), port, True
+            return True
         else:
             if container_id.strip():
                 stop_container(container_id)
-            return 0, 0, False
+            return False
     except:
-        return 0, 0, False
+        return False
     
 if __name__=="__main__":
     print(create_instance())

@@ -122,7 +122,7 @@ export default function RentCarModal(props: {open: boolean, setOpen: React.Dispa
       );
 
       // redirect to home page
-      navigate("/");
+      navigate("/browse");
     }
     catch (e) {
       console.error(e);
