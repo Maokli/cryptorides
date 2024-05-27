@@ -1,13 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import CarGrid from './components/car-grid.component';
-import { Car } from './models/car.model';
-import { Route, Routes, redirect } from 'react-router-dom';
+import  BrowseCarsPage  from './pages/app/browse-cars.page';
+import { Route, Routes } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
+import LandingPage from './pages/app/LandingPage';
+import AgreementPage from './pages/app/Agreement.page';
 import NotFoundPage from './pages/shared/notFound.page';
+import LoginForm  from  './components/loginForm';
+import SignUpForm  from './components/signupForm';
+import {Chat} from './components/chat';
+import CarRentalConditions from './components/CarRentalConditions';
+import Navbar  from './components/Navbar';
+import { ApolloProvider } from "@apollo/react-hooks";
+import client from './apolloclient'; 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AddCarForm from './pages/forms/addCar.form';
+import './index.css'; 
+import { Link } from 'react-scroll';
+import BrowseUserCars from './pages/app/userCarsPage';
 
 const theme = createTheme({
   palette: {
@@ -24,8 +38,7 @@ const theme = createTheme({
       contrastText: '#000',
     },
     text: {
-      primary: '#1a202c',
-      secondary: '#90a3bf'
+      
     }
   },
   typography: {
@@ -44,23 +57,21 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* Routes that will be active when user is not logged in*/}
-      {
-        !isLoggedIn && 
+      <ToastContainer /> {/* Add ToastContainer here */}
+      <ApolloProvider client={client}>
+      <Navbar /> 
         <Routes>
-          <Route path='/' element={<h1>Home Page</h1>}/>
-          <Route path='/login' element={<h1>Login Page</h1>}/>
-          <Route path='/signup' element={<h1>Signup Page</h1>}/>
-          <Route path="*" element={<NotFoundPage/>}></Route>
+          <Route path='/' element={<LandingPage />}/>
+          <Route path='/login' element={<LoginForm />}/>
+          <Route path='/signup' element={<SignUpForm/>}/>
+          <Route path="/chat" element={<Chat  onLogout={() => {}} />} />
+          <Route path="/notfound" element={<NotFoundPage/>}></Route>
+          <Route path="addCar" element={<AddCarForm/>}></Route>
+          <Route path="/conditions" element={<CarRentalConditions/>}></Route>
+          <Route path="/agreement" element={<AgreementPage/>}></Route>
         </Routes>
-      }
-      
-      {/* Routes that will be active when user is logged in*/}
-      {
-        isLoggedIn && 
-        <MainAppWrapper></MainAppWrapper>
-      }
-
+      </ApolloProvider>
+      {isLoggedIn && <MainAppWrapper />}
     </ThemeProvider>
   )
 }

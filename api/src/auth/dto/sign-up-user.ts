@@ -39,4 +39,9 @@ export class SignUpUserInput {
   @IsString()
   @IsString()
   familyName: string;
+
+  @Field()
+  @IsString()
+  @IsString()
+  confirmPassword: string;
 }

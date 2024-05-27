@@ -29,11 +29,6 @@ export class FileAssignmentResolver {
   }
 
   @Mutation(() => FileAssignment)
-  updateFileAssignment(@Args('updateFileAssignmentInput') updateFileAssignmentInput: UpdateFileAssignmentInput) {
-    return this.fileAssignmentService.update(updateFileAssignmentInput.id, updateFileAssignmentInput);
-  }
-
-  @Mutation(() => FileAssignment)
   removeFileAssignment(@Args('id', { type: () => Int }) id: number) {
     return this.fileAssignmentService.remove(id);
   }

@@ -3,6 +3,8 @@ import { Image } from "./image.model";
 export interface Car {
   id: number;
 
+  ownerId: number;
+
   location: string;
 
   brand: string;
@@ -13,7 +15,7 @@ export interface Car {
 
   fuelType: string;
 
-  seats: number;
+  seatsNumber: number;
 
   rentalPrice: number;
 

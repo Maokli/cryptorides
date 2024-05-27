@@ -44,6 +44,17 @@ export class UsersService {
       return null;
     }
   }
+ 
+  async GetNameById(id: number): Promise<string | null> {
+    try {
+      const user = await this.userRepository.findOneBy({ id });
+      return user.name;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+ 
 
   
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User> {

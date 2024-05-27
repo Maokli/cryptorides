@@ -26,8 +26,15 @@ function Carousel(props: {images: Image[]}) {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    <Box
+      sx={{
+        maxWidth: 400,
+        flexGrow: 1,
+        backgroundColor: 'transparent', // Make the background transparent
+      }}
+    >
       <SwipeableViews
+        style={{ background: 'transparent' }}
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={activeStep}
         onChangeIndex={handleStepChange}
@@ -44,6 +51,7 @@ function Carousel(props: {images: Image[]}) {
                   maxWidth: 400,
                   overflow: 'hidden',
                   width: '100%',
+                  objectFit: 'cover'
                 }}
                 src={step.url}
                 alt={step.url}

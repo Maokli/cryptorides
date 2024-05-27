@@ -8,14 +8,18 @@ async function bootstrap() {
   dotenv.config();
 
   const dir = './uploads';
-  if (!fs.existsSync(dir)){
+  if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+    allowedHeaders: 'Content-Type, Authorization',
+    methods: 'GET, POST, PUT, DELETE',
+  });
   app.use('/uploads', express.static('uploads'));
-  
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

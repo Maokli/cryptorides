@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import MyHeader from "./components/header/header";
-import MyFooter from "./components/footer/footer";
-import PictureUpload from "./components/carRentForm/imageUpload";
+import MyHeader from "../header/header";
+import MyFooter from "../footer/footer";
+import PictureUpload from "./imageUpload";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import axios from "axios";

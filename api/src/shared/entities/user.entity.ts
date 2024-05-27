@@ -1,6 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "@nestjs/graphql";
 import { Car } from "../../car/entities/car.entity";
+import { Notification } from "../../notification/entities/notification.entity";
 
 @ObjectType()
 @Entity("UsersTable")
@@ -40,6 +42,11 @@ export class User {
   @Field(() => [Car], { nullable: true })
   @OneToMany(() => Car, (car) => car.owner)
   carsCreatedByUser: Car[];
+
+
+  @Field(() => [Notification], { nullable: true })
+  @OneToMany(() => Notification, (notification) => notification.owner)
+  notifByUser: Notification[];
 
   /**
    * A random string of a constant length.

@@ -4,10 +4,12 @@ import { CarResolver } from "./car.resolver";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Car } from "./entities/car.entity";
 import { UsersModule } from "../users/users.module";
+import { Rentalcar } from "src/Rentalcar/entities/rentalcar.entity";
+import { FileAssignment } from "src/file-assignment/entities/file-assignment.entity";
 
 @Module({
   providers: [CarResolver, CarService],
-  imports: [TypeOrmModule.forFeature([Car]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Car, Rentalcar, FileAssignment]), UsersModule],
   exports: [CarService],
 })
 export class CarModule {}

@@ -3,6 +3,7 @@
 /node_modules
 /build
 /db
+/uploads/*
 #GraphQlSchema 
 schema.gql
 # Logs
