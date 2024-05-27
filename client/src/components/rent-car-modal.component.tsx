@@ -6,6 +6,10 @@ import { DateRange, DateRangePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState } from 'react';
 import { Dayjs } from 'dayjs';
+import { Car } from '../models/car.model';
+import axios from '../helpers/axios.helpers';
+import { useNavigate } from 'react-router-dom';
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -24,8 +28,8 @@ function ConfirmationModal(props: {dateRanges: DateRange<Dayjs>, downPayment: nu
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
-    props.onRentalConfirmation();
+  const handleClose = async () => {
+    await props.onRentalConfirmation();
     setOpen(false);
   };
 
@@ -75,16 +79,53 @@ function ConfirmationModal(props: {dateRanges: DateRange<Dayjs>, downPayment: nu
   );
 }
 
-export default function RentCarModal(props: {open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, downPayment: number, rentalPrice: number}) {
+export default function RentCarModal(props: {open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, car: Car}) {
   const handleClose = () => props.setOpen(false);
   const [dateRanges, setDateRanges] = useState(null as unknown as DateRange<Dayjs>)
+  const navigate = useNavigate();
 
   const handleDateRangeChange = (newValue: DateRange<Dayjs>) => {
     setDateRanges(newValue)
   }
 
-  const onRentalConfirmation = () => {
-    // Code for rent api call goes here
+  const onRentalConfirmation = async () => {
+    try {
+      const query = `
+      query ValidateRentalrequest($input: rentalRequestInput!) {
+        validateRentalrequest(request: $input) {
+          id
+          fromdate
+          todate
+          status
+          ownerId
+          renterId
+          createdAt
+          car {id}
+        }
+      }
+      `;
+
+      const variables = {
+        input: {
+          carId: props.car.id,
+          availabilityFrom: dateRanges[0]?.toDate(),
+          availabilityTo: dateRanges[1]?.toDate(),
+          ownerId: props.car.ownerId,
+          renterId: 6
+        }
+      };
+      console.log(props.car)
+
+      await axios.instance.post("",
+        { query, variables },
+      );
+
+      // redirect to home page
+      navigate("/");
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   return (
@@ -114,7 +155,12 @@ export default function RentCarModal(props: {open: boolean, setOpen: React.Dispa
                     </LocalizationProvider>
                 </FormControl>
               </Stack>
-              <ConfirmationModal dateRanges={dateRanges} rentalPrice={props.rentalPrice} downPayment={props.downPayment} onRentalConfirmation={onRentalConfirmation}/>
+              <ConfirmationModal 
+                dateRanges={dateRanges} 
+                rentalPrice={props.car.rentalPrice} 
+                downPayment={props.car.downPayment} 
+                onRentalConfirmation={onRentalConfirmation}
+              />
           </Box>
         </Fade>
       </Modal>

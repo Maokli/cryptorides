@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import PictureUpload from "../../components/carRentForm/imageUpload";
 import InputAdornment from "@mui/material/InputAdornment";
-
-import axios from "axios";
+import axios from "../../helpers/axios.helpers";
 import { Button, Grid, Container, Box, TextField } from "@mui/material";
 
 const AddCarForm = () => {
@@ -118,16 +117,10 @@ const AddCarForm = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/graphql",
+      const response = await axios.instance.post("",
         {
           query,
           variables,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
@@ -142,12 +135,11 @@ const AddCarForm = () => {
         uploadData.append("elementId", response.data.data.createCar.id);
         uploadData.append("elementType", "1");
 
-        const ImageUploadResponse = await axios.post(
+        const ImageUploadResponse = await axios.instance.post(
           "http://localhost:3001/upload",
           uploadData,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
           }

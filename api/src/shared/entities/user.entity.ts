@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "@nestjs/graphql";
 import { Car } from "../../car/entities/car.entity";

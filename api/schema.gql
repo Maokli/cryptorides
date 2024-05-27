@@ -48,6 +48,9 @@ type CarWithImages {
   id: Int!
   images: [Image!]
   location: String!
+
+  """Unique id of the car owner"""
+  ownerId: Int!
   rentalPrice: Float!
   seatsNumber: Int!
   title: String!
@@ -71,14 +74,6 @@ input CreateRentalcarInput {
   carId: Int!
   reservedfrom: DateTime!
   reservedto: DateTime!
-}
-
-input CreateUserInput {
-  FamilyName: String!
-  email: String!
-  name: String!
-  password: String!
-  phoneNumber: String!
 }
 
 """
@@ -133,7 +128,6 @@ type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
   createFileAssignment(elementId: Int!, elementType: EntityType!, fileUrl: String!): FileAssignment!
   createRentalcar(input: CreateRentalcarInput!): Rentalcar!
-  createUser(createUserInput: CreateUserInput!): User!
   deleteRentalcarByCarId(carId: Float!): String!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!

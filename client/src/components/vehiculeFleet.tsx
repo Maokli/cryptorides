@@ -2,18 +2,13 @@ import React from 'react';
 import { Box, Button, Typography, Grid, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Card, CardContent, Stack } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/People';
-import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
-import SpeedIcon from '@mui/icons-material/Speed';
-import FlashAutoIcon from '@mui/icons-material/FlashAuto';
 import { Car } from '../models/car.model';
-import  FancyCarCard  from '../components/car-card-fancy'
+import FancyCarCard from '../components/car-card-fancy'
 
 
 export default function VehiculeFleet(props: { cars: Car[] }) {
-        return (
-        <Grid container item xs={12} md={16} mt = {1} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+    return (
+        <Grid container item xs={12} md={16} mt={1} sx={{ padding: 10, display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
             <Box
                 sx={{
                     display: 'flex',
@@ -24,7 +19,7 @@ export default function VehiculeFleet(props: { cars: Car[] }) {
                     padding: '20px', // Add padding for spacing
                 }}
             >
-                <Grid sx={{ ml: -50 , mt : -10}}>
+                <Grid sx={{ ml: -50, mt: -10 }}>
                     <Typography variant="h4" sx={{ fontFamily: 'Montserrat', color: 'white', textAlign: 'left', mt: -10 }}>
                         WE HAVE <span style={{ color: '#0CC0DF', fontFamily: 'Montserrat', fontWeight: 'bold', textAlign: 'left' }}>A LARGE SELECTION</span>{' '}
                         <br />
@@ -126,9 +121,13 @@ export default function VehiculeFleet(props: { cars: Car[] }) {
             </Box>
 
             {/* Separate Box for the Card component */}
-            {props.cars.map((car) => (
-                <FancyCarCard car={car} ></FancyCarCard>
-            )) }
+            {/* Separate Box for the Card component */}
+            {props.cars.map((car, index) => (
+                <Box key={index} sx={{ ml: '100px' }}>
+                    <FancyCarCard car={car} />
+                </Box>
+            ))}
+
         </Grid>
     );
 };

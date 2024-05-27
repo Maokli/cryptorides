@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Resolver, Query, Mutation, Args, Context } from "@nestjs/graphql";
 import { UsersService } from "./users.service";
 import { User } from "src/shared/entities/user.entity";
@@ -9,16 +11,6 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  /**
-   *
-   * Not recommended to use !!!
-   * Causes problems with next requests
-   * Use signup instead
-   */
-  @Mutation(() => User)
-  createUser(@Args("createUserInput") createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
-  }
 
   @Query(() => [User], { name: "users" })
   @UseGuards(JwtAuthGuard)
