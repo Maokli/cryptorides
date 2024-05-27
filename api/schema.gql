@@ -76,14 +76,6 @@ input CreateRentalcarInput {
   reservedto: DateTime!
 }
 
-input CreateUserInput {
-  FamilyName: String!
-  email: String!
-  name: String!
-  password: String!
-  phoneNumber: String!
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -136,7 +128,6 @@ type Mutation {
   createCar(createCarInput: CreateCarInput!): Car!
   createFileAssignment(elementId: Int!, elementType: EntityType!, fileUrl: String!): FileAssignment!
   createRentalcar(input: CreateRentalcarInput!): Rentalcar!
-  createUser(createUserInput: CreateUserInput!): User!
   deleteRentalcarByCarId(carId: Float!): String!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeCar(id: Int!): Car!
