@@ -1,5 +1,5 @@
 // file-upload.controller.ts
-import { Controller, Post, UploadedFiles, UseInterceptors, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, UploadedFiles, UseInterceptors, Body, UseGuards, Delete} from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FileAssignmentService } from './file-assignment.service';
 import { join } from 'path';
@@ -37,4 +37,11 @@ export class FileAssignmentController {
 
     return fileAssignments;
   }
+  @Delete('deleteImages')
+  async deleteByUrl(@Body() urls: {deletedImages : string[]}): Promise<{ success: boolean }> {
+    const success = await this.fileAssignmentService.deleteByUrl(urls.deletedImages);
+    return { success };
+  }
+
 }
+

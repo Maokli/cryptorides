@@ -11,6 +11,7 @@ import { rentalRequestInput } from "./dto/rentalRequest.input";
 import { rentalRequest } from "./entities/rentalRequest.entity";
 import { UpdateRentalRequestInput } from "./dto/updateRentalRequest.input";
 import { getRentalRequestInput } from "./dto/getRentalRequest.input";
+import { rentalRequestDto } from "./dto/rental-request.dto";
 
 @Resolver(() => Rentalcar)
 export class RentalcarResolver {
@@ -59,8 +60,8 @@ export class RentalcarResolver {
   async validateRentalrequest(@Args("request") request: rentalRequestInput): Promise<rentalRequest> {
     return await this.rentalcarService.validateRentalRequest(request);
   }
-  @Query(() => [rentalRequest])
-  async getAllRentalsRequests(@Args("getAllRequest") getRentalRequest: getRentalRequestInput): Promise<rentalRequest[]> {
+  @Query(() => [rentalRequestDto])
+  async getAllRentalsRequests(@Args("getRentalRequestInput") getRentalRequest: getRentalRequestInput): Promise<rentalRequestDto[]> {
     return this.rentalcarService.getAll(getRentalRequest);
   }
   @Query(() => rentalRequest)

@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from "react";
-import { Button, Avatar, Box } from "@mui/material";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Button, Avatar, Box, CardMedia } from "@mui/material";
 import { styled } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
@@ -7,6 +7,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 interface PictureUploadProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onDiscard: () => void;
+  imageUrl?: string; 
   required?: boolean;
   error?: boolean;
 }
@@ -18,10 +19,11 @@ const Input = styled('input')({
 const PictureUpload: React.FC<PictureUploadProps> = ({
   onChange,
   onDiscard,
+  imageUrl,
   required,
   error: boolean,
 }) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(imageUrl || null);
 
   const handleImagePreview = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,6 +36,11 @@ const PictureUpload: React.FC<PictureUploadProps> = ({
       setPreviewUrl(imageUrl);
     }
   };
+  useEffect(() => {
+    if (imageUrl) {
+      setPreviewUrl(imageUrl);
+    }
+  }, []);
 
   const handleDiscard = () => {
     setPreviewUrl(null);

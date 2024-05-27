@@ -8,10 +8,13 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
 import { FilterOptions } from "./dto/filterOptions";
 import { CarWithImages } from "./dto/get-car-withImage-dto";
+import { UserIdFromToken } from "src/helpers/token.helpers";
 
 @Resolver(() => Car)
 export class CarResolver {
-  constructor(private readonly carService: CarService) {}
+  constructor(
+    private readonly carService: CarService , 
+  ) {}
 
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
@@ -26,10 +29,10 @@ export class CarResolver {
   findAll() {
     return this.carService.findAll();
   }
-  @Query(() => [Car], { name: "carsById" })
+  @Query(() => [CarWithImages], { name: "carsById" })
   @UseGuards(JwtAuthGuard)
   async findAllById(@Args("id", { type: () => Int }) id: number) {
-    return await this.carService.findAllById(id);
+    return await this.carService.findAllByOwnerId(id);
   }
   @Query(() => CarWithImages, { name: "car" })
   @UseGuards(JwtAuthGuard)
@@ -46,12 +49,12 @@ export class CarResolver {
   removeCar(@Args("id", { type: () => Int }) id: number) {
     return this.carService.remove(id);
   }
-  @Query(() => [Car]!, { name: "userCars" })
+  @Query(() => [CarWithImages]!, { name: "userCars" })
   @UseGuards(JwtAuthGuard)
   async findUserCars(@Context() context){
     const { req } = context;
-    const id = await this.carService.idFromRequest(req) ;
-    const Cars = await this.carService.findAllCarsById(id); 
+    const id = await UserIdFromToken(req.headers['authorization']) ;
+    const Cars = await this.carService.findAllByOwnerId(id); 
     return Cars; 
   }
 

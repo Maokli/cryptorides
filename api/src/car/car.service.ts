@@ -98,35 +98,53 @@ export class CarService {
       }
       return carWithImages;
     } catch (error) {
-      console.error(error);
       return null;
     }
   }
-  async findAllById(id: number): Promise<Car[] | null> {
+  async findAllByOwnerId(id: number): Promise<CarWithImages[] | null> {
     try {
       const cars = await this.carRepository.find({
         where: { owner: { id: id } },
         relations: ["owner"]
       });
-      console.log(cars) ;
-      return cars ;
+    
+      const carsWithoutImages = cars ; 
+      const carsWithImages: CarWithImages[] = [];
+  
+      for (let i = 0; i<carsWithoutImages.length; i++) {
+        const car = carsWithoutImages[i];
+        const carFileAssignments = await this.getCarPictures(car.id);
+        const images: Image[] = carFileAssignments.map(fa => {
+          return {
+            url: fa.fileUrl
+          }
+        })
+  
+        const carWithImages: CarWithImages = {
+          id: car.id,
+          location: car.location,
+          brand: car.brand,
+          color: car.color,
+          title: car.title,
+          rentalPrice: car.rentalPrice,
+          downPayment: car.downPayment,
+          seatsNumber: car.seatsNumber,
+          fuelType: car.fuelType,
+          images: images,
+          ownerId: car.owner.id
+        }
+  
+        carsWithImages.push(carWithImages);
+        console.log(carWithImages)
+  
+      }
+  
+      console.log(carsWithImages)
+    
+      return carsWithImages ;
     } catch (error) {
-      console.error(error);
       return null;
     }
-  }
-  async idFromRequest(request: Request): Promise <null | number>  {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    if (!(type === 'Bearer') ){
-        return null ; 
-    }else{
-        const payload = jwtDecode(token) ;
-        const id = parseInt(payload.sub) ; 
-        return id ; 
-    }
-  }
-  async findAllCarsById(id : number) : Promise< Car[] | null>{
-    return this.findAllById(id) ; 
   }
 
 

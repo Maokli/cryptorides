@@ -1,4 +1,6 @@
+import { redirect, redirectDocument } from "react-router-dom";
 import { isNullOrEmpty } from "./string.helpers";
+import { jwtDecode } from "jwt-decode";
 
 const TOKEN_KEY = "token";
 
@@ -20,6 +22,18 @@ export const isAuthenticated = () => {
   return !isNullOrEmpty(token);
 }
 
-export const getLoggedInUserId = () => {
-  
+export const handleLogout = () => {
+  window.location.reload();
+  removeUserToken() ;
 }
+
+export const getIdFromToken = (token: string): string | null => {
+  try {
+    const decoded = jwtDecode(token);
+    console.log(decoded.sub) ; 
+    return decoded.sub ?? null;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+};
