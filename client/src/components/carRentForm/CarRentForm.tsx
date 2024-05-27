@@ -1,31 +1,18 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Button, Grid, Container, Box, TextField, InputAdornment } from "@mui/material";
-import axios from "../../helpers/axios.helpers";
-import { getIdFromToken } from '../../helpers/auth.helpers';
-import PictureUpload from "../../components/carRentForm/imageUpload";
-import { get } from "http";
+import React, { useState } from "react";
+import MyHeader from "../header/header";
+import MyFooter from "../footer/footer";
+import PictureUpload from "./imageUpload";
+import InputAdornment from "@mui/material/InputAdornment";
 
-interface CarData {
-  picture1: File | null;
-  picture2: File | null;
-  picture3: File | null;
-  picture4: File | null;
-  title: string;
-  carLocation: string;
-  rentalPrice: string;
-  downPayment: string;
-  brand: string;
-  color: string;
-  fuelType: string;
-  numberOfSeats: string;
-}
+import axios from "axios";
+import { Button, Grid, Container, Box, TextField } from "@mui/material";
 
-const AddCarForm = () => {
-  const [carData, setCarData] = useState<CarData>({
-    picture1: null,
-    picture2: null,
-    picture3: null,
-    picture4: null,
+const CarRentalForm = () => {
+  const [carData, setCarData] = useState({
+    picture1: null as File | null,
+    picture2: null as File | null,
+    picture3: null as File | null,
+    picture4: null as File | null,
     title: "",
     carLocation: "",
     rentalPrice: "",
@@ -36,18 +23,10 @@ const AddCarForm = () => {
     numberOfSeats: "",
   });
 
-  const [touched, setTouched] = useState({
-    title: false,
-    carLocation: false,
-    rentalPrice: false,
-    downPayment: false,
-    brand: false,
-    color: false,
-    fuelType: false,
-    numberOfSeats: false,
-  });
-
-  const handlePictureChange = (e: ChangeEvent<HTMLInputElement>, pictureName: string) => {
+  const handlePictureChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pictureName: string
+  ) => {
     if (e.target.files && e.target.files[0]) {
       setCarData({
         ...carData,
@@ -56,28 +35,24 @@ const AddCarForm = () => {
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setCarData({
       ...carData,
       [name]: value,
     });
-    setTouched({
-      ...touched,
-      [name]: true,
-    });
   };
 
-  const handleNumericChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleNumericChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (!isNaN(Number(value)) && !value.includes("e")) {
       setCarData({
         ...carData,
         [name]: value,
-      });
-      setTouched({
-        ...touched,
-        [name]: true,
       });
     }
   };
@@ -89,18 +64,14 @@ const AddCarForm = () => {
     });
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const ownerIdString = localStorage.getItem("ownerId");
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("Token is missing in local storage");
-      return;
-    }
-    const ownerIdString = getIdFromToken(token);
 
-    if (!ownerIdString) {
-      console.error("OwnerId  missing in local storage");
+    if (!ownerIdString || !token) {
+      console.error("OwnerId or token is missing in local storage");
       return;
     }
 
@@ -149,10 +120,16 @@ const AddCarForm = () => {
     };
 
     try {
-      const response = await axios.instance.post("",
+      const response = await axios.post(
+        "http://localhost:3000/graphql",
         {
           query,
           variables,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -167,11 +144,12 @@ const AddCarForm = () => {
         uploadData.append("elementId", response.data.data.createCar.id);
         uploadData.append("elementType", "1");
 
-        const ImageUploadResponse = await axios.instance.post(
-          "http://localhost:3001/upload",
+        const ImageUploadResponse = await axios.post(
+          "http://localhost:3000/upload",
           uploadData,
           {
             headers: {
+              Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
           }
@@ -190,17 +168,6 @@ const AddCarForm = () => {
           color: "",
           fuelType: "",
           numberOfSeats: "",
-        });
-
-        setTouched({
-          title: false,
-          carLocation: false,
-          rentalPrice: false,
-          downPayment: false,
-          brand: false,
-          color: false,
-          fuelType: false,
-          numberOfSeats: false,
         });
       } else {
         console.error("Error creating car:", response.data.errors);
@@ -258,11 +225,10 @@ const AddCarForm = () => {
                 name="title"
                 value={carData.title}
                 onChange={handleChange}
-                onBlur={() => setTouched({ ...touched, title: true })}
                 required
                 fullWidth
-                error={touched.title && carData.title === ""}
-                helperText={touched.title && carData.title === "" ? "Title is required" : ""}
+                error={carData.title === ""}
+                helperText={carData.title === "" ? "Title is required" : ""}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -272,11 +238,10 @@ const AddCarForm = () => {
                 name="brand"
                 value={carData.brand}
                 onChange={handleChange}
-                onBlur={() => setTouched({ ...touched, brand: true })}
                 required
                 fullWidth
-                error={touched.brand && carData.brand === ""}
-                helperText={touched.brand && carData.brand === "" ? "Brand is required" : ""}
+                error={carData.brand === ""}
+                helperText={carData.brand === "" ? "Brand is required" : ""}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -286,12 +251,15 @@ const AddCarForm = () => {
                 name="rentalPrice"
                 value={carData.rentalPrice}
                 onChange={handleNumericChange}
-                onBlur={() => setTouched({ ...touched, rentalPrice: true })}
                 required
                 fullWidth
                 type="number"
-                error={touched.rentalPrice && Number(carData.rentalPrice) <= 0}
-                helperText={touched.rentalPrice && Number(carData.rentalPrice) <= 0 ? "Rental Price must be greater than 0" : ""}
+                error={Number(carData.rentalPrice) <= 0}
+                helperText={
+                  Number(carData.rentalPrice) <= 0
+                    ? "Rental Price must be greater than 0"
+                    : ""
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">TND</InputAdornment>
@@ -306,11 +274,12 @@ const AddCarForm = () => {
                 name="carLocation"
                 value={carData.carLocation}
                 onChange={handleChange}
-                onBlur={() => setTouched({ ...touched, carLocation: true })}
                 required
                 fullWidth
-                error={touched.carLocation && carData.carLocation === ""}
-                helperText={touched.carLocation && carData.carLocation === "" ? "Car Location is required" : ""}
+                error={carData.carLocation === ""}
+                helperText={
+                  carData.carLocation === "" ? "Car Location is required" : ""
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -320,11 +289,10 @@ const AddCarForm = () => {
                 name="color"
                 value={carData.color}
                 onChange={handleChange}
-                onBlur={() => setTouched({ ...touched, color: true })}
                 required
                 fullWidth
-                error={touched.color && carData.color === ""}
-                helperText={touched.color && carData.color === "" ? "Color is required" : ""}
+                error={carData.color === ""}
+                helperText={carData.color === "" ? "Color is required" : ""}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -334,12 +302,15 @@ const AddCarForm = () => {
                 name="downPayment"
                 value={carData.downPayment}
                 onChange={handleNumericChange}
-                onBlur={() => setTouched({ ...touched, downPayment: true })}
                 required
                 fullWidth
                 type="number"
-                error={touched.downPayment && Number(carData.downPayment) < 0}
-                helperText={touched.downPayment && Number(carData.downPayment) < 0 ? "Down Payment cannot be negative" : ""}
+                error={Number(carData.downPayment) < 0}
+                helperText={
+                  Number(carData.downPayment) < 0
+                    ? "Down Payment cannot be negative"
+                    : ""
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">TND</InputAdornment>
@@ -354,11 +325,12 @@ const AddCarForm = () => {
                 name="fuelType"
                 value={carData.fuelType}
                 onChange={handleChange}
-                onBlur={() => setTouched({ ...touched, fuelType: true })}
                 required
                 fullWidth
-                error={touched.fuelType && carData.fuelType === ""}
-                helperText={touched.fuelType && carData.fuelType === "" ? "Fuel Type is required" : ""}
+                error={carData.fuelType === ""}
+                helperText={
+                  carData.fuelType === "" ? "Fuel Type is required" : ""
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -368,12 +340,15 @@ const AddCarForm = () => {
                 name="numberOfSeats"
                 value={carData.numberOfSeats}
                 onChange={handleChange}
-                onBlur={() => setTouched({ ...touched, numberOfSeats: true })}
                 required
                 fullWidth
                 type="number"
-                error={touched.numberOfSeats && Number(carData.numberOfSeats) <= 0}
-                helperText={touched.numberOfSeats && Number(carData.numberOfSeats) <= 0 ? "Number of Seats must be greater than 0" : ""}
+                error={Number(carData.numberOfSeats) <= 0}
+                helperText={
+                  Number(carData.numberOfSeats) <= 0
+                    ? "Number of Seats must be greater than 0"
+                    : ""
+                }
               />
             </Grid>
           </Grid>
@@ -388,4 +363,4 @@ const AddCarForm = () => {
   );
 };
 
-export default AddCarForm;
+export default CarRentalForm;

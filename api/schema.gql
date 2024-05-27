@@ -143,7 +143,6 @@ type Mutation {
   removeFileAssignment(id: Int!): FileAssignment!
   signup(SignUpUserInput: SignUpUserInput!): User!
   updateCar(updateCarInput: UpdateCarInput!): Car!
-  updateFileAssignment(updateFileAssignmentInput: UpdateFileAssignmentInput!): FileAssignment!
   updateNotification(updateNotificationInput: UpdateNotificationInput!): String!
   updateStatusRentalRequest(input: UpdateRentalRequestInput!, requestid: Float!): String!
 }
@@ -201,25 +200,18 @@ enum StatusRequest {
 }
 
 input UpdateCarInput {
-  brand: String
-  color: String
-  downPayment: Float
+  brand: String!
+  color: String!
+  downPayment: Float!
 
   """Fuel type enum : Gas, Diesel, Electric ..."""
-  fuelType: FuelType = Gas
+  fuelType: FuelType! = Gas
   id: Int!
-  location: String
+  location: String!
   ownerId: Int
-  rentalPrice: Float
-  seatsNumber: Int = 4
-  title: String
-}
-
-input UpdateFileAssignmentInput {
-  elementId: Int
-  elementType: EntityType
-  fileUrl: String
-  id: Int!
+  rentalPrice: Float!
+  seatsNumber: Int! = 4
+  title: String!
 }
 
 input UpdateNotificationInput {
