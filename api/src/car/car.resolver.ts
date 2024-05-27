@@ -8,7 +8,7 @@ import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
 import { FilterOptions } from "./dto/filterOptions";
 import { CarWithImages } from "./dto/get-car-withImage-dto";
-import { UserIdFromToken } from "src/helpers/token.helpers";
+import { GetCurrentUserId } from "src/decorators/getCurrentUserId.decorator";
 
 @Resolver(() => Car)
 export class CarResolver {
@@ -20,8 +20,9 @@ export class CarResolver {
   @UseGuards(JwtAuthGuard)
   async createCar(
     @Args("createCarInput") createCarInput: CreateCarInput,
+    @GetCurrentUserId() userId: number
   ): Promise<Car> {
-    return await this.carService.create(createCarInput);
+    return await this.carService.create(createCarInput, userId);
   }
 
   @Query(() => [Car], { name: "cars" })
@@ -31,8 +32,8 @@ export class CarResolver {
   }
   @Query(() => [CarWithImages], { name: "carsById" })
   @UseGuards(JwtAuthGuard)
-  async findAllById(@Args("id", { type: () => Int }) id: number) {
-    return await this.carService.findAllByOwnerId(id);
+  async findAllById(@GetCurrentUserId() userId: number) {
+    return await this.carService.findAllByOwnerId(userId);
   }
   @Query(() => CarWithImages, { name: "car" })
   @UseGuards(JwtAuthGuard)
@@ -41,20 +42,18 @@ export class CarResolver {
   }
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
-  updateCar(@Args("updateCarInput") updateCarInput: UpdateCarInput) {
-    return this.carService.update(updateCarInput.id, updateCarInput);
+  updateCar(@Args("updateCarInput") updateCarInput: UpdateCarInput, @GetCurrentUserId() userId: number) {
+    return this.carService.update(updateCarInput.id, updateCarInput, userId);
   }
   @Mutation(() => Car)
   @UseGuards(JwtAuthGuard)
-  removeCar(@Args("id", { type: () => Int }) id: number) {
-    return this.carService.remove(id);
+  removeCar(@Args("id", { type: () => Int }) id: number, @GetCurrentUserId() userId: number) {
+    return this.carService.remove(id, userId);
   }
   @Query(() => [CarWithImages]!, { name: "userCars" })
   @UseGuards(JwtAuthGuard)
-  async findUserCars(@Context() context){
-    const { req } = context;
-    const id = await UserIdFromToken(req.headers['authorization']) ;
-    const Cars = await this.carService.findAllByOwnerId(id); 
+  async findUserCars(@GetCurrentUserId() userId: number){
+    const Cars = await this.carService.findAllByOwnerId(userId); 
     return Cars; 
   }
 

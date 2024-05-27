@@ -37,7 +37,7 @@ const AgreementPage: React.FC = () => {
               fuelType,
               seatsNumber,
               rentalPrice,
-              downPayment,
+              downPayment
             }
           }
         }

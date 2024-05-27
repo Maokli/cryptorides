@@ -152,7 +152,7 @@ type Query {
   availableFilters: FilterOptions!
   car(id: Int!): CarWithImages!
   cars: [Car!]!
-  carsById(id: Int!): [CarWithImages!]!
+  carsById: [CarWithImages!]!
   fileAssignment(id: Int!): FileAssignment!
   filteredCars(filter: CarFilter): [CarWithImages!]!
   getAllRentalsRequests(getRentalRequestInput: getRentalRequestInput!): [rentalRequestDto!]!
@@ -175,6 +175,7 @@ type Rentalcar {
 }
 
 input SignUpUserInput {
+  confirmPassword: String!
   email: String!
   familyName: String!
   name: String!
