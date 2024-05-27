@@ -13,7 +13,7 @@ interface Message {
 
 const SystemMessage: Message = {
   id: 1,
-  body: "Welcome to the CryptoRides chat app!",
+  body: "Welcome to CryptoRides chat app!",
   author: "Bot",
   authorName: "System",
 };

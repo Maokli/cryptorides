@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { CarFilters } from '../../models/car-filters.model';
 import CarFiltersComponent from '../../components/car-filters.component';
-import { Box, Container, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
-import { getUserToken } from '../../helpers/auth.helpers';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
-import CarDetailsCard from '../../components/car-details-card.component';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);

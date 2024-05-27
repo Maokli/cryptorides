@@ -1,5 +1,3 @@
-// src/components/Sidebar.tsx
-
 import React, { useState } from 'react';
 import { List, ListItem, Divider, Box, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -22,7 +20,6 @@ const useStyles = makeStyles({
     borderRight: '1px solid lightgrey',
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: 20, // Adjust left padding
   },
   button: {
     justifyContent: 'flex-start',
@@ -35,6 +32,7 @@ const useStyles = makeStyles({
       color: '#0CC0DF',
       backgroundColor: 'transparent',
     },
+    textAlign: 'left', 
   },
   selected: {
     color: '#0CC0DF',
@@ -42,11 +40,11 @@ const useStyles = makeStyles({
   listItem: {
     padding: '10px 0',
     display: 'flex',
-    alignItems: 'center', // Align items vertically
+    alignItems: 'center', 
   },
   logoutContainer: {
     marginTop: 'auto',
-    paddingBottom: 20, // Add padding to space out the logout button
+    paddingBottom: 20, 
   },
   logout: {
     width: '100%',

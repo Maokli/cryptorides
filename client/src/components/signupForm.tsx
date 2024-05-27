@@ -3,10 +3,9 @@ import { useMutation, gql } from '@apollo/client';
 import { TextField, Button, Grid, Paper, Box,  } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
-import { SiGoogle, SiGithub } from 'react-icons/si';
-import Navbar from '../components/Navbar';
 
 const SIGN_UP = gql`
   mutation SignUp($input: SignUpUserInput!) {
@@ -27,14 +26,16 @@ const SignUpForm: React.FC = () => {
     email: '',
     phoneNumber: '',
     password: '',
-    
+    confirmPassword: ''
   });
   const [signUp, { loading, error }] = useMutation(SIGN_UP);
+  const navigate = useNavigate();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signUp({ variables: { input: formData } });
+      navigate('/login');
     } catch (error) {
       console.error('Error signing up:', error);
     }

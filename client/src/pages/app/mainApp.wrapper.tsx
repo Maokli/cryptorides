@@ -6,6 +6,7 @@ import NotFoundPage from '../shared/notFound.page';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AddCarForm from '../forms/addCar.form';
 import CarDetailsPage from './car-details.page';
+import AgreementPage from './Agreement.page';
 import RentalRequestsPage from './rental-requests.page';
 import BrowseUserCars from './userCarsPage';
 import BrowseUserRentalRequests from './rentalrequestPage';
@@ -34,6 +35,7 @@ function MainAppWrapper() {
         <Route path='/publishedcars' element={<BrowseUserCars/>}/>
         <Route path='/publishedrequest' element={<BrowseUserRentalRequests/>}/>
         <Route path="/details/:id" element={<CarDetailsPage />}></Route>
+        <Route path="/agreement/:id" element={<AgreementPage />}></Route>
         <Route path="/rentalRequests/" element={<RentalRequestsPage />}></Route>
         <Route path="/update/:id" element={<UpdateCarForm/>}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>

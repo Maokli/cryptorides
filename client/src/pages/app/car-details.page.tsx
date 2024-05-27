@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import CarGrid from '../../components/car-grid.component';
 import { Car } from '../../models/car.model';
-import { CarFilters } from '../../models/car-filters.model';
-import CarFiltersComponent from '../../components/car-filters.component';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
-import { getUserToken } from '../../helpers/auth.helpers';
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import CenterCarFiltersComponent from '../../components/center-car-filters.component';
 import CarDetailsCard from '../../components/car-details-card.component';
 import CarDetailsCarousel from '../../components/car-details-carousel.component';
 import { useParams } from 'react-router-dom';
