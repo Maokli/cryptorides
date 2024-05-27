@@ -18,6 +18,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import client from './apolloclient'; 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddCarForm from './pages/forms/addCar.form';
 import './index.css'; 
 import { Link } from 'react-scroll';
 import BrowseUserCars from './pages/app/userCarsPage';
@@ -61,11 +62,11 @@ function App() {
       <Navbar /> 
         <Routes>
           <Route path='/' element={<LandingPage />}/>
-          <Route path='/cars' element={<BrowseCarsPage/>}/>
           <Route path='/login' element={<LoginForm />}/>
           <Route path='/signup' element={<SignUpForm/>}/>
           <Route path="/chat" element={<Chat  onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
+          <Route path="addCar" element={<AddCarForm/>}></Route>
           <Route path="/conditions" element={<CarRentalConditions/>}></Route>
           <Route path="/agreement" element={<AgreementPage/>}></Route>
         </Routes>

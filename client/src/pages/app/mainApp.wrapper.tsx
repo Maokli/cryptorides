@@ -7,8 +7,10 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import AddCarForm from '../forms/addCar.form';
 import CarDetailsPage from './car-details.page';
 import BrowseUserCars from './userCarsPage';
-import { RenderPromises } from '@apollo/client/react/ssr';
 import BrowseUserRentalRequests from './rentalrequestPage';
+
+import UpdateCarForm from '../forms/updateCar.form';
+
 
 function MainAppWrapper() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -32,6 +34,7 @@ function MainAppWrapper() {
         <Route path='/publishedcars' element={<BrowseUserCars/>}/>
         <Route path='/publishedrequest' element={<BrowseUserRentalRequests/>}/>
         <Route path="/details/:id" element={<CarDetailsPage />}></Route>
+        <Route path="/update" element={<UpdateCarForm/>}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>
     </>
