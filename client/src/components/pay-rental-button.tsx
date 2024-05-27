@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button, CircularProgress } from '@mui/material';
-import axios from 'axios';
+import axios from './../helpers/axios.helpers';
 import { getUserToken } from '../helpers/auth.helpers';
+import { notifyPaymentError } from '../helpers/toast.helpers'; 
+
 
 interface PayButtonProps {
   requestId: number;
@@ -27,7 +29,7 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
         `;
         const checkStatusVariables = { requestId: parseFloat(requestId.toString()) };
 
-        const checkStatusResponse = await axios.post(
+        const checkStatusResponse = await axios.instance.post(
           "http://localhost:3001/graphql",
           {
             query: checkStatusQuery,
@@ -52,7 +54,9 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
           setPaymentStatus(null);
         }
       } catch (error) {
-        console.error("Error checking payment status:", error);
+        //console.error("Error checking payment status:", error);
+        notifyPaymentError("Error checking payment status. Please try again.");
+
       }
     };
 
@@ -64,18 +68,17 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
 
     try {
       const token = getUserToken();
-      // Step 2: Execute payment process
-      const payProcessMutation = `
+      const payProcessQuery = `
         query PayProcess($requestId: Float!) {
           payProcess(request: $requestId)
         }
       `;
       const payProcessVariables = { requestId: parseFloat(requestId.toString()) };
 
-      const payResponse = await axios.post(
+      const payResponse = await axios.instance.post(
         "http://localhost:3001/graphql",
         {
-          query: payProcessMutation,
+          query: payProcessQuery,
           variables: payProcessVariables
         },
         {
