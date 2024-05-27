@@ -17,8 +17,8 @@ const Navbar: React.FC = () => {
           <NavLink to="/browse" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Cars</NavLink>
          {isAuthenticated() ? (
             <>
-              <NavLink to="/publishedrequest" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Requests</NavLink>
-              <NavLink to="/publishedcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Cars</NavLink>
+              <NavLink to="/publishedrequest" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>My Requests</NavLink>
+              <NavLink to="/publishedcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>My Cars</NavLink>
               <button onClick={handleLogout} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button></>
        
       ) : (

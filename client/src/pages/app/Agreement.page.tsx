@@ -38,6 +38,7 @@ const AgreementPage: React.FC = () => {
               seatsNumber,
               rentalPrice,
               downPayment,
+              images {url}
             }
           }
         }
