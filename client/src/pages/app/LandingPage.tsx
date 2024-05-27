@@ -25,6 +25,7 @@ const images = [
 const cars: Car[] = [
     {
         id: 1,
+        ownerId: 1,
         location: "Ariana",
         brand: "Range Rover",
         color: "Black",
@@ -42,6 +43,7 @@ const cars: Car[] = [
     }
     , {
         id: 2,
+        ownerId: 1,
         location: "Ariana",
         brand: "Rolls Royce ",
         color: "Blue",
@@ -59,6 +61,7 @@ const cars: Car[] = [
     ,
     {
         id: 3,
+        ownerId: 1,
         location: "Ariana",
         brand: "Range",
         color: "Blue",
