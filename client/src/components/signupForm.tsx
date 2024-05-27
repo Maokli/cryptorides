@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
 
-import { useNavigate } from 'react-router-dom';
-
 
 const SIGN_UP = gql`
   mutation SignUp($input: SignUpUserInput!) {
