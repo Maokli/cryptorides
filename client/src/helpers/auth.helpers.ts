@@ -24,6 +24,7 @@ export const handleLogout = () => {
   window.location.reload();
   removeUserToken() ;
 
+}
 export const getLoggedInUserId = () => {
-  
+  return 2 ;   // hardcoded for now
 }

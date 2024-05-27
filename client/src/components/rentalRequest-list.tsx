@@ -4,24 +4,21 @@ import CarCard from "./car-card.component";
 import { Car } from "../models/car.model";
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
 import { RentalRequest } from "../models/renatalrequest.model";
-const images = [
-    {
-        url:
-            'https://i.ytimg.com/vi/1HAACt8gmE0/maxresdefault.jpg',
-    },
-    {
-        url:
-            'https://fdm.dk/sites/default/files/d6images/07-bpv-toyotagt86-002.jpg',
-    }, {
-        url: '../'
+
+export default function RentalRequestsList(props: { rentalrequest: RentalRequest[] }) {
+    if (props.rentalrequest.length === 0) {
+        return (
+            <Typography variant="h3" color="textSecondary" align="center">
+                You didn't make any requests yet.
+            </Typography>
+        );
     }
-]
-export default function RentalRequestsList(props: { rentalrequest: RentalRequest[], cars: Car[] }) {
+
     return (
-        <>        
+        <>       
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                 {props.rentalrequest.map((rentalrequest) => (
-                    <ListItem>
+                    <ListItem key={rentalrequest.id}>
                         <ListItemAvatar>
                             <Avatar
                                 alt="Remy Sharp"
@@ -47,7 +44,6 @@ export default function RentalRequestsList(props: { rentalrequest: RentalRequest
                         <Divider variant="inset" component="li" />
                     </ListItem>
                 ))}
-
             </List>
         </>
     );

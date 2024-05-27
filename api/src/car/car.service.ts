@@ -130,7 +130,8 @@ export class CarService {
           downPayment: car.downPayment,
           seatsNumber: car.seatsNumber,
           fuelType: car.fuelType,
-          images: images
+          images: images,
+          ownerId: car.owner.id
         }
   
         carsWithImages.push(carWithImages);
