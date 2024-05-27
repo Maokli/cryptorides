@@ -18,6 +18,11 @@ import { CreateNotificationInput } from "src/notification/dto/create-notificatio
 import { statusRequest } from "./enum/statusRequest.enum";
 import { UpdateRentalRequestInput } from "./dto/updateRentalRequest.input";
 import { getRentalRequestInput } from "./dto/getRentalRequest.input";
+import { rentalRequestDto } from "./dto/rental-request.dto";
+import { FileAssignment } from "src/file-assignment/entities/file-assignment.entity";
+import { entityType } from "src/shared/enum/entityType.enum";
+import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
+import { Image } from "src/car/dto/image.model";
 
 @Injectable()
 export class RentalCarService {
@@ -30,6 +35,9 @@ export class RentalCarService {
 
     @InjectRepository(rentalRequest)
     private readonly rentalRequestRepository: Repository<rentalRequest>,
+
+    @InjectRepository(FileAssignment)
+    private readonly fileAssignmentRepository: Repository<FileAssignment>,
 
     private readonly carService: CarService,
     private readonly notificationService: NotificationService
@@ -249,17 +257,17 @@ export class RentalCarService {
   }
 
   //to discuss
-  async getAll(input: getRentalRequestInput): Promise<rentalRequest[]> {
-
+  async getAll(input: getRentalRequestInput): Promise<rentalRequestDto[]> {
+    let rentalRequests;
     if (input.userRole === 'owner') {
-      return this.rentalRequestRepository.find({
+      rentalRequests = await this.rentalRequestRepository.find({
         where: {
           ownerId: input.userId
         },
         relations: ["car"]
       });
     } else if (input.userRole === 'renter') {
-      return this.rentalRequestRepository.find({
+      rentalRequests = await this.rentalRequestRepository.find({
         where: {
           renterId: input.userId
         },
@@ -268,6 +276,11 @@ export class RentalCarService {
     } else {
       throw new Error('Invalid userRole');
     }
+    if(!rentalRequests || rentalRequests.length === 0)
+      return []
+
+    console.log(rentalRequests)
+    return rentalRequests.map(rentalRequest => this.mapRentalRequestToDto(rentalRequest))
   }
 
   private async callPaymentEngine(): Promise<boolean> {
@@ -317,6 +330,35 @@ export class RentalCarService {
     } else {
       throw new Error('Payment failed. Please try again.');
     }
+  }
+
+  private async getCarPictures(carId: number) {
+    return await this.fileAssignmentRepository.find({where: {elementId: carId, elementType: entityType.Car}}) ;
+  }
+
+  private async mapRentalRequestToDto(rentalRequest: rentalRequest): Promise<rentalRequestDto> {
+    const carFileAssignments = await this.getCarPictures(rentalRequest.car.id);
+      const images: Image[] = carFileAssignments.map(fa => {
+        return {
+          url: fa.fileUrl
+        }
+      })
+
+      const carWithImages: CarWithImages = {
+        id: rentalRequest.car.id,
+        ownerId: rentalRequest.ownerId as number,
+        location: rentalRequest.car.location,
+        brand: rentalRequest.car.brand,
+        color: rentalRequest.car.color,
+        title: rentalRequest.car.title,
+        rentalPrice: rentalRequest.car.rentalPrice,
+        downPayment: rentalRequest.car.downPayment,
+        seatsNumber: rentalRequest.car.seatsNumber,
+        fuelType: rentalRequest.car.fuelType,
+        images: images
+      }
+
+      return {...rentalRequest, car: carWithImages}
   }
 
 }

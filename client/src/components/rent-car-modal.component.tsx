@@ -9,6 +9,7 @@ import { Dayjs } from 'dayjs';
 import { Car } from '../models/car.model';
 import axios from '../helpers/axios.helpers';
 import { useNavigate } from 'react-router-dom';
+import { getUserIdFromToken } from '../services/account.service';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -111,7 +112,7 @@ export default function RentCarModal(props: {open: boolean, setOpen: React.Dispa
           availabilityFrom: dateRanges[0]?.toDate(),
           availabilityTo: dateRanges[1]?.toDate(),
           ownerId: props.car.ownerId,
-          renterId: 6
+          renterId: parseInt(getUserIdFromToken() ?? "0")
         }
       };
       console.log(props.car)

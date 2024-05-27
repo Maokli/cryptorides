@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { TextField, Button, Grid, Paper, Box } from '@mui/material'; 
 import { isAuthenticated, setUserToken } from '../helpers/auth.helpers';
 import { useNavigate } from 'react-router-dom';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import loginImage from '../assets/images/loginImage.jpg';
@@ -31,19 +32,26 @@ const LoginForm: React.FC = () => {
   });
   const [login, { loading, error }] = useMutation(LOGIN);
   const navigate = useNavigate();
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const { data } = await login({ variables: { email: formData.email, password: formData.password } });
       if (data && data.login && data.login.access_token) {
         setUserToken(data.login.access_token);
-        navigate('/');
+        setIsLoggedIn(true);
       }
     } catch (error) {
       console.error('Login error:', error);
     }
   };
+  useEffect(() => {
+    if (isLoggedIn) {
+      window.location.reload();
+      navigate('/');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,7 +64,6 @@ const LoginForm: React.FC = () => {
 
   return (
     <>
-      <Navbar /> {/* Add Navbar component */}
       <Grid container spacing={0} sx={{ height: '100vh', alignItems: 'center' }}>
         {/* Left Side - Welcome Text */}
         <Grid item xs={12} md={6} sx={{ textAlign: 'center', marginBottom: '50px', paddingLeft: '20px' }}>
