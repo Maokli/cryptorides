@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import CarGrid from '../../components/car-grid.component';
 import { getUserToken } from '../../helpers/auth.helpers';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
-import debouncedFilters from './browse-cars.page'
+import debouncedFilters from './browse-cars.page';
+import { useNavigate } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
+import OwnerCarGrid from '../../components/owner-car-grid.component';
+
 const query = `
   query GetUserCars {
     userCars {
@@ -14,17 +17,16 @@ const query = `
         title , 
         fuelType , 
         rentalPrice , 
-        downPayment , 
-        images {url} 
+        downPayment 
     }
   }
 `;
 
-
 function BrowseUserCars() {
-  const [userCars, setCars] = useState([])
-  const fetchdata = async () => {
+  const [userCars, setCars] = useState([]);
+  const navigate = useNavigate();
 
+  const fetchdata = async () => {
     const token = getUserToken();
     try {
       const response = await axios.instance.post(
@@ -38,24 +40,30 @@ function BrowseUserCars() {
           },
         }
       );
-      console.log(response.data.data) ; 
       setCars(response.data.data.userCars);
+    } catch {
+      console.log("error");
     }
-    catch {
-      console.log("error")
-    }
+  };
 
-  }
   useEffect(() => {
     fetchdata();
   }, [debouncedFilters]);
 
+  const handleAddCarClick = () => {
+    navigate('/add');
+  };
+
   return (
     <>
-      <Box sx={{ pt: 3, pl: 3 }}>
-        <Typography variant="h3">My Cars : </Typography>
-        <CarGrid cars={userCars}></CarGrid>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography variant="h3">My Cars</Typography>
+        <Button color="primary" variant="contained" onClick={handleAddCarClick} sx={{marginRight: '1vw'}}>
+          <AddIcon></AddIcon>
+          Add Car
+        </Button>
       </Box>
+      <OwnerCarGrid cars={userCars}></OwnerCarGrid>
     </>
   );
 }

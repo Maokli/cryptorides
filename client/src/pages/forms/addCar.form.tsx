@@ -3,7 +3,8 @@ import { Button, Grid, Container, Box, TextField, InputAdornment } from "@mui/ma
 import axios from "../../helpers/axios.helpers";
 import { getIdFromToken } from '../../helpers/auth.helpers';
 import PictureUpload from "../../components/carRentForm/imageUpload";
-import { get } from "http";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 interface CarData {
   picture1: File | null;
@@ -35,6 +36,8 @@ const AddCarForm = () => {
     fuelType: "",
     numberOfSeats: "",
   });
+
+  const navigate = useNavigate();
 
   const [touched, setTouched] = useState({
     title: false,
@@ -210,6 +213,10 @@ const AddCarForm = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate("/browse");
+  };
+
   return (
     <div>
       <Container
@@ -377,7 +384,10 @@ const AddCarForm = () => {
               />
             </Grid>
           </Grid>
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+            <Button onClick={handleBack} variant="outlined">
+              <ArrowBackIosIcon></ArrowBackIosIcon> Back
+            </Button>
             <Button type="submit" variant="contained">
               Submit
             </Button>

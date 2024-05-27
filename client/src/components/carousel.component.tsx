@@ -8,10 +8,25 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { Image } from '../models/image.model';
 
+const DEFAULT_IMAGE_URL = 'https://www.vistacars.in/assets/product_images/default.png';
+
 function Carousel(props: {images: Image[]}) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = props.images.length;
+  const images = props.images || []; 
+  const maxSteps = images.length;
+
+  if (maxSteps === 0) {
+    return (
+      <Box>
+        <img
+          src={DEFAULT_IMAGE_URL}
+          alt="Default Image"
+          style={{ maxWidth: '100%', height: 'auto' }}
+        />
+      </Box>
+    );
+  }
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

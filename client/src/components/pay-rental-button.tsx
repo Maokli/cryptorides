@@ -54,7 +54,6 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
           setPaymentStatus(null);
         }
       } catch (error) {
-        //console.error("Error checking payment status:", error);
         notifyPaymentError("Error checking payment status. Please try again.");
 
       }

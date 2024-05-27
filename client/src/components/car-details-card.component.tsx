@@ -1,19 +1,25 @@
 // src/components/CarCard.js
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, Button, Box, Grid, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, Button, Box, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { Car } from '../models/car.model';
 import RentCarModal from './rent-car-modal.component';
+import { useNavigate } from 'react-router-dom';
 
-const CarDetailsCard = (props: {car: Car}) => {
+const CarDetailsCard = (props: { car: Car }) => {
     const [open, setOpen] = useState(false);
-    
+    const navigate = useNavigate();
+
+    const onBack = () => {
+        navigate('/browse');
+    }
+
     const onRentCar = () => {
         setOpen(true);
     }
 
     return (
-        <Card sx={{ display: 'flex', flexDirection: 'column', height: "inherit"}}>
+        <Card sx={{ display: 'flex', flexDirection: 'column', height: "inherit" }}>
             <RentCarModal open={open} setOpen={setOpen} car={props.car} />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -28,10 +34,14 @@ const CarDetailsCard = (props: {car: Car}) => {
                     </Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 2 }}>
-                  If you like this car, proceede to send a rental request to the owner, you will then interviewed via chat.
-                  <br></br>Once the owner approves of you, you can proceed to pay the rent and pickup the vehicule.
-                  <br></br>A down payment of <Typography variant='body2' fontWeight={900}>{props.car.downPayment} TND + {props.car.rentalPrice} x number of days will be substracted from your account immidiately.</Typography>
+                    If you like this car, proceed to send a rental request to the owner, you will then be redirected to chat to be interviewed. Once the owner approves your rental request, you can proceed to pay the rent and pickup the vehicle. 
+                    <br></br>A down payment of{' '}
+                    <Typography variant='body2' fontWeight={900} component="span" display="inline">
+                        {props.car.downPayment} TND + {props.car.rentalPrice} x number of days
+                    </Typography>{' '}
+                    will be subtracted from your account immediately.
                 </Typography>
+
                 <Grid container spacing={1}>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="text.secondary">Type Car</Typography>
@@ -39,7 +49,7 @@ const CarDetailsCard = (props: {car: Car}) => {
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="text.secondary">Capacity</Typography>
-                        <Typography variant="body1">{props.car.seatsNumber} Person</Typography>
+                        <Typography variant="body1">{props.car.seatsNumber} Person(s)</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="body2" color="text.secondary">Fuel Type</Typography>
@@ -51,11 +61,16 @@ const CarDetailsCard = (props: {car: Car}) => {
                     </Grid>
                 </Grid>
                 <Typography variant="h6" sx={{ mt: 2 }}>
-                    {`${props.car.rentalPrice} TND`}/ day
+                    {`${props.car.rentalPrice} TND`} /day
                 </Typography>
-                <Button onClick={onRentCar} variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Rent Now
-                </Button>
+                <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
+                    <Button onClick={onBack} variant="outlined" color="primary">
+                        Back
+                    </Button>
+                    <Button onClick={onRentCar} variant="contained" color="primary">
+                        Rent Now
+                    </Button>
+                </Box>
             </CardContent>
         </Card>
     );
