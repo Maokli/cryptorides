@@ -21,6 +21,7 @@ export const isAuthenticated = () => {
 
   return !isNullOrEmpty(token);
 }
+
 export const handleLogout = () => {
   window.location.reload();
   removeUserToken() ;

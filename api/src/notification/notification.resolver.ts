@@ -14,10 +14,9 @@ export class NotificationResolver {
   }
   
   @Query(() => [Notification], { name: 'notification' })
-  findAll() {
-    return this.notificationService.findAll();
+  findAllNewByOwnerId(ownerId: number) {
+    return this.notificationService.findAllNewByOwnerId(ownerId);
   }
-
  
   @Mutation(() => String)
   async updateNotification(@Args('updateNotificationInput') updateNotificationInput: UpdateNotificationInput): Promise<string> {
