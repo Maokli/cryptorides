@@ -300,7 +300,7 @@ export class RentalCarService {
     const differenceInDays = (rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24);
     const rentalPeriod = Math.floor((rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24));
   
-    const response = await fetch('http://your-api-url', {
+    const response = await fetch('localhost:5000/rental', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
