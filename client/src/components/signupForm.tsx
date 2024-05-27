@@ -3,10 +3,12 @@ import { useMutation, gql } from '@apollo/client';
 import { TextField, Button, Grid, Paper, Box,  } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
-import { SiGoogle, SiGithub } from 'react-icons/si';
-import Navbar from '../components/Navbar';
+
+import { useNavigate } from 'react-router-dom';
+
 
 const SIGN_UP = gql`
   mutation SignUp($input: SignUpUserInput!) {
@@ -27,25 +29,30 @@ const SignUpForm: React.FC = () => {
     email: '',
     phoneNumber: '',
     password: '',
-    
+    confirmPassword: '',
+
   });
   const [signUp, { loading, error }] = useMutation(SIGN_UP);
+  const navigate = useNavigate();
+  
+  const navigate = useNavigate();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signUp({ variables: { input: formData } });
+      navigate('/login');
     } catch (error) {
       console.error('Error signing up:', error);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
   return (
     <>
+
       <Grid container spacing={2} sx={{ height: '100vh', alignItems: 'center' }}>
         <Grid item xs={12} md={6} sx={{ textAlign: 'center', marginBottom: '50px', paddingLeft: '20px' }}>
           <TypeAnimation
@@ -205,6 +212,33 @@ const SignUpForm: React.FC = () => {
                       value={formData.password}
                       onChange={handleChange}
                       label="Password"
+                      fullWidth
+                      required
+                      sx={{
+                        '& label': {
+                          color: '#0575ee',
+                        },
+                        '& input': {
+                          borderBottom: '2px solid #0575ee',
+                          backgroundColor: '#000',
+                          color: '#FFFFFF',
+                          boxShadow: '0 0 5px #0575ee, 0 0 25px #0575ee, 0 0 50px #0575ee, 0 0 200px #0575ee',
+                        },
+                        '& input:hover': {
+                          borderColor: '#0575ee',
+                          boxShadow: '0 0 10px #0575ee',
+                        },
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      type="Password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      label="Confirm Password"
                       fullWidth
                       required
                       sx={{

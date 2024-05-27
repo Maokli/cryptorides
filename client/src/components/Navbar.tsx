@@ -4,8 +4,10 @@ import { NavLink } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import logo from '../assets/images/logo.png';
 import { isAuthenticated, handleLogout   } from '../helpers/auth.helpers';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <AppBar position="static" style={{ background: '#000000' }}>
       <Toolbar>
@@ -19,7 +21,8 @@ const Navbar: React.FC = () => {
             <>
               <NavLink to="/publishedrequest" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Requests</NavLink>
               <NavLink to="/publishedcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Cars</NavLink>
-              <button onClick={handleLogout} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button></>
+              <button onClick={() =>{handleLogout(); navigate(`/`);}} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button></>
+
        
       ) : (
             <>

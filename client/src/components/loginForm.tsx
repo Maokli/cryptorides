@@ -49,7 +49,7 @@ const LoginForm: React.FC = () => {
   useEffect(() => {
     if (isLoggedIn) {
       window.location.reload();
-      navigate('/');
+      navigate('/browse');
     }
   }, [isLoggedIn, navigate]);
 
@@ -58,7 +58,7 @@ const LoginForm: React.FC = () => {
   };
 
   if (isAuthenticated()) {
-    navigate('/');
+    navigate('/browse');
     return null;
   }
 

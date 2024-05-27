@@ -1,48 +1,46 @@
 import * as React from "react";
-import Grid from "@mui/material/Grid";
-import CarCard from "./car-card.component";
-import { Car } from "../models/car.model";
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
+import { Button, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, Typography } from "@mui/material";
 import { RentalRequest } from "../models/renatalrequest.model";
+import { useNavigate } from "react-router-dom";
 
 export default function RentalRequestsList(props: { rentalrequest: RentalRequest[] }) {
+
+    const navigate = useNavigate();
+
     if (props.rentalrequest.length === 0) {
         return (
-            <Typography variant="h3" color="textSecondary" align="center">
-                You didn't make any requests yet.
+            <Typography variant="h6" color="textSecondary" align="center">
+                There aren't any requests yet.
             </Typography>
         );
     }
 
+    const handleNavigate = (id: number) => {
+        navigate(`/agreement/${id.toString()}`);
+    };
+
     return (
-        <>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {props.rentalrequest.map((rentalrequest) => (
-                    <ListItem key={rentalrequest.id}>
-
-
-
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            {props.rentalrequest.map((rentalrequest) => (
+                <React.Fragment key={rentalrequest.id}>
+                    <ListItem>
                         <ListItemText
-                            secondary={
-                                <React.Fragment>
-                                    <Typography
-                                        sx={{ display: 'block' }} // Use block display to make it appear on a new line
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
-                                    >
-                                        {rentalrequest.car.brand}
-                                    </Typography>
-                                    {"From " + rentalrequest.fromdate + " to " + rentalrequest.todate}
-                                </React.Fragment>
-                            }
+                            primary={rentalrequest.car.brand}
+                            secondary={`From ${rentalrequest.fromdate} to ${rentalrequest.todate}`}
                         />
-                        <Divider variant="inset" component="li" />
+                        <ListItemSecondaryAction>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleNavigate(rentalrequest.id)}
+                            >
+                                View details
+                            </Button>
+                        </ListItemSecondaryAction>
                     </ListItem>
-
-
-                ))}
-            </List>
-        </>
+                    <Divider component="li" />
+                </React.Fragment>
+            ))}
+        </List>
     );
 }
