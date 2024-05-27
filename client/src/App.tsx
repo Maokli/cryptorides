@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import  BrowseCarsPage  from './pages/app/browse-cars.page';
 import { Route, Routes } from 'react-router-dom';
 import { isAuthenticated } from './helpers/auth.helpers';
 import MainAppWrapper from './pages/app/mainApp.wrapper';
@@ -20,8 +19,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddCarForm from './pages/forms/addCar.form';
 import './index.css'; 
-import { Link } from 'react-scroll';
-import BrowseUserCars from './pages/app/userCarsPage';
 
 const theme = createTheme({
   palette: {
@@ -66,7 +63,7 @@ function App() {
           <Route path='/signup' element={<SignUpForm/>}/>
           <Route path="/chat" element={<Chat  onLogout={() => {}} />} />
           <Route path="/notfound" element={<NotFoundPage/>}></Route>
-          <Route path="addCar" element={<AddCarForm/>}></Route>
+          <Route path="/addCar" element={<AddCarForm/>}></Route>
           <Route path="/conditions" element={<CarRentalConditions/>}></Route>
           <Route path="/agreement" element={<AgreementPage/>}></Route>
         </Routes>
