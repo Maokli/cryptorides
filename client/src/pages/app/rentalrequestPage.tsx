@@ -8,7 +8,7 @@ import RentalRequestsList from '../../components/rentalRequest-list';
 import { RentalRequest } from '../../models/renatalrequest.model';
 const query = `
   query getAllRentalsRequests($input: getRentalRequestInput!) {
-    getAllRentalsRequests(getAllRequest: $input) {
+    getAllRentalsRequests(getRentalRequestInput: $input) {
         id , 
         fromdate , 
         todate ,  

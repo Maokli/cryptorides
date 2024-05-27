@@ -9,7 +9,7 @@ export default function RentalRequestsList(props: { rentalrequest: RentalRequest
     if (props.rentalrequest.length === 0) {
         return (
             <Typography variant="h3" color="textSecondary" align="center">
-                You didn't make any requests yet.
+                There aren't any requests yet.
             </Typography>
         );
     }
