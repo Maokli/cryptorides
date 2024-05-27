@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import CarGrid from '../../components/car-grid.component';
 import { getIdFromToken, getUserToken } from '../../helpers/auth.helpers';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, Typography, Paper } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
-import debouncedFilters from './browse-cars.page'
+import debouncedFilters from './browse-cars.page';
 import RentalRequestsList from '../../components/rentalRequest-list';
-import { RentalRequest } from '../../models/renatalrequest.model';
+import CallReceivedIcon from '@mui/icons-material/CallReceived';
+import CallMadeIcon from '@mui/icons-material/CallMade';
+
 const query = `
   query getAllRentalsRequests($input: getRentalRequestInput!) {
     getAllRentalsRequests(getRentalRequestInput: $input) {
@@ -23,6 +24,7 @@ const query = `
 function BrowseUserRentalRequests() {
     const [renterrequests, setrenterrequest] = useState([]);
     const [ownerrequests, setownerrequest] = useState([]);
+    
     const fetchdataAsowner = async () => {
         const token = getUserToken();
         const userId = getIdFromToken(token as string);
@@ -31,7 +33,7 @@ function BrowseUserRentalRequests() {
                 userId: userId,
                 userRole: "owner"
             }
-        }
+        };
 
         try {
             const response = await axios.instance.post(
@@ -46,23 +48,21 @@ function BrowseUserRentalRequests() {
                     },
                 }
             );
-            console.log(response.data.data.getAllRentalsRequests);
             setownerrequest(response.data.data.getAllRentalsRequests);
+        } catch {
+            console.log("error");
         }
-        catch {
-            console.log("error")
-        }
-
-    }
+    };
+    
     const fetchdataAsRenter = async () => {
         const token = getUserToken();
         const userId = getIdFromToken(token as string);
         let variables = {
             input: {
                 userId: userId,
-                userRole: "owner"
+                userRole: "renter"
             }
-        }
+        };
 
         try {
             const response = await axios.instance.post(
@@ -78,33 +78,32 @@ function BrowseUserRentalRequests() {
                 }
             );
             setrenterrequest(response.data.data.getAllRentalsRequests);
+        } catch {
+            console.log("error");
         }
-        catch {
-            console.log("error")
-        }
-
-    }
+    };
+    
     useEffect(() => {
         fetchdataAsowner();
-    }, [debouncedFilters]);
-    useEffect(() => {
         fetchdataAsRenter();
     }, [debouncedFilters]);
-    console.log(renterrequests, ownerrequests) ; 
+
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
-            <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
-            <Typography variant="h6" color="green" align="center">
-               Incoming Requests : 
-            </Typography>                <Divider flexItem />
+        <Box sx={{ display: 'flex', height: '100vh', justifyContent: 'space-around', alignItems: 'center', p: 3 }}>
+            <Paper elevation={3} sx={{ width: '45vw', p: 3, borderRadius: 2, boxShadow: 3, height : '90vh' }}>
+                <Typography variant="h6" color="green" align="center" fontWeight="bold">
+                Incoming Requests <CallReceivedIcon></CallReceivedIcon>
+                </Typography>
+                <Divider flexItem sx={{ my: 2 }} />
                 <RentalRequestsList rentalrequest={ownerrequests} />
-            </Box>
-            <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3 }}>
-            <Typography variant="h6" color="red" align="center">
-               Outgoing Requests : 
-            </Typography> 
-            <RentalRequestsList rentalrequest={renterrequests} />
-            </Box>
+            </Paper>
+            <Paper elevation={3} sx={{ width: '45vw', p: 3, borderRadius: 2, boxShadow: 3, height : '90vh' }}>
+                <Typography variant="h6" color="red" align="center" fontWeight="bold">
+                Outgoing Requests <CallMadeIcon></CallMadeIcon>
+                </Typography>
+                <Divider flexItem sx={{ my: 2 }} />
+                <RentalRequestsList rentalrequest={renterrequests} />
+            </Paper>
         </Box>
     );
 }
