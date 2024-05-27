@@ -16,6 +16,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
 import {UserData}  from '../../models/user.model';
+import axios from 'axios';
+import {getUserToken} from '../../helpers/auth.helpers'
+import { SelectChangeEvent } from '@mui/material/Select';
 
 const states = [
     { value: 'ariana', label: 'Ariana' },
@@ -44,25 +47,59 @@ const states = [
     { value: 'zaghouan', label: 'Zaghouan' }
   ] as const;
   
-  async function fetchUserData(token: string): Promise<any> {
-    const response = await fetch('http://localhost:3000/userProfile', {
-      method: 'GET',
+
+// Define your GraphQL queries and mutations
+const GET_USER_PROFILE_QUERY = `
+  query {
+    userProfile {
+      id
+      firstName
+      lastName
+      email
+      phone
+      state
+      walletID
+    }
+  }
+`;
+
+const UPDATE_USER_PROFILE_MUTATION = `
+  mutation UpdateUserProfile($input: UserProfileInput!) {
+    updateUserProfile(input: $input) {
+      id
+      firstName
+      lastName
+      email
+      phone
+      state
+      walletID
+    }
+  }
+`;
+
+async function fetchUserData(token: string): Promise<any> {
+  try {
+    const response = await axios.post('http://localhost:3000/graphql', {
+      query: GET_USER_PROFILE_QUERY,
+    }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
-    return response.json();
+    return response.data.data.userProfile;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw new Error('Failed to fetch user data');
   }
+}
+
   
   export function AccountDetailsForm(): React.JSX.Element {
     const [userData, setUserData] = useState<UserData | null>(null);
   
     useEffect(() => {
       // Fetch JWT token from local storage
-      const authToken =  localStorage.getItem('authToken') || '';
+      const authToken =  getUserToken()|| '';
   
       const fetchUser = async () => {
         try {
@@ -77,29 +114,45 @@ const states = [
         fetchUser();
       }
     }, []);
-    async function updateUserProfile(userData: UserData, authToken: string) {
-        const response = await fetch('http://localhost:3000/updateUserProfile', {
-            method: 'PUT', // Assuming you're updating user profile
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${authToken}`,
-            },
-            body: JSON.stringify(userData),
+
+    async function updateUserProfile(userData: UserData, authToken: string): Promise<any> {
+      try {
+        const response = await axios.post('http://localhost:3000/graphql', {
+          query: UPDATE_USER_PROFILE_MUTATION,
+          variables: {
+            input: userData,
+          },
+        }, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         });
-        if (!response.ok) {
-            throw new Error('Failed to update user profile');
-        }
-        return response.json();
-    }
+        return response.data.data.updateUserProfile;
+      } catch (error) {
+        console.error('Error updating user profile:', error);
+        throw new Error('Failed to update user profile');
+      }
+    };
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setUserData((prevUserData) => (prevUserData ? { ...prevUserData, [name]: value } : null));
+    };
+  
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+      const { name, value } = event.target;
+      setUserData((prevUserData) =>
+        prevUserData ? { ...prevUserData, [name as string]: value } : null
+      );
+    };
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const authToken = localStorage.getItem('authToken') || '';
+            const authToken = getUserToken() || '';
             if (!authToken) {
                 throw new Error('Authentication token not found');
             }
             if (userData) {
-                await updateUserProfile(userData, authToken);
+                await updateUserProfile (userData, authToken);
                 // Optionally, you can show a success message or redirect the user
             } else {
                 throw new Error('User data is not available');
@@ -116,60 +169,92 @@ const states = [
       <form
         onSubmit={handleFormSubmit}
       >
-        <Card>
-          <CardHeader title="Profile" />
-          <Divider />
-          <CardContent>
-            <Grid container spacing={3}>
-              <Grid md={6} xs={12}>
-                <FormControl fullWidth required>
-                  <InputLabel>First name</InputLabel>
-                  <OutlinedInput value={userData?.firstName || ''} label="First name" name="firstName"/>
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl fullWidth required>
-                  <InputLabel>Last name</InputLabel>
-                  <OutlinedInput value={userData?.lastName || ''} label="Last name" name="lastName"/>
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl fullWidth required>
-                  <InputLabel>Email address</InputLabel>
-                  <OutlinedInput value={userData?.email || ''} label="Email address" name="email" readOnly />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Phone number</InputLabel>
-                  <OutlinedInput value={userData?.phone || ''} label="Phone number" name="phone" type="tel" />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>State</InputLabel>
-                  <Select label="State" name="state" variant="outlined" value={userData ? userData.state : ''}>
-                    {states.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                        </MenuItem>
-                    ))}
-                    </Select>
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>City</InputLabel>
-                  <OutlinedInput label="City" />
-                </FormControl>
-              </Grid>
+      <Card>
+        <CardHeader title="Profile" />
+        <Divider />
+        <CardContent>
+          <Grid container spacing={3}>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>First name</InputLabel>
+                <OutlinedInput 
+                  value={userData?.firstName || ''} 
+                  label="First name" 
+                  name="firstName" 
+                  onChange={handleInputChange}
+                />
+              </FormControl>
             </Grid>
-          </CardContent>
-          <Divider />
-          <CardActions sx={{ justifyContent: 'flex-end' }}>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Last name</InputLabel>
+                <OutlinedInput 
+                  value={userData?.lastName || ''} 
+                  label="Last name" 
+                  name="lastName" 
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Email address</InputLabel>
+                <OutlinedInput 
+                  value={userData?.email || ''} 
+                  label="Email address" 
+                  name="email" 
+                  readOnly 
+                />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Phone number</InputLabel>
+                <OutlinedInput 
+                  value={userData?.phone || ''} 
+                  label="Phone number" 
+                  name="phone" 
+                  type="tel" 
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>State</InputLabel>
+                <Select 
+                  label="State" 
+                  name="state" 
+                  variant="outlined" 
+                  value={userData?.state || ''} 
+                  onChange={handleSelectChange}
+                >
+                  {states.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>City</InputLabel>
+                <OutlinedInput 
+                  label="City" 
+                  name="city" 
+                  value={userData?.city || ''} 
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </CardContent>
+        <Divider />
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button variant="contained" type="submit">Save details</Button>
-          </CardActions>
-        </Card>
+        </CardActions>
+      </Card>
       </form>
     );
   }
