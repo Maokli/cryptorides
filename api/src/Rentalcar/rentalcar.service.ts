@@ -297,10 +297,9 @@ export class RentalCarService {
     const downPayment = car.downPayment;
     const rentalPrice = car.rentalPrice;
   
-    const differenceInDays = (rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24);
     const rentalPeriod = Math.floor((rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24));
   
-    const response = await fetch('localhost:5000/rental', {
+    const response = await fetch('http://127.0.0.1:5000/rent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -311,10 +310,19 @@ export class RentalCarService {
         rentalPeriod: rentalPeriod,
         downPaymentAmount: downPayment,
         rentAmount: rentalPrice,
+        secret: "66687104b6c27da56e1fbacd5636a9e6",
       }),
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
     });
   
-    if (!response.ok) {
+    if (!response==true) {
       console.error('Error calling payment engine:', response.statusText);
       return false;
     }
