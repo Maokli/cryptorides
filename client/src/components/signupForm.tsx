@@ -3,9 +3,9 @@ import { useMutation, gql } from '@apollo/client';
 import { TextField, Button, Grid, Paper, Box,  } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/images/loginImage.jpg';
 import { TypeAnimation } from 'react-type-animation';
+import { useNavigate } from 'react-router-dom';
 
 
 const SIGN_UP = gql`
@@ -32,9 +32,6 @@ const SignUpForm: React.FC = () => {
   });
   const [signUp, { loading, error }] = useMutation(SIGN_UP);
   const navigate = useNavigate();
-  
-  const navigate = useNavigate();
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
