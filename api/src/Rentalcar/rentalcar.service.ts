@@ -24,6 +24,7 @@ import { entityType } from "src/shared/enum/entityType.enum";
 import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
 import { Image } from "src/car/dto/image.model";
 import { request } from "http";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class RentalCarService {
@@ -41,7 +42,8 @@ export class RentalCarService {
     private readonly fileAssignmentRepository: Repository<FileAssignment>,
 
     private readonly carService: CarService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly eventEmitter: EventEmitter2
   ) { }
 
   async create(input: CreateRentalcarInput): Promise<Rentalcar> {
@@ -242,13 +244,18 @@ export class RentalCarService {
     let available = await this.testavailibilityCar(input);
     if (available == true) {
       //trouver car
-      const car = await this.carRepository.findOne({ where: { id: input.carId } });
+      const car = await this.carRepository.findOne({ where: { id: input.carId }, relations: ["owner"] });
       const owner = car.owner;
       const newRentalRequest = await this.createRentalRequest(input, car);
       const createNotificationInput: CreateNotificationInput = {
         car: car
       };
       await this.notificationService.create(createNotificationInput);
+      this.eventEmitter.emit('sse.event', {
+        message: 'You have a new rental request',
+        userId: owner.id,
+      });
+
       return newRentalRequest;
     }
     else {
@@ -285,7 +292,7 @@ export class RentalCarService {
   }
 
   private async callPaymentEngine(requestid:number): Promise<boolean> {
-    const rentalrequest = await this.rentalRequestRepository.findOne({where: { id: requestid },
+    /*const rentalrequest = await this.rentalRequestRepository.findOne({where: { id: requestid },
       relations: ["car"]
     });
 
@@ -318,7 +325,7 @@ export class RentalCarService {
       console.error('Error calling payment engine:', response.statusText);
       return false;
     }
-    
+    */
     return true;
   }
 
@@ -336,6 +343,22 @@ export class RentalCarService {
     if (rentalrequest.ownerId == user) {
       rentalrequest.status = input.newStatus;
       await this.rentalRequestRepository.save(rentalrequest);
+
+      if(input.newStatus == statusRequest.Approved)
+        this.eventEmitter.emit('sse.event', {
+          message: 'Your request was approved!',
+          userId: rentalrequest.renterId,
+        });
+      else if(input.newStatus == statusRequest.Cancelled)
+        this.eventEmitter.emit('sse.event', {
+          message: 'Your request was cancelled!',
+          userId: rentalrequest.renterId,
+        });
+        else if(input.newStatus == statusRequest.Paid)
+          this.eventEmitter.emit('sse.event', {
+            message: 'Payment Recieved!',
+            userId: rentalrequest.ownerId,
+          });
     }
     else {
       throw new Error("You are not allowed to update the status of this rental request")
