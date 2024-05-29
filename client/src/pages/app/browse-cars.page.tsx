@@ -5,6 +5,7 @@ import CarFiltersComponent from '../../components/car-filters.component';
 import { Grid } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
+import browse from '../../assets/images/browse.png';
 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -22,7 +23,6 @@ const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   return debouncedFilters;
 };
 
-
 function BrowseCarsPage() {
   const initialFilters: CarFilters = {
     availabilityFrom: null,
@@ -35,12 +35,11 @@ function BrowseCarsPage() {
     location: null,
     color: null,
     brand: null
-  }
-  const [filters, setFilters] = useState(initialFilters);
-  const [cars, setCars] = useState([])
+  };
 
-  // improves UX and perf as we don't fetch on each filter change
-  // source: https://www.dhiwise.com/post/ultimate-guide-to-implementing-react-debounce-effectively
+  const [filters, setFilters] = useState(initialFilters);
+  const [cars, setCars] = useState([]);
+
   const debouncedFilters = useDebouncedFilters(filters, 500);
 
   const getCarsWithFilters = async () => {
@@ -71,35 +70,34 @@ function BrowseCarsPage() {
       );
 
       setCars(response.data.data.filteredCars);
+    } catch {
+      console.log("error");
     }
-    catch {
-      console.log("error")
-    }
-  }
+  };
 
   useEffect(() => {
     getCarsWithFilters();
   }, [debouncedFilters]);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={2.5}>
-        <CarFiltersComponent filters={filters} setFilters={setFilters} />
+    <div>
+      <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <img src={browse} alt="Browse Cars" style={{ maxWidth: '100%', height: 'auto' }} />
       </Grid>
-      <Grid item xs={8}>
-        <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-          >
+      <Grid container spacing={2}>
+        <Grid item xs={2.5}>
+          <CarFiltersComponent filters={filters} setFilters={setFilters} />
+        </Grid>
+        <Grid item xs={8}>
+          <Grid container justifyContent="center" alignItems="center">
             <Grid item width={"70%"}>
               <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
             </Grid>
+          </Grid>
+          <CarGrid cars={cars}></CarGrid>
         </Grid>
-        <CarGrid cars={cars}></CarGrid>
       </Grid>
-    </Grid>
-
+    </div>
   );
 }
 
