@@ -53,16 +53,13 @@ export class FileAssignmentService {
   }
 
   async deleteByUrl(urls: string[]): Promise<boolean> {
-    console.log('urls:', urls);
-  
+      
     if (urls === null || urls === undefined) {
       console.error("Error deleting file assignments: urls is null or undefined");
       return false;
     }
   
-    try {
-      
-      
+    try {      
       await this.fileAssignmentRepository.delete({ fileUrl: In(urls) });
       return true;
     } catch (error) {

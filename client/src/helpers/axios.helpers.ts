@@ -2,16 +2,22 @@ import axios, { AxiosInstance } from 'axios';
 import { isAuthenticated, getUserToken } from './auth.helpers';
 import { toast } from 'react-toastify';
 
+let isToastShown = false;
+
 const notifySuccess = () => {
-  toast.success("Successfully fetched", {
-    position: "bottom-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  });
+  if (!isToastShown) {
+    isToastShown = true;
+    toast.success("Successfully fetched", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      onClose: () => (isToastShown = false), 
+    });
+  }
 };
 
 const notifyError = (message: string) => {
