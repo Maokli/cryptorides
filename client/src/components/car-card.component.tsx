@@ -19,6 +19,7 @@ export default function CarCard(props: {car: Car}) {
     <Card sx={{ width: 400, paddingY: 2, boxShadow: 2 }}>
       <CardHeader
         title={props.car.title}
+        titleTypographyProps={{ fontFamily: 'Montserrat, sans-serif', fontWeight: '600' }}
       />
       <CardMedia>
       <Carousel images={props.car.images}></Carousel>
@@ -60,13 +61,13 @@ export default function CarCard(props: {car: Car}) {
       <CardActions disableSpacing>
         <Stack direction="row" width="100%" paddingX={2} alignItems="center" justifyContent="space-between">
           <Stack direction="column" alignItems="start">
-            <Typography color="text.primary" variant='h5' fontWeight="900" gutterBottom>
-              {props.car.rentalPrice} TND/
-              <Typography component="span" color="text.secondary" variant='h6' gutterBottom>day</Typography>
+          <Typography color="text.primary" variant='h5' sx={{ fontFamily: 'Montserrat, sans-serif' }} gutterBottom>
+                <span style={{ fontWeight: 'bold' }}>{props.car.rentalPrice}</span> TND
+                <Typography component="span" color="text.secondary" variant='h6' sx={{ fontFamily: 'Montserrat, sans-serif' }} gutterBottom> /day</Typography>
             </Typography>
-            <Typography color="text.primary" variant='subtitle1' fontWeight="900" gutterBottom>
-              {props.car.downPayment} TND 
-              <Typography component="span" color="text.secondary" variant='subtitle1' gutterBottom> deposit</Typography>
+            <Typography color="text.primary" variant='subtitle1' sx={{ fontFamily: 'Montserrat, sans-serif' }} gutterBottom>
+                <span style={{ fontWeight: 'bold' }}>{props.car.downPayment}</span> TND 
+                <Typography component="span" color="text.secondary" variant='subtitle1' sx={{ fontFamily: 'Montserrat, sans-serif' }} gutterBottom> deposit</Typography>
             </Typography>
           </Stack>
           <Button variant='contained' 
