@@ -22,6 +22,10 @@ export class CreateUserInput {
   password: string;
 
   @Field()
+  @IsString()
+  WalletID: string;
+
+  @Field()
   @IsPhoneNumber()
   phoneNumber: string;
 }

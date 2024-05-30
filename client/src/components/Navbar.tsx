@@ -21,6 +21,7 @@ const Navbar: React.FC = () => {
             <>
               <NavLink to="/publishedrequest" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Requests</NavLink>
               <NavLink to="/publishedcars" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Cars</NavLink>
+              <NavLink to="/profile" style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Your Profile</NavLink>
               <button onClick={() =>{handleLogout(); navigate(`/`);}} style={{ color: '#FFFFFF', fontFamily: 'Montserrat, sans-serif', cursor: 'pointer', marginLeft: 20 }}>Logout</button></>
 
        

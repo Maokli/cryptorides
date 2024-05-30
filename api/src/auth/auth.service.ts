@@ -60,6 +60,7 @@ export class AuthService {
       name: SignUpUserInput.name,
       FamilyName: SignUpUserInput.familyName,
       phoneNumber: SignUpUserInput.phoneNumber,
+      WalletID:null
     });
   }
 }

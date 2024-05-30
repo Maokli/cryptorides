@@ -36,6 +36,10 @@ export class User {
   @OneToMany(() => Notification, (notification) => notification.owner)
   notifByUser: Notification[];
 
+  @Field({ nullable: true })
+  @Column({ length: 50, nullable: true })
+  WalletID: string;
+
   /**
    * A random string of a constant length.
    * Before hashing the password we concat it with this salt and hash the result.

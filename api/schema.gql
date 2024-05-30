@@ -136,6 +136,7 @@ type Mutation {
   updateCar(updateCarInput: UpdateCarInput!): Car!
   updateNotification(updateNotificationInput: UpdateNotificationInput!): String!
   updateStatusRentalRequest(input: UpdateRentalRequestInput!, requestid: Float!): String!
+  updateUserProfile(Input: UpdateUserInput!, id: Float!): User!
 }
 
 type Notification {
@@ -161,7 +162,7 @@ type Query {
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
-  user(email: String!): User!
+  user(id: String!): User!
   userCars: [CarWithImages!]!
   users: [User!]!
   validateRentalrequest(request: rentalRequestInput!): rentalRequest!
@@ -213,8 +214,20 @@ input UpdateRentalRequestInput {
   newStatus: StatusRequest!
 }
 
+input UpdateUserInput {
+  FamilyName: String
+  WalletID: String
+  email: String
+  familyName: String
+  id: Int!
+  name: String
+  password: String
+  phoneNumber: String
+}
+
 type User {
   FamilyName: String
+  WalletID: String
   carsCreatedByUser: [Car!]
   email: String
   id: ID!

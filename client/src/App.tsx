@@ -22,7 +22,8 @@ import AddCarForm from './pages/forms/addCar.form';
 import './index.css'; 
 import { Link } from 'react-scroll';
 import BrowseUserCars from './pages/app/userCarsPage';
-
+import ProfilePage from "./pages/account/userProfilePage";
+ 
 const theme = createTheme({
   palette: {
     primary: {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/addCar" element={<AddCarForm/>}></Route>
           <Route path="/conditions" element={<CarRentalConditions/>}></Route>
           <Route path="/agreement" element={<AgreementPage/>}></Route>
+          <Route path="/profile" element={<ProfilePage/>}></Route>
         </Routes>
       </ApolloProvider>
       {isLoggedIn && <MainAppWrapper />}

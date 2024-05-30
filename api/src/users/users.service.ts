@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
 import { CreateUserInput } from "./dto/create-user.input";
+import { UpdateUserInput } from "./dto/update-user.input";
 import { User } from "src/shared/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -21,6 +22,7 @@ export class UsersService {
       email,
       phoneNumber,
       passwordHash: password,
+      WalletID:null
     });
 
     return await this.userRepository.save(newUser);
@@ -53,18 +55,34 @@ export class UsersService {
       return null;
     }
   }
- 
+  async getUserById(id: string): Promise< User| null>  {
+    const userId = Number(id);  // Convert the string ID to a number
+  if (isNaN(userId)) {
+    return null;  // Return null if the conversion failed
+  }
+  try{
+    return this.userRepository.findOne({ where: { id: userId } });
+  }
+  catch (error) {
+    console.error(error);
+    return null;
+  }
+  }
 
-  /*** /
+  
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User> {
-    const user = await this.userRepository.findOne(id);
+    const userId = Number(id);  // Convert the string ID to a number
+  if (isNaN(userId)) {
+    return null;  // Return null if the conversion failed
+  }
+    const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new Error(`User with ID ${id} not found`);
     }
     const updatedUser = Object.assign(user, updateUserInput);
     return await this.userRepository.save(updatedUser);
   }
-
+  /*** /
   async remove(id: number): Promise<void> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
