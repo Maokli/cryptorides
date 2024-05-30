@@ -23,7 +23,13 @@ import { handleLogout as performLogout } from '../helpers/auth.helpers';
 import { CarFilters } from '../models/car-filters.model';
 import CarFiltersComponent from '../components/car-filters.component';
 
-const WhiteNavbar: React.FC<{ filters: CarFilters, setFilters: React.Dispatch<React.SetStateAction<CarFilters>> }> = (props) => {
+interface WhiteNavbarProps {
+  filters: CarFilters;
+  setFilters: React.Dispatch<React.SetStateAction<CarFilters>>;
+  onApplyFilters: (filters: CarFilters) => void;
+}
+
+const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -57,8 +63,11 @@ const WhiteNavbar: React.FC<{ filters: CarFilters, setFilters: React.Dispatch<Re
   };
 
   const handleDialogClose = () => {
-    setDialogOpen(false);
+    setDialogOpen(false); // Close the dialog
+    props.onApplyFilters(props.filters); // Apply the selected filters
   };
+
+  // Other code remains the same...
 
   const iconButtonStyle = {
     backgroundColor: 'white',

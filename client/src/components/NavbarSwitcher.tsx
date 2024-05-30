@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
-import WhiteNavbar from './WhiteNavbar';
 import { isAuthenticated } from '../helpers/auth.helpers';
+import WhiteNavbar from './WhiteNavbar';
+import Navbar from './Navbar';
 import { CarFilters } from '../models/car-filters.model';
 
 const NavbarSwitcher: React.FC = () => {
@@ -20,7 +20,11 @@ const NavbarSwitcher: React.FC = () => {
 
   const [filters, setFilters] = useState<CarFilters>(initialFilters);
 
-  return isAuthenticated() ? <WhiteNavbar filters={filters} setFilters={setFilters} /> : <Navbar />;
+  return isAuthenticated() ? (
+    <WhiteNavbar filters={filters} setFilters={setFilters} onApplyFilters={() => {}} />
+  ) : (
+    <Navbar />
+  );
 };
 
 export default NavbarSwitcher;

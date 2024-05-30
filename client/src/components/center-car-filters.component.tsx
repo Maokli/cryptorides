@@ -8,11 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Label } from '@mui/icons-material';
 
 export default function CenterCarFiltersComponent(props: {filters: CarFilters, setFilters: React.Dispatch<React.SetStateAction<CarFilters>>}) {
-  const onSearchInput = (e: React.FormEvent<HTMLDivElement>) => {
-    const newFilters = {...props.filters}
-    newFilters.search = (e.target as HTMLInputElement).value;
-    props.setFilters(newFilters);
-  }
+  
 
   const handleDateRangeChange = (newValue: DateRange<Dayjs>) => {
     const newFilters = {...props.filters};
@@ -23,18 +19,7 @@ export default function CenterCarFiltersComponent(props: {filters: CarFilters, s
 
   return (
     <Card sx={{ borderRadius: 4, boxShadow: 1, marginY: 2 }}>
-      <Stack direction={"column"} padding={2} display={"flex"} alignItems={"center"}>
-          <TextField
-            id="search-bar"
-            className="text"
-            onInput={onSearchInput}
-            label="Custom Search"
-            variant="outlined"
-            placeholder="Search..."
-            size="medium"
-            fullWidth
-          >
-          </TextField>
+      
 
         <Stack direction={"row"} marginTop={2}>
           <FormControl margin   ="dense">
@@ -46,7 +31,7 @@ export default function CenterCarFiltersComponent(props: {filters: CarFilters, s
                 />
               </LocalizationProvider>
           </FormControl>
-        </Stack>
+        
       </Stack>
     </Card>
   );
