@@ -3,6 +3,8 @@ import { Box, Button, Typography } from '@mui/material';
 import { getUserIdFromToken } from '../services/account.service';
 import PayButton from './pay-rental-button';
 import CarCard from './car-card.component';
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const statusColors = {
     Waiting: 'orange',
@@ -62,12 +64,23 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
             </Box>
             {isOwner ? (
                 <Box mb={2}>
-                    <Button variant="contained" onClick={handleApprove} style={{ marginRight: '8px', backgroundColor: '#00DB1E' }}>
+                    <Button
+                        variant="contained"
+                        onClick={handleApprove}
+                        sx={{ mr: '2%', bgcolor: '#00DB1E' }}
+                        startIcon={<CheckCircleIcon sx={{ mr: '1%' }} />}
+                    >
                         Approve Request
                     </Button>
-                    <Button variant="contained" onClick={handleDeny} style={{ marginRight: '8px', backgroundColor: '#F31C1D' }}>
+                    <Button
+                        variant="contained"
+                        onClick={handleDeny}
+                        sx={{ bgcolor: '#F31C1D' }}
+                        startIcon={<DoDisturbOnIcon sx={{ mr: '1%' }} />}
+                    >
                         Deny Request
                     </Button>
+
                 </Box>
             ) : (
                 <PayButton requestId={rentalRequest.id} onSuccess={() => { }} onError={() => { }} />
