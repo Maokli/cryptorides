@@ -71,7 +71,6 @@ const DateTimePickerValue = () => {
         height: '10px',
         borderRadius: '50%',
         backgroundColor: '#0575ee',
-        boxShadow: '0 0 5px #0575ee, 0 0 25px #0575ee, 0 0 50px #0575ee, 0 0 200px #0575ee',
     };
 
     return (
@@ -122,8 +121,7 @@ const DateTimePickerValue = () => {
                     <Box sx={{
                         backgroundColor: '#0575ee',
                         color: '#212121',
-                        boxShadow: '0 0 5px #0575ee, 0 0 25px #0575ee, 0 0 50px #0575ee, 0 0 200px #0575ee',
-                        borderRadius: '10px%',
+                        borderRadius: '12px',
                         p: 1,
                         display: 'flex',
                         justifyContent: 'center',
