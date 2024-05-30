@@ -28,7 +28,6 @@ const AgreementPage: React.FC = () => {
             todate
             ownerId
             renterId
-            createdAt
             car {
               id,
               location,
@@ -39,6 +38,7 @@ const AgreementPage: React.FC = () => {
               seatsNumber,
               rentalPrice,
               downPayment
+              images {url}
             }
           }
         }

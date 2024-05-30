@@ -330,13 +330,13 @@ export class RentalCarService {
     return true;
   }
 
-  async getRentalRequestsById(requestid): Promise<rentalRequest> {
+  async getRentalRequestsById(requestid): Promise<rentalRequestDto> {
     const rentalrequest = await this.rentalRequestRepository.findOne({
       where: { id: requestid },
       relations: ["car"]
     });
 
-    return rentalrequest;
+    return this.mapRentalRequestToDto(rentalrequest);
   }
 
   async updateRentalRequests(requestid, input: UpdateRentalRequestInput, user): Promise<void> {

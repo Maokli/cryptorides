@@ -64,8 +64,8 @@ export class RentalcarResolver {
   async getAllRentalsRequests(@Args("getRentalRequestInput") getRentalRequest: getRentalRequestInput): Promise<rentalRequestDto[]> {
     return this.rentalcarService.getAll(getRentalRequest);
   }
-  @Query(() => rentalRequest)
-  async getRentalRequests(@Args("requestid") requestid: number): Promise<rentalRequest> {
+  @Query(() => rentalRequestDto)
+  async getRentalRequests(@Args("requestid") requestid: number): Promise<rentalRequestDto> {
     return this.rentalcarService.getRentalRequestsById(requestid);
   }
 
