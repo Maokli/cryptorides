@@ -3,6 +3,7 @@ import { Button, CircularProgress } from '@mui/material';
 import axios from './../helpers/axios.helpers';
 import { getUserToken } from '../helpers/auth.helpers';
 import { notifyPaymentError } from '../helpers/toast.helpers'; 
+import PaidIcon from '@mui/icons-material/Paid';
 
 
 interface PayButtonProps {
@@ -106,8 +107,15 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
       onClick={handleClick}
       variant="contained"
       color="primary"
+      sx={{
+        mb: '2%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '25%'
+      }}
       disabled={isLoading || paymentStatus === "already paid"}
     >
+      <PaidIcon sx={{mr: '2%'}}></PaidIcon>
       {isLoading ? <CircularProgress size={24} /> : paymentStatus === "already paid" ? 'Already Paid' : 'Pay Now'}
     </Button>
   );

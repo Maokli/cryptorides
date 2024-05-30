@@ -1,17 +1,11 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { getUserIdFromToken } from '../services/account.service';
 import PayButton from './pay-rental-button';
 import CarCard from './car-card.component';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
-const statusColors = {
-    Waiting: 'orange',
-    Approved: 'blue',
-    Paid: 'green',
-    Cancelled: 'red'
-};
+import RequestStatusStepper from './request-status-stepper';
 
 interface AgreementRightSideProps {
     rentalRequest: {
@@ -30,8 +24,8 @@ interface AgreementRightSideProps {
             downPayment: number;
             ownerId: number;
             color: string;
-            seatsNumber : number;
-            images : any;
+            seatsNumber: number;
+            images: any;
             title: string;
         };
     };
@@ -53,14 +47,7 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
     return (
         <Box padding={2}>
             <Box display="flex" alignItems="center" mb={2}>
-                <Box
-                    width={15}
-                    height={15}
-                    borderRadius="50%"
-                    bgcolor={statusColors[rentalRequest.status]}
-                    mr={1}
-                />
-                <Typography variant="h6">{rentalRequest.status}</Typography>
+                <RequestStatusStepper currentStatus={rentalRequest.status} />
             </Box>
             {isOwner ? (
                 <Box mb={2}>
