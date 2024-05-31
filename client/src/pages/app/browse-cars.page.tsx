@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { CarFilters } from '../../models/car-filters.model';
-import WhiteNavbar from '../../components/WhiteNavbar';
 import { Grid , Box } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import browse from '../../assets/images/browse.png';

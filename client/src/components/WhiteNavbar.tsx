@@ -54,6 +54,7 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
   };
 
   const onSearchInput = (e: React.FormEvent<HTMLDivElement>) => {
+    console.log("hello") ; 
     const newFilters = { ...props.filters };
     newFilters.search = (e.target as HTMLInputElement).value;
     props.setFilters(newFilters);
@@ -92,7 +93,7 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
     height: '44px',
     display: 'flex',
     alignItems: 'center',
-    border: 'none', 
+    border: 'none',
     position: 'absolute',
     left: '500px',
     top: '10px',
@@ -115,7 +116,7 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
     flex: 1,
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: 'transparent', 
+        borderColor: 'transparent',
       },
       '&:hover fieldset': {
         borderColor: 'transparent',
@@ -125,7 +126,14 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
       },
     },
   };
-
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearchInput(e as any); // Type casting to any because FormEvent and KeyboardEvent are not directly compatible
+    }
+  };
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
   return (
     <>
       <AppBar position="static" elevation={1} sx={{ backgroundColor: 'white', color: 'black' }}>
@@ -141,12 +149,8 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
               size="small"
               sx={textFieldStyle}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  onSearchInput(e); 
-                }
-              }}
+              onKeyDown={handleKeyDown}
+              onChange={handleSearchInputChange}
               InputProps={{
                 endAdornment: (
                   <IoFilterOutline
