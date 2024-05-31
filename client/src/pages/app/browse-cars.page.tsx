@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { CarFilters } from '../../models/car-filters.model';
 import WhiteNavbar from '../../components/WhiteNavbar';
-import { Grid } from '@mui/material';
+import { Grid , Box } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import browse from '../../assets/images/browse.png';
 import CarFiltersComponent from '../../components/center-car-filters.component';
@@ -73,6 +73,9 @@ const BrowseCarsPage = () => {
       </Grid>
       <Grid container justifyContent="center" alignItems="center">
         <DateTimePickerValue />
+        <Box sx = {{ margin : 'auto' , marginTop: '20px' }}>
+        <CarGrid cars={cars} />
+        </Box>
       </Grid>
     </div>
   );

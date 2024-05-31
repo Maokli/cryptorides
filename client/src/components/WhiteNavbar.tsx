@@ -46,6 +46,7 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
   const handleLogout = () => {
     handleMenuClose();
     performLogout();
+    navigate('/');
   };
 
   const handleCars = () => {
