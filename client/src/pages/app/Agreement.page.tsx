@@ -98,17 +98,17 @@ const AgreementPage: React.FC = () => {
   return (
     <Box display="flex" height="100vh">
       <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={1} width="100%">
           <Sidebar />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item width="100%" xs={7}>
           <Box height="100%" padding={2}>
             {rentalRequest && (
               <Chat recipientId={currentUserId === (rentalRequest as any).ownerId ? (rentalRequest as any).renterId : (rentalRequest as any).ownerId} onLogout={() => { }} />
             )}
           </Box>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={4} width="100%">
           {rentalRequest && (
             <AgreementRightSide rentalRequest={rentalRequest} onStatusUpdate={handleStatusUpdate} />
           )}
