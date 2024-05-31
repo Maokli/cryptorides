@@ -1,4 +1,3 @@
-// src/components/CarCard.js
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Box, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
@@ -19,9 +18,17 @@ const CarDetailsCard = (props: { car: Car }) => {
     }
 
     return (
-        <Card sx={{ display: 'flex', flexDirection: 'column', height: "inherit" }}>
+        <Card 
+            sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                height: "inherit", 
+                margin: '20px', 
+                boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.1)' 
+            }}
+        >
             <RentCarModal open={open} setOpen={setOpen} car={props.car} />
-            <CardContent>
+            <CardContent >
                 <Typography gutterBottom variant="h5" component="div">
                     {props.car.title}
                 </Typography>

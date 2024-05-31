@@ -7,7 +7,7 @@ import axios from '../../helpers/axios.helpers';
 import browse from '../../assets/images/browse.png';
 import DateTimePickerValue from '../../components/DateRangePicker';
 import { useFilters } from '../../components/filterContext';
-
+import Footer from '../../components/footer/footer'; 
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
   console.log(filters);
@@ -81,6 +81,7 @@ const BrowseCarsPage = () => {
         <CarGrid cars={cars} />
         </Box>
       </Grid>
+      <Footer/>
     </div>
   );
 }
