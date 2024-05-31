@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddCarForm from './pages/forms/addCar.form';
 import NavbarSwitcher from './components/NavbarSwitcher';
 import { FiltersProvider } from './components/filterContext'; // Import FiltersProvider
+import Footer from './components/footer/footer';
 import './index.css';
 
 const theme = createTheme({
@@ -68,6 +69,7 @@ function App() {
             <Route path="/agreement" element={<AgreementPage />}></Route>
           </Routes>
           {isLoggedIn && <MainAppWrapper />}
+          {isLoggedIn && <Footer/>}
         </FiltersProvider>
       </ApolloProvider>
     </ThemeProvider>
