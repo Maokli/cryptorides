@@ -5,25 +5,32 @@ import WhiteNavbar from '../../components/WhiteNavbar';
 import { Grid , Box } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import browse from '../../assets/images/browse.png';
-import CarFiltersComponent from '../../components/center-car-filters.component';
 import DateTimePickerValue from '../../components/DateRangePicker';
+import { useFilters } from '../../components/filterContext';
+
+const useDebouncedFilters = (filters: CarFilters, delay: number) => {
+  const [debouncedFilters, setDebouncedFilters] = useState(filters);
+  console.log(filters);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedFilters(filters);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [filters, delay]);
+
+  return debouncedFilters;
+};
 
 const BrowseCarsPage = () => {
-  const initialFilters: CarFilters = {
-    availabilityFrom: null,
-    availabilityTo: null,
-    minPrice: null,
-    maxPrice: null,
-    minDownPayment: null,
-    maxDownPayment: null,
-    search: null,
-    location: null,
-    color: null,
-    brand: null
-  };
+  const { filters, setFilters } = useFilters();
+  const [cars, setCars] = useState([])
 
-  const [filters, setFilters] = useState<CarFilters>(initialFilters);
-  const [cars, setCars] = useState([]);
+  // improves UX and perf as we don't fetch on each filter change
+  // source: https://www.dhiwise.com/post/ultimate-guide-to-implementing-react-debounce-effectively
+  const debouncedFilters = useDebouncedFilters(filters, 500);
 
   const getCarsWithFilters = async () => {
     const query = `
@@ -56,21 +63,18 @@ const BrowseCarsPage = () => {
     } catch {
       console.log("error");
     }
-  };
+
+  }
 
   useEffect(() => {
     getCarsWithFilters();
-  }, [filters]);
-
-  const handleApplyFilters = () => {
-    getCarsWithFilters(); // Update cars when filters applied
-  };
-
+  }, [debouncedFilters]);
+  
   return (
     <div>
-      <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
-        <img src={browse} alt="Browse Cars" style={{ maxWidth: '100%', height: 'auto' }} />
-      </Grid>
+        <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
+          <img src={browse} alt="Browse Cars" style={{ maxWidth: '100%', height: 'auto' }} />
+        </Grid>
       <Grid container justifyContent="center" alignItems="center">
         <DateTimePickerValue />
         <Box sx = {{ margin : 'auto' , marginTop: '20px' }}>

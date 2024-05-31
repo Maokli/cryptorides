@@ -22,14 +22,11 @@ import logo from '../assets/images/WhiteLogo.png';
 import { handleLogout as performLogout } from '../helpers/auth.helpers';
 import { CarFilters } from '../models/car-filters.model';
 import CarFiltersComponent from '../components/car-filters.component';
+import { useFilters } from '../components/filterContext';
 
-interface WhiteNavbarProps {
-  filters: CarFilters;
-  setFilters: React.Dispatch<React.SetStateAction<CarFilters>>;
-  onApplyFilters: (filters: CarFilters) => void;
-}
 
-const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
+export default function WhiteNavbar() {
+  const props = useFilters();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -65,7 +62,6 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
 
   const handleDialogClose = () => {
     setDialogOpen(false); // Close the dialog
-    props.onApplyFilters(props.filters); // Apply the selected filters
   };
 
   // Other code remains the same...
@@ -125,6 +121,18 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
       },
     },
   };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearchInput(e);
+    }
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    const newFilters = { ...props.filters, search: e.target.value };
+    props.setFilters(newFilters);
+    console.log(props) ; 
+  };
 
   return (
     <>
@@ -141,12 +149,8 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
               size="small"
               sx={textFieldStyle}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  onSearchInput(e); 
-                }
-              }}
+              onKeyDown={handleKeyDown}
+              onChange={handleSearchInputChange}
               InputProps={{
                 endAdornment: (
                   <IoFilterOutline
@@ -215,4 +219,3 @@ const WhiteNavbar: React.FC<WhiteNavbarProps> = (props) => {
   );
 };
 
-export default WhiteNavbar;
