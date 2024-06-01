@@ -36,7 +36,44 @@ export const notifyError = () => {
       draggable: true,
       progress: undefined,
     });
-
 }
+
+export const failedToIdentifyCar = () => {
+  toast.error("Failed to identify car.", {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
+export const noImageIsSelected = () => {
+  toast.error("No image is selected.", {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
+export const notifyCarCreationFailure = () => {
+  toast.error("Failed to create car.", {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+}
+
+
 
 
