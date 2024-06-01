@@ -445,7 +445,7 @@ const AddCarForm = () => {
               >
                 <MenuItem value="Gas">Gas</MenuItem>
                 <MenuItem value="Electric">Electric</MenuItem>
-                <MenuItem value="Hybrid">Hybrid</MenuItem>
+                <MenuItem value="Diesel">Diesel</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
