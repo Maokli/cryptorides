@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 import uuid
+import requests
 
 '''
 from gps3 import gps3
@@ -32,8 +33,19 @@ def get_gps_coordinates():
 
 
 def get_coordinates():
-    # Simulated coordinates (e.g., San Francisco coordinates)
-    return 37.7749, -122.4194
+    try:
+        response = requests.get('https://ipinfo.io')
+        response.raise_for_status()  # Will raise an HTTPError if the HTTP request returned an unsuccessful status code
+        data = response.json()
+        loc = data['loc'].split(',')
+        lat, long = float(loc[0]), float(loc[1])
+        city = data.get('city', 'Unknown')
+        state = data.get('region', 'Unknown')
+        return lat, long, city, state
+    except requests.exceptions.RequestException as e:
+        # Print the error and return False
+        print(f"Error: {e}")
+        return False
 
 def send_coordinates():
     # Load environment variables from .env file
@@ -54,11 +66,13 @@ def send_coordinates():
         return
 
     while True:
-        latitude, longitude = get_coordinates()
+        latitude, longitude, city, state = get_coordinates()
         message =json.dumps( {
             'id': uuid.uuid4().int,
             'latitude': latitude,
             'longitude': longitude,
+            'city': city,
+            'state': state,
             'createdAt': datetime.utcnow().isoformat()  # Use UTC time in ISO format
         })
         ws.send(message)

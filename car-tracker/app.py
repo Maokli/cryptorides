@@ -7,7 +7,7 @@ import uuid
 from datetime import datetime
 from dotenv import load_dotenv
 import websocket
-
+import requests
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -32,8 +32,19 @@ def start_tracking():
     return jsonify({'status': 'tracking started for car_id ' + car_id}), 200
 
 def get_coordinates():
-    # Simulated coordinates (e.g., San Francisco coordinates)
-    return 37.7749, -122.4194
+    try:
+        response = requests.get('https://ipinfo.io')
+        response.raise_for_status()  # Will raise an HTTPError if the HTTP request returned an unsuccessful status code
+        data = response.json()
+        loc = data['loc'].split(',')
+        lat, long = float(loc[0]), float(loc[1])
+        city = data.get('city', 'Unknown')
+        state = data.get('region', 'Unknown')
+        return lat, long, city, state
+    except requests.exceptions.RequestException as e:
+        # Print the error and return False
+        print(f"Error: {e}")
+        return False
 
 def send_coordinates(car_id, ws_url):
     ws = websocket.WebSocket()
@@ -46,12 +57,14 @@ def send_coordinates(car_id, ws_url):
         return
 
     while True:
-        latitude, longitude = get_coordinates()
+        latitude, longitude, city, state = get_coordinates()
         message = json.dumps({
-            'car_id': car_id,
+            'id': uuid.uuid4().int,
             'latitude': latitude,
             'longitude': longitude,
-            'timestamp': datetime.utcnow().isoformat()
+            'city': city,
+            'state': state,
+            'createdAt': datetime.utcnow().isoformat() 
         })
         ws.send(message)
         print('Coordinates sent:', message)
