@@ -122,8 +122,8 @@ export const Chat: React.FC<ChatProps> = ({ onLogout, recipientId }) => {
   return (
     <Paper sx={{ width: "80%", margin: "auto", padding: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Typography variant="h6" sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 'bold' }}>Real Time Chat</Typography>
-        {/*<Button variant="contained" onClick={handleLogout}>Logout</Button>*/}
+        <Typography variant="h6">Cryptorides Chat App</Typography>
+        <Button variant="contained" onClick={handleLogout}>Logout</Button>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", height: "60vh", overflowY: "scroll" }}>
         {messages.map((message, idx) => (

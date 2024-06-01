@@ -13,46 +13,66 @@ import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Car } from '../models/car.model';
 import { useNavigate } from 'react-router-dom';
 
-export default function OwnerCarCard(props: {car: Car}) {
+export default function OwnerCarCard(props: { car: Car }) {
   const navigate = useNavigate();
   return (
-    <Card sx={{ width: 400, paddingY: 2, boxShadow: 2 }}>
+    <Card sx={{ width: 300, height: 400, borderRadius: 10, paddingY: 1, boxShadow: 2  , marginLeft : 10}}>
       <CardHeader
         title={props.car.title}
+        titleTypographyProps={{ fontFamily: 'Montserrat', fontWeight: '600', fontSize: '0.9rem', textAlign: 'center' }}
       />
-      <CardMedia>
-      <Carousel images={props.car.images}></Carousel>
+      <CardMedia
+        sx={{
+          width: 200,
+          height: 70,
+          margin: 'auto',
+          '& .MuiBox-root.css-1tnsptx': {
+            width: '100%',
+            height: '100%',
+            borderRadius: 10,
+            marginLeft: 'auto'
+          },
+        }}
+      >
+        <Carousel images={props.car.images}></Carousel>
       </CardMedia>
       <CardContent>
-        <Stack width="100%" direction="row" alignItems="center" justifyContent="space-around">
-          <Stack spacing={0.5} direction="row" alignItems="center">
+        <Stack
+          width="100%"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-around"
+          spacing={2}
+          marginTop={12}
+        >
+          <Stack spacing={0.5} direction="row" alignItems="center" sx={{ marginTop: '15px' }}>
             <Icon>
-              <Typography color="text.secondary">
-                <PlaceIcon></PlaceIcon>
+              <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
+                <PlaceIcon fontSize="small" />
               </Typography>
             </Icon>
-            <Typography color="text.secondary">
-                {props.car.location}
+            <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
+              {props.car.location}
             </Typography>
           </Stack>
-          <Stack spacing={0.5} direction="row" alignItems="center" color="secondary">
+          <Stack spacing={0.5} direction="row" alignItems="center" color="secondary" sx={{ marginTop: '8px' }}>
             <Icon>
-              <Typography color="text.secondary">
-                <PeopleIcon></PeopleIcon>
+              <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
+                <PeopleIcon fontSize="small" />
               </Typography>
             </Icon>
-            <Typography color="text.secondary">
-                {props.car.seatsNumber} People
+            <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
+              {props.car.seatsNumber} People
             </Typography>
           </Stack>
-          <Stack spacing={0.5} direction="row" alignItems="center" color="secondary">
+          <Stack spacing={0.5} direction="row" alignItems="center" color="secondary" sx={{ marginTop: '8px' }}>
             <Icon>
-              <Typography color="text.secondary">
-                <LocalGasStationIcon></LocalGasStationIcon>
+              <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
+                <LocalGasStationIcon fontSize="small" />
               </Typography>
             </Icon>
-            <Typography color="text.secondary">
-                {props.car.fuelType}
+            <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
+              {props.car.fuelType}
             </Typography>
           </Stack>
         </Stack>
@@ -60,18 +80,18 @@ export default function OwnerCarCard(props: {car: Car}) {
       <CardActions disableSpacing>
         <Stack direction="row" width="100%" paddingX={2} alignItems="center" justifyContent="space-between">
           <Stack direction="column" alignItems="start">
-            <Typography color="text.primary" variant='h5' fontWeight="900" gutterBottom>
-              {props.car.rentalPrice} TND/
-              <Typography component="span" color="text.secondary" variant='h6' gutterBottom>day</Typography>
+            <Typography color="text.primary" variant='h6' sx={{ fontFamily: 'Montserrat', fontSize: '0.9rem' }} gutterBottom>
+              <span style={{ fontWeight: 'bold' }}>{props.car.rentalPrice}</span> TND
+              <Typography component="span" color="text.secondary" variant='body2' sx={{ fontFamily: 'Montserrat' }} gutterBottom> /day</Typography>
             </Typography>
-            <Typography color="text.primary" variant='subtitle1' fontWeight="900" gutterBottom>
-              {props.car.downPayment} TND 
-              <Typography component="span" color="text.secondary" variant='subtitle1' gutterBottom> deposit</Typography>
+            <Typography color="text.primary" variant='subtitle1' sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem', color: 'grey' }} gutterBottom>
+              <span style={{ fontWeight: 'bold' }}>{props.car.downPayment}</span> TND
+              <Typography component="span" color="text.secondary" variant='body2' sx={{ fontFamily: 'Montserrat' }} gutterBottom> deposit</Typography>
             </Typography>
           </Stack>
-          <Button variant='contained' 
+          <Button variant='contained' sx={{ width: '60px', height: '30px' }}
             onClick={() => navigate(`/update/${props.car.id}`)}>
-              Edit
+            Edit
           </Button>
         </Stack>
       </CardActions>
