@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, Tooltip } from '@mui/material';
 import axios from './../helpers/axios.helpers';
 import { getUserToken } from '../helpers/auth.helpers';
 import { notifyPaymentError } from '../helpers/toast.helpers'; 
@@ -8,11 +8,12 @@ import PaidIcon from '@mui/icons-material/Paid';
 
 interface PayButtonProps {
   requestId: number;
+  isDisabled: boolean;
   onSuccess: (data: any) => void;
   onError: (error: any) => void;
 }
 
-const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) => {
+const PayButton: React.FC<PayButtonProps> = (props: PayButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
 
@@ -28,7 +29,7 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
             }
           }
         `;
-        const checkStatusVariables = { requestId: parseFloat(requestId.toString()) };
+        const checkStatusVariables = { requestId: parseFloat(props.requestId.toString()) };
 
         const checkStatusResponse = await axios.instance.post(
           "http://localhost:3001/graphql",
@@ -61,7 +62,7 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
     };
 
     checkPaymentStatus();
-  }, [requestId]);
+  }, [props.requestId]);
 
   const handleClick = async () => {
     setIsLoading(true);
@@ -73,7 +74,7 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
           payProcess(request: $requestId)
         }
       `;
-      const payProcessVariables = { requestId: parseFloat(requestId.toString()) };
+      const payProcessVariables = { requestId: parseFloat(props.requestId.toString()) };
 
       const payResponse = await axios.instance.post(
         "http://localhost:3001/graphql",
@@ -93,31 +94,35 @@ const PayButton: React.FC<PayButtonProps> = ({ requestId, onSuccess, onError }) 
         throw new Error(payResponse.data.errors[0].message);
       }
 
-      onSuccess(payResponse.data.data.payProcess);
+      props.onSuccess(payResponse.data.data.payProcess);
     } catch (error) {
       console.error("Payment error:", error);
-      onError(error);
+      props.onError(error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Button
-      onClick={handleClick}
-      variant="contained"
-      color="primary"
-      sx={{
-        mb: '2%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '25%'
-      }}
-      disabled={isLoading || paymentStatus === "already paid"}
-    >
-      <PaidIcon sx={{mr: '2%'}}></PaidIcon>
-      {isLoading ? <CircularProgress size={24} /> : paymentStatus === "already paid" ? 'Already Paid' : 'Pay Now'}
-    </Button>
+    <Tooltip sx={{display: props.isDisabled ? "inline-block" : "none"}} title="You can only pay an approved request">
+      <span>
+        <Button
+          onClick={handleClick}
+          variant="contained"
+          color="primary"
+          disabled={props.isDisabled}
+          sx={{
+            mb: '2%',
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
+          <PaidIcon sx={{mr: '2%'}}></PaidIcon>
+          {isLoading ? <CircularProgress size={24} /> : paymentStatus === "already paid" ? 'Already Paid' : 'Pay Now'}
+        </Button>
+      </span>
+    </Tooltip>
+    
   );
 };
 

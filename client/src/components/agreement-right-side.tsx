@@ -53,6 +53,7 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
                 <Box mb={2}>
                     <Button
                         variant="contained"
+                        disabled={rentalRequest.status !== 'Waiting'}
                         onClick={handleApprove}
                         sx={{ mr: '2%', bgcolor: '#00DB1E' }}
                         startIcon={<CheckCircleIcon sx={{ mr: '1%' }} />}
@@ -60,6 +61,7 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
                         Approve Request
                     </Button>
                     <Button
+                        disabled={rentalRequest.status !== 'Waiting'}
                         variant="contained"
                         onClick={handleDeny}
                         sx={{ bgcolor: '#F31C1D' }}
@@ -70,7 +72,7 @@ const AgreementRightSide: React.FC<AgreementRightSideProps> = ({ rentalRequest, 
 
                 </Box>
             ) : (
-                <PayButton requestId={rentalRequest.id} onSuccess={() => { }} onError={() => { }} />
+                <PayButton requestId={rentalRequest.id} isDisabled={rentalRequest.status !== 'Approved'} onSuccess={() => { }} onError={() => { }} />
             )}
             <CarCard car={rentalRequest.car}></CarCard>
         </Box>
