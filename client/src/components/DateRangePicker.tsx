@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography, MenuItem, Select } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,8 +11,6 @@ const DateTimePickerValue = () => {
     const [pickupTime, setPickupTime] = React.useState<Dayjs | null>(dayjs());
     const [dropoffDate, setDropoffDate] = React.useState<Dayjs | null>(dayjs().add(1, 'day'));
     const [dropoffTime, setDropoffTime] = React.useState<Dayjs | null>(dayjs().add(1, 'day'));
-    const [pickupLocation, setPickupLocation] = React.useState('');
-    const [dropoffLocation, setDropoffLocation] = React.useState('');
 
     const handlePickupDateChange = (date: Dayjs | null) => {
         setPickupDate(date);
@@ -37,22 +35,6 @@ const DateTimePickerValue = () => {
         boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)',
         width: '600px',
         maxWidth: '100%',
-    };
-
-    const commonSelectStyles = {
-        minWidth: 120,
-        borderColor: 'transparent',
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: 'transparent',
-            },
-            '&:hover fieldset': {
-                borderColor: 'transparent',
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: 'transparent',
-            },
-        },
     };
 
     const dividerStyles = {
@@ -85,29 +67,23 @@ const DateTimePickerValue = () => {
                                 Pick - Up
                             </Typography>
                             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                                {/* Removed label for location */}
-                                <Select
-                                    value={pickupLocation}
-                                    onChange={(e) => setPickupLocation(e.target.value)}
-                                    displayEmpty
-                                    sx={{ ...commonSelectStyles, width: '120px' }} // Adjusted width
-                                >
-                                    <MenuItem value="" disabled>Select your city</MenuItem>
-                                    <MenuItem value="City1">City1</MenuItem>
-                                    <MenuItem value="City2">City2</MenuItem>
-                                </Select>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Typography sx={{ fontFamily: 'Montserrat', color: 'black', fontWeight: 'bold' }}>Date</Typography>
+                                    {/* Increased size of date input */}
+                                    <DatePicker
+                                        value={pickupDate}
+                                        onChange={handlePickupDateChange}
+                                    />
+                                </Box>
                                 <Box sx={dividerStyles} />
-                                {/* Increased size of date input */}
-                                <DatePicker
-                                    value={pickupDate}
-                                    onChange={handlePickupDateChange}
-                                />
-                                <Box sx={dividerStyles} />
-                                {/* Increased size of time input */}
-                                <TimePicker
-                                    value={pickupTime}
-                                    onChange={handlePickupTimeChange}
-                                />
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Typography sx={{ fontFamily: 'Montserrat', color: 'black', fontWeight: 'bold' }}>Time</Typography>
+                                    {/* Increased size of time input */}
+                                    <TimePicker
+                                        value={pickupTime}
+                                        onChange={handlePickupTimeChange}
+                                    />
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
@@ -135,35 +111,29 @@ const DateTimePickerValue = () => {
                                 Drop - Off
                             </Typography>
                             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                                {/* Removed label for location */}
-                                <Select
-                                    value={dropoffLocation}
-                                    onChange={(e) => setDropoffLocation(e.target.value)}
-                                    displayEmpty
-                                    sx={{ ...commonSelectStyles, width: '120px' }} // Adjusted width
-                                >
-                                    <MenuItem value="" disabled>Select your city</MenuItem>
-                                    <MenuItem value="City1">City1</MenuItem>
-                                    <MenuItem value="City2">City2</MenuItem>
-                                </Select>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Typography sx={{ fontFamily: 'Montserrat', color: 'black', fontWeight: 'bold' , textAlign :'center' }}>Date</Typography>
+                                    {/* Increased size of date input */}
+                                    <DatePicker
+                                        value={dropoffDate}
+                                        onChange={handleDropoffDateChange}
+                                    />
+                                </Box>
                                 <Box sx={dividerStyles} />
-                                {/* Increased size of date input */}
-                                <DatePicker
-                                    value={dropoffDate}
-                                    onChange={handleDropoffDateChange}
-                                />
-                                <Box sx={dividerStyles} />
-                                {/* Increased size of time input */}
-                                <TimePicker
-                                    value={dropoffTime}
-                                    onChange={handleDropoffTimeChange}
-                                />
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Typography sx={{ fontFamily: 'Montserrat', color: 'black', fontWeight: 'bold' }}>Time</Typography>
+                                    {/* Increased size of time input */}
+                                    <TimePicker
+                                        value={dropoffTime}
+                                        onChange={handleDropoffTimeChange}
+                                    />
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
                 </Box>
-            </LocalizationProvider >
-        </Box >
+            </LocalizationProvider>
+        </Box>
     );
 };
 
