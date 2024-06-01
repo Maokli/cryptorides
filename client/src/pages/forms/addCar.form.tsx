@@ -20,6 +20,8 @@ import {
   notifyCarCreationFailure,
 } from "../../helpers/toast.helpers";
 
+const prediction_key = process.env.REACT_APP_PREDICTION_KEY;
+
 interface CarData {
   picture1: File | null;
   picture2: File | null;
@@ -144,7 +146,7 @@ const AddCarForm = () => {
         image,
         {
           headers: {
-            "Prediction-Key": "294e1c1b06b44292a168cca286b2435e",
+            "Prediction-Key": prediction_key,
             "Content-Type": "application/octet-stream",
           },
         }

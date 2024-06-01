@@ -24,7 +24,9 @@
     "@types/react-dom": "^18.2.23",
     "@types/react-toastr": "^3.0.10",
     "axios": "^1.6.8",
+    "crypto-browserify": "^3.12.0",
     "dayjs": "^1.11.10",
+    "dotenv": "^16.4.5",
     "graphql": "^16.8.1",
     "jwt-decode": "^4.0.0",
     "mdb-react-ui-kit": "^8.0.0",
@@ -80,5 +82,8 @@
     "@types/socket.io-client": "^3.0.0",
     "@types/toastr": "^2.1.43",
     "google-fonts-webpack-plugin": "^0.4.4"
+  },
+  "browser": {
+      "crypto": false
   }
 }
