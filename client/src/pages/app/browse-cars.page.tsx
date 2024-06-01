@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { CarFilters } from '../../models/car-filters.model';
-import CarFiltersComponent from '../../components/car-filters.component';
-import { Grid } from '@mui/material';
+import { Grid , Box } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
+import browse from '../../assets/images/browse.png';
+import { useFilters } from '../../components/filterContext';
+import CarFiltersComponent from '../../components/car-filters.component';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
-
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
-
+  console.log(filters);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedFilters(filters);
@@ -22,21 +23,8 @@ const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   return debouncedFilters;
 };
 
-
-function BrowseCarsPage() {
-  const initialFilters: CarFilters = {
-    availabilityFrom: null,
-    availabilityTo: null,
-    minPrice: null,
-    maxPrice: null,
-    minDownPayment: null,
-    maxDownPayment: null,
-    search: null,
-    location: null,
-    color: null,
-    brand: null
-  }
-  const [filters, setFilters] = useState(initialFilters);
+const BrowseCarsPage = () => {
+  const { filters, setFilters } = useFilters();
   const [cars, setCars] = useState([])
 
   // improves UX and perf as we don't fetch on each filter change
@@ -71,35 +59,43 @@ function BrowseCarsPage() {
       );
 
       setCars(response.data.data.filteredCars);
+    } catch {
+      console.log("error");
     }
-    catch {
-      console.log("error")
-    }
+
   }
 
   useEffect(() => {
     getCarsWithFilters();
   }, [debouncedFilters]);
-
+  
   return (
     <Grid container spacing={2}>
-      <Grid item xs={2.5}>
+      <Grid item xs={2} sx={{backgroundColor: "white",  boxShadow: 2}}>
         <CarFiltersComponent filters={filters} setFilters={setFilters} />
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={8} md={9}>
         <Grid
             container
             justifyContent="center"
             alignItems="center"
-          >
-            <Grid item width={"70%"}>
+        >
+            <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
+              <img src={browse} alt="Browse Cars" style={{ maxWidth: '100%', height: 'auto' }} />
+            </Grid>
+            <Grid item margin={2}>
               <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
             </Grid>
         </Grid>
-        <CarGrid cars={cars}></CarGrid>
+        <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+        >
+          <CarGrid cars={cars}></CarGrid>
+        </Grid>
       </Grid>
     </Grid>
-
   );
 }
 

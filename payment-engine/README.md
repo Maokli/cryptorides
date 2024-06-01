@@ -34,4 +34,4 @@ start the server
 
 send a request and there you go you deployed your own contract !!! 
 
-PS : create a .env file in the payment folder its necessary and get the API key from https://currencyapi.net/ and put it in the .env file as API_KEY=your_api_key (it must be in the same folder as the api.py file)
+PS : create a .env file in the payment folder its necessary and get the API key from https://currencyapi.com/ and put it in the .env file as API_KEY=your_api_key (it must be in the same folder as the api.py file)
