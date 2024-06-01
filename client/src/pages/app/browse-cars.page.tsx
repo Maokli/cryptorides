@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import CarGrid from '../../components/car-grid.component';
 import { CarFilters } from '../../models/car-filters.model';
-import WhiteNavbar from '../../components/WhiteNavbar';
 import { Grid , Box } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import browse from '../../assets/images/browse.png';
 import DateTimePickerValue from '../../components/DateRangePicker';
 import { useFilters } from '../../components/filterContext';
+import CarFiltersComponent from '../../components/car-filters.component';
+import CenterCarFiltersComponent from '../../components/center-car-filters.component';
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
   console.log(filters);
@@ -70,18 +71,32 @@ const BrowseCarsPage = () => {
   }, [debouncedFilters]);
   
   return (
-    <div>
-        <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
-          <img src={browse} alt="Browse Cars" style={{ maxWidth: '100%', height: 'auto' }} />
-        </Grid>
-      <Grid container justifyContent="center" alignItems="center">
-        <DateTimePickerValue />
-        <Box sx = {{ margin : 'auto' , marginTop: '20px' }}>
-        <CarGrid cars={cars} />
-        </Box>
+    <Grid container spacing={2}>
+      <Grid item xs={2} sx={{backgroundColor: "white",  boxShadow: 2}}>
+        <CarFiltersComponent filters={filters} setFilters={setFilters} />
       </Grid>
-     
-    </div>
+      <Grid item xs={8} md={9}>
+        <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+        >
+            <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
+              <img src={browse} alt="Browse Cars" style={{ maxWidth: '100%', height: 'auto' }} />
+            </Grid>
+            <Grid item margin={2}>
+              <CenterCarFiltersComponent filters={filters} setFilters={setFilters} />
+            </Grid>
+        </Grid>
+        <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+        >
+          <CarGrid cars={cars}></CarGrid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

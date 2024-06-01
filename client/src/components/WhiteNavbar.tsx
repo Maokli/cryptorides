@@ -13,7 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { CiSearch } from 'react-icons/ci';
 import { IoFilterOutline, IoCarSport } from 'react-icons/io5';
 import { IoIosNotifications } from 'react-icons/io';
@@ -31,6 +31,7 @@ export default function WhiteNavbar() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const location = useLocation();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -136,31 +137,25 @@ export default function WhiteNavbar() {
 
   return (
     <>
-      <AppBar position="static" elevation={1} sx={{ backgroundColor: 'white', color: 'black' }}>
+      <AppBar position="sticky" elevation={1} sx={{ backgroundColor: 'white', color: 'black', zIndex: 999 }}>
         <Toolbar>
           <Box display="flex" alignItems="center">
             <img src={logo} alt="CryptoRides Logo" style={{ height: 60 }} />
           </Box>
-          <Box display="flex" alignItems="center" marginLeft="auto" marginRight="auto" sx={searchBarStyle}>
-            <CiSearch style={searchIconStyle} />
-            <TextField
-              placeholder="Search Something here..."
-              variant="outlined"
-              size="small"
-              sx={textFieldStyle}
-              value={searchTerm}
-              onKeyDown={handleKeyDown}
-              onChange={handleSearchInputChange}
-              InputProps={{
-                endAdornment: (
-                  <IoFilterOutline
-                    style={filterIconStyle}
-                    onClick={handleFilterClick}
-                  />
-                ),
-              }}
-            />
-          </Box>
+          { location.pathname.includes("browse") &&
+            <Box display="flex" alignItems="center" marginLeft="auto" marginRight="auto" sx={searchBarStyle}>
+              <CiSearch style={searchIconStyle} />
+              <TextField
+                placeholder="Search Something here..."
+                variant="outlined"
+                size="small"
+                sx={textFieldStyle}
+                value={searchTerm}
+                onKeyDown={handleKeyDown}
+                onChange={handleSearchInputChange}
+              />
+            </Box>
+          }
           <Box display="flex" alignItems="center" marginLeft="auto">
             <IconButton sx={iconButtonStyle} color="inherit" onClick={handleCars}>
               <IoCarSport />
@@ -205,16 +200,6 @@ export default function WhiteNavbar() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="md" fullWidth>
-        <DialogTitle>Filter Cars</DialogTitle>
-        <DialogContent>
-          <CarFiltersComponent filters={props.filters} setFilters={props.setFilters} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">Close</Button>
-          <Button onClick={handleDialogClose} color="primary">Apply</Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

@@ -19,24 +19,13 @@ export default function CarCard(props: {car: Car}) {
   const [isLiked, setLiked] = useState(false); // State for the heart icon
 
   return (
-    <Card sx={{ width: 280, height: 340, borderRadius: 10, paddingY: 1, boxShadow: 2 }}>
+    <Card sx={{ width: 300, borderRadius: 10, paddingY: 1, boxShadow: 2 }}>
       <CardHeader 
         title={props.car.brand.toUpperCase() }
         titleTypographyProps={{ fontFamily: 'Montserrat', fontWeight: '600', fontSize: '0.9rem', textAlign: 'center' }}
 
       />
       <CardMedia
-        sx={{
-          width: 200,
-          height: 70,
-          margin: 'auto',
-          '& .MuiBox-root.css-1tnsptx': {
-            width: '100%',
-            height: '100%',
-            borderRadius: 10,
-            marginLeft : 'auto'
-          },
-        }}
       >
         <Carousel images={props.car.images}></Carousel>
       </CardMedia>
@@ -47,7 +36,7 @@ export default function CarCard(props: {car: Car}) {
           alignItems="center"
           justifyContent="space-around"
           spacing={2}
-          marginTop={10}
+          marginTop={1}
         >
           {/* Adjusted typography styles */}
           <Stack spacing={0.5} direction="row" alignItems="center">
