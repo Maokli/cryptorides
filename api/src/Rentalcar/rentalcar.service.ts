@@ -356,7 +356,7 @@ export class RentalCarService {
         });
         else if(input.newStatus == statusRequest.Paid)
           this.eventEmitter.emit('sse.event', {
-            message: 'Payment Recieved!',
+            message: 'Payment Received!',
             userId: rentalrequest.ownerId,
           });
     }
