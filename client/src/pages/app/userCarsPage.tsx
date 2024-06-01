@@ -6,19 +6,20 @@ import debouncedFilters from './browse-cars.page';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import OwnerCarGrid from '../../components/owner-car-grid.component';
+import nocars from '../../assets/images/nocars.jpg';
 
 const query = `
   query GetUserCars {
     userCars {
-        id , 
-        location , 
-        brand , 
-        color , 
-        title , 
-        fuelType , 
-        rentalPrice , 
-        downPayment,
-        images {url}
+      id , 
+      location , 
+      brand , 
+      color , 
+      title , 
+      fuelType , 
+      rentalPrice , 
+      downPayment,
+      images {url}
     }
   }
 `;
@@ -57,14 +58,19 @@ function BrowseUserCars() {
 
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h3">My Cars</Typography>
-        <Button color="primary" variant="contained" onClick={handleAddCarClick} sx={{marginRight: '1vw'}}>
-          <AddIcon></AddIcon>
-          Add Car
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginX: '30px' }}>
+        <Typography variant="h4" sx={{ fontFamily: 'Montserrat-Regular', fontWeight: 'bold', textTransform: 'uppercase', color: '#0CC0DF', textAlign: 'center' }}>My Cars</Typography>
+        <Button sx ={{backgroundColor :'#0CC0DF',  width : 200 , height : 100 , marginTop : 2}} variant="contained" onClick={handleAddCarClick}>
+          <AddIcon /> Add Car
         </Button>
       </Box>
-      <OwnerCarGrid cars={userCars}></OwnerCarGrid>
+      {userCars.length === 0 ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
+          <img src={nocars} alt="No Cars" style={{ maxWidth: '100%', height: 'auto' }} />
+        </Box>
+      ) : (
+        <OwnerCarGrid cars={userCars} />
+      )}
     </>
   );
 }

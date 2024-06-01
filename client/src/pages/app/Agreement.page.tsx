@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import Sidebar from '../../components/sidebar';
 import { Chat } from '../../components/chat';
 import { useParams } from 'react-router-dom';
 import axios from '../../helpers/axios.helpers';
@@ -90,6 +89,7 @@ const AgreementPage: React.FC = () => {
       };
 
       await axios.instance.post("", { query: mutation, variables });
+      await axios.instance.post("", { query: mutation, variables });
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -98,17 +98,16 @@ const AgreementPage: React.FC = () => {
   return (
     <Box display="flex" height="100vh">
       <Grid container>
-        <Grid item xs={2}>
-          <Sidebar />
-        </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <Box height="100%" padding={2}>
             {rentalRequest && (
-              <Chat recipientId={currentUserId === (rentalRequest as any).ownerId ? (rentalRequest as any).renterId : (rentalRequest as any).ownerId} onLogout={() => { }} />
+              <Box height="100%">
+                <Chat recipientId={currentUserId === (rentalRequest as any).ownerId ? (rentalRequest as any).renterId : (rentalRequest as any).ownerId} onLogout={() => { }} />
+              </Box>
             )}
           </Box>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           {rentalRequest && (
             <AgreementRightSide rentalRequest={rentalRequest} onStatusUpdate={handleStatusUpdate} />
           )}
