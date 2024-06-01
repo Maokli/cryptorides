@@ -296,8 +296,8 @@ export class RentalCarService {
       relations: ["car"]
     });
 
-    const ownerWallet = "0xACa94ef8bD5ffEE41947b4585a84BdA5a3d3DA6E";
-    const renterWallet = "0x1dF62f291b2E969fB0849d99D9Ce41e2F137006e";
+    const ownerWallet = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";
+    const renterWallet = "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0";
     
     const car = rentalrequest.car;
   
@@ -337,13 +337,13 @@ export class RentalCarService {
     return true;
   }
 
-  async getRentalRequestsById(requestid): Promise<rentalRequest> {
+  async getRentalRequestsById(requestid): Promise<rentalRequestDto> {
     const rentalrequest = await this.rentalRequestRepository.findOne({
       where: { id: requestid },
       relations: ["car"]
     });
 
-    return rentalrequest;
+    return this.mapRentalRequestToDto(rentalrequest);
   }
 
   async updateRentalRequests(requestid, input: UpdateRentalRequestInput, user): Promise<void> {

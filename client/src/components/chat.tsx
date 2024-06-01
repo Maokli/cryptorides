@@ -95,10 +95,10 @@ export const Chat: React.FC<ChatProps> = ({ onLogout, recipientId }) => {
     console.log("Sending private message to recipient:", recipientId);
 
     const newMessage: Message = {
-      id: Date.now(), 
+      id: Date.now(),
       body: inputValue.trim(),
       author: currentUserId!,
-      authorName: "You", 
+      authorName: "You",
     };
 
     // Add the sent message to the local state
@@ -121,29 +121,34 @@ export const Chat: React.FC<ChatProps> = ({ onLogout, recipientId }) => {
 
   return (
     <Paper sx={{ width: "80%", margin: "auto", padding: 2 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Typography variant="h6">Cryptorides Chat App</Typography>
-        <Button variant="contained" onClick={handleLogout}>Logout</Button>
-      </Box>
       <Box sx={{ display: "flex", flexDirection: "column", height: "60vh", overflowY: "scroll" }}>
         {messages.map((message, idx) => (
-          <Paper
+          <Box
             key={idx}
             sx={{
-              backgroundColor: message.author === currentUserId ? "#E3F2FD" : "#F3E5F5",
-              padding: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: message.author === currentUserId ? "flex-end" : "flex-start",
               mb: 1,
-              width: "fit-content",
-              maxWidth: "80%",
-              alignSelf: message.author === currentUserId ? "flex-end" : "flex-start",
             }}
           >
-            <Typography variant="body1">{message.authorName}</Typography>
-            <Typography variant="body1">{message.body}</Typography>
-            <Typography variant="body2" sx={{ color: "#9E9E9E" }}>
-              {new Date().toLocaleTimeString()}
+            <Paper
+              sx={{
+                backgroundColor: message.author === currentUserId ? "#92bbff" : "lightgray",
+                padding: 1,
+                width: "fit-content",
+                maxWidth: "80%",
+                boxShadow: "0px -3px 6px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <Typography variant="body1" sx={{ fontWeight: '550', fontStyle: 'italic' }}>{message.authorName}</Typography>
+              <Typography variant="body1">{message.body}</Typography>
+            </Paper>
+            <Typography variant="body2" sx={{ mt: 0.5, color: "#9E9E9E" }}>
+              {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </Typography>
-          </Paper>
+
+          </Box>
         ))}
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
