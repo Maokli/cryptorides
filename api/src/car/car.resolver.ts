@@ -59,8 +59,8 @@ export class CarResolver {
 
   @Query(() => [CarWithImages])
   @UseGuards(JwtAuthGuard)
-  async filteredCars(@Args("filter", { nullable: true }) filter: CarFilter) {
-    return await this.carService.filterCars(filter);
+  async filteredCars(@Args("filter", { nullable: true }) filter: CarFilter, @GetCurrentUserId() userId: number) {
+    return await this.carService.filterCars(filter, userId);
   }
 
   @Query(() => FilterOptions, {name: "availableFilters"})

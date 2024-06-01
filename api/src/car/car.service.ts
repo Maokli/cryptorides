@@ -191,8 +191,12 @@ export class CarService {
     }
   }
 
-  async filterCars(filter: CarFilter): Promise<CarWithImages[]> {
+  async filterCars(filter: CarFilter, userId: number): Promise<CarWithImages[]> {
     let query = this.carRepository.createQueryBuilder("car");
+
+    query = query.andWhere("car.ownerId != :userId", {
+      userId: userId
+    });
 
     if (filter.minPrice) {
       query = query.andWhere("car.rentalPrice >= :minPrice", {
