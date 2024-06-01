@@ -1,10 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Button, Grid, Container, Box, TextField, InputAdornment } from "@mui/material";
 import axios from "../../helpers/axios.helpers";
-import { getIdFromToken } from '../../helpers/auth.helpers';
+import { getIdFromToken, getUserToken } from '../../helpers/auth.helpers';
 import PictureUpload from "../../components/carRentForm/imageUpload";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 
 interface CarData {
   picture1: File | null;
@@ -95,7 +96,7 @@ const AddCarForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
+    const token = getUserToken();
     if (!token) {
       console.error("Token is missing in local storage");
       return;

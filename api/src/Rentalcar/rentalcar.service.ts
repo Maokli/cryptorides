@@ -24,6 +24,7 @@ import { entityType } from "src/shared/enum/entityType.enum";
 import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
 import { Image } from "src/car/dto/image.model";
 import { request } from "http";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 @Injectable()
 export class RentalCarService {
@@ -41,7 +42,8 @@ export class RentalCarService {
     private readonly fileAssignmentRepository: Repository<FileAssignment>,
 
     private readonly carService: CarService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly eventEmitter: EventEmitter2
   ) { }
 
   async create(input: CreateRentalcarInput): Promise<Rentalcar> {
@@ -242,13 +244,18 @@ export class RentalCarService {
     let available = await this.testavailibilityCar(input);
     if (available == true) {
       //trouver car
-      const car = await this.carRepository.findOne({ where: { id: input.carId } });
+      const car = await this.carRepository.findOne({ where: { id: input.carId }, relations: ["owner"] });
       const owner = car.owner;
       const newRentalRequest = await this.createRentalRequest(input, car);
       const createNotificationInput: CreateNotificationInput = {
         car: car
       };
       await this.notificationService.create(createNotificationInput);
+      this.eventEmitter.emit('sse.event', {
+        message: 'You have a new rental request',
+        userId: owner.id,
+      });
+
       return newRentalRequest;
     }
     else {
@@ -285,7 +292,7 @@ export class RentalCarService {
   }
 
   private async callPaymentEngine(requestid:number): Promise<boolean> {
-    const rentalrequest = await this.rentalRequestRepository.findOne({where: { id: requestid },
+    /*const rentalrequest = await this.rentalRequestRepository.findOne({where: { id: requestid },
       relations: ["car"]
     });
 
@@ -297,10 +304,9 @@ export class RentalCarService {
     const downPayment = car.downPayment;
     const rentalPrice = car.rentalPrice;
   
-    const differenceInDays = (rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24);
     const rentalPeriod = Math.floor((rentalrequest.todate.getTime() - rentalrequest.fromdate.getTime()) / (1000 * 60 * 60 * 24));
   
-    const response = await fetch('localhost:5000/rental', {
+    const response = await fetch('http://127.0.0.1:5000/rent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -311,14 +317,23 @@ export class RentalCarService {
         rentalPeriod: rentalPeriod,
         downPaymentAmount: downPayment,
         rentAmount: rentalPrice,
+        secret: "66687104b6c27da56e1fbacd5636a9e6",
       }),
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
     });
   
-    if (!response.ok) {
+    if (!response==true) {
       console.error('Error calling payment engine:', response.statusText);
       return false;
     }
-    
+    */
     return true;
   }
 
@@ -336,6 +351,22 @@ export class RentalCarService {
     if (rentalrequest.ownerId == user) {
       rentalrequest.status = input.newStatus;
       await this.rentalRequestRepository.save(rentalrequest);
+
+      if(input.newStatus == statusRequest.Approved)
+        this.eventEmitter.emit('sse.event', {
+          message: 'Your request was approved!',
+          userId: rentalrequest.renterId,
+        });
+      else if(input.newStatus == statusRequest.Cancelled)
+        this.eventEmitter.emit('sse.event', {
+          message: 'Your request was cancelled!',
+          userId: rentalrequest.renterId,
+        });
+        else if(input.newStatus == statusRequest.Paid)
+          this.eventEmitter.emit('sse.event', {
+            message: 'Payment Received!',
+            userId: rentalrequest.ownerId,
+          });
     }
     else {
       throw new Error("You are not allowed to update the status of this rental request")

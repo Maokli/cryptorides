@@ -10,6 +10,7 @@ import axios from "../../helpers/axios.helpers";
 import PictureUpload from "../../components/carRentForm/imageUpload";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/backButton.component";
+import { getUserToken } from "../../helpers/auth.helpers";
 
 interface CarData {
   picture1: File | null;
@@ -155,7 +156,7 @@ const UpdateCarForm = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = getUserToken();
     if (!token) {
       console.error("Token is missing in local storage");
       return;

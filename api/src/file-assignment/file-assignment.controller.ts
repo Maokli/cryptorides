@@ -37,11 +37,11 @@ export class FileAssignmentController {
 
     return fileAssignments;
   }
+  
   @Delete('deleteImages')
   async deleteByUrl(@Body() urls: {deletedImages : string[]}): Promise<{ success: boolean }> {
     const success = await this.fileAssignmentService.deleteByUrl(urls.deletedImages);
     return { success };
   }
-
 }
 

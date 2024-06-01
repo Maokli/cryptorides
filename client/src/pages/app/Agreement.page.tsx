@@ -89,6 +89,7 @@ const AgreementPage: React.FC = () => {
       };
 
       await axios.instance.post("", { query: mutation, variables });
+      await axios.instance.post("", { query: mutation, variables });
     } catch (error) {
       console.error("Error updating status:", error);
     }
