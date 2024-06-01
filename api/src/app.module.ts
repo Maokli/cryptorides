@@ -15,6 +15,7 @@ import { FileAssignmentController } from "./file-assignment/file-assignment.cont
 import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 import { ChatGateway } from './chat/chat.gateway';
 import { NotificationModule } from './notification/notification.module';
+import { EventEmitterModule } from "@nestjs/event-emitter";
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { NotificationModule } from './notification/notification.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
     SharedModule,
     RentalcarModule,
     UsersModule,
