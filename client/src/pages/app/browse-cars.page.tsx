@@ -4,7 +4,6 @@ import { CarFilters } from '../../models/car-filters.model';
 import { Grid , Box } from '@mui/material';
 import axios from '../../helpers/axios.helpers';
 import browse from '../../assets/images/browse.png';
-import DateTimePickerValue from '../../components/DateRangePicker';
 import { useFilters } from '../../components/filterContext';
 import CarFiltersComponent from '../../components/car-filters.component';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
