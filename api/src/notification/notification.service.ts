@@ -36,9 +36,10 @@ export class NotificationService {
   }
 
   async findAllByOwnerId(ownerId: number): Promise<NotificationDto[]> {
+    console.log(ownerId)
     const notificationsFromDb = await this.notificationRepository
       .find({where: {owner: {id: ownerId}}, relations: ["rentalRequest"]});
-
+    console.log(notificationsFromDb)
     return notificationsFromDb
       .map(notification => {
         return {id: notification.id, 

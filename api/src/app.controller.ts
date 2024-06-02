@@ -17,13 +17,15 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Sse('/sse/notifications')
-  async sseNotifications(@GetCurrentUserId() userId): Promise<Observable<MessageEvent>> {
+  async sseNotifications(): Promise<Observable<MessageEvent>> {
     return fromEvent(this.eventEmitter, 'notifications').pipe(
-      filter((payload: any) => userId === payload.userId),
+      filter((payload: any) => {
+        console.log(payload);
+        return true;
+      }),
       map((payload: any) => ({
-        data: JSON.stringify(payload.notification),
+        data: JSON.stringify(payload),
       })),
     );
   }

@@ -384,11 +384,10 @@ export class RentalCarService {
   }
 
   async updateRentalRequests(requestid, input: UpdateRentalRequestInput, user): Promise<void> {
-    const rentalrequestFromDb = await this.rentalRequestRepository.findOne({where: {id: requestid}});
+    const rentalrequestFromDb = await this.rentalRequestRepository.findOne({where: {id: requestid}, relations: ["car", "car.owner"]});
     if (rentalrequestFromDb.ownerId == user) {
       rentalrequestFromDb.status = input.newStatus;
       await this.rentalRequestRepository.save(rentalrequestFromDb);
-
       if(input.newStatus == statusRequest.Approved)
       {
         const notificationOwner = await this.userRepository.findOne({where: {id: rentalrequestFromDb.renterId as unknown as number}})
