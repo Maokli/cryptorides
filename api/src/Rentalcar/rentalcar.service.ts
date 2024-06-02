@@ -25,12 +25,16 @@ import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
 import { Image } from "src/car/dto/image.model";
 import { request } from "http";
 import { EventEmitter2 } from "@nestjs/event-emitter";
+import { User } from "src/shared/entities/user.entity";
 
 @Injectable()
 export class RentalCarService {
   constructor(
     @InjectRepository(Car)
     private readonly carRepository: Repository<Car>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
 
     @InjectRepository(Rentalcar)
     private readonly rentalcarRepository: Repository<Rentalcar>,
@@ -247,13 +251,25 @@ export class RentalCarService {
       const car = await this.carRepository.findOne({ where: { id: input.carId }, relations: ["owner"] });
       const owner = car.owner;
       const newRentalRequest = await this.createRentalRequest(input, car);
+
       const createNotificationInput: CreateNotificationInput = {
-        car: car
+        owner: owner,
+        message: `You have a new rental request for ${car.title}.`,
+        rentalRequest: newRentalRequest
       };
-      await this.notificationService.create(createNotificationInput);
-      this.eventEmitter.emit('sse.event', {
-        message: 'You have a new rental request',
+      const notification = await this.notificationService.create(createNotificationInput);
+
+      this.eventEmitter.emit('notifications', {
         userId: owner.id,
+        notification: {
+          id: notification.id,
+ 
+          message: notification.message,
+          
+          status: notification.status,
+          
+          rentalRequestId: notification.rentalRequest.id
+        }
       });
 
       return newRentalRequest;
@@ -292,10 +308,11 @@ export class RentalCarService {
   }
 
   private async callPaymentEngine(requestid:number): Promise<boolean> {
-    /*const rentalrequest = await this.rentalRequestRepository.findOne({where: { id: requestid },
-      relations: ["car"]
+    const rentalrequestFromDB = await this.rentalRequestRepository.findOne({where: { id: requestid },
+      relations: ["car", "car.owner"]
     });
 
+    /*
     const ownerWallet = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";
     const renterWallet = "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0";
     
@@ -334,6 +351,26 @@ export class RentalCarService {
       return false;
     }
     */
+    const createNotificationInput: CreateNotificationInput = {
+      owner: rentalrequestFromDB.car.owner,
+      message: `You received a payment for ${rentalrequestFromDB.car.title}`,
+      rentalRequest: rentalrequestFromDB
+    }
+    const notification = await this.notificationService.create(createNotificationInput);
+
+    this.eventEmitter.emit('notifications', {
+      userId: rentalrequestFromDB.car.owner.id,
+      notification: {
+        id: notification.id,
+
+        message: notification.message,
+        
+        status: notification.status,
+        
+        rentalRequestId: notification.rentalRequest.id
+      }
+    });
+
     return true;
   }
 
@@ -347,26 +384,59 @@ export class RentalCarService {
   }
 
   async updateRentalRequests(requestid, input: UpdateRentalRequestInput, user): Promise<void> {
-    const rentalrequest = await this.getRentalRequestsById(requestid);
-    if (rentalrequest.ownerId == user) {
-      rentalrequest.status = input.newStatus;
-      await this.rentalRequestRepository.save(rentalrequest);
+    const rentalrequestFromDb = await this.rentalRequestRepository.findOne({where: {id: requestid}});
+    if (rentalrequestFromDb.ownerId == user) {
+      rentalrequestFromDb.status = input.newStatus;
+      await this.rentalRequestRepository.save(rentalrequestFromDb);
 
       if(input.newStatus == statusRequest.Approved)
-        this.eventEmitter.emit('sse.event', {
-          message: 'Your request was approved!',
-          userId: rentalrequest.renterId,
+      {
+        const notificationOwner = await this.userRepository.findOne({where: {id: rentalrequestFromDb.renterId as unknown as number}})
+        const createNotificationInput: CreateNotificationInput = {
+          owner: notificationOwner,
+          message: `Your request for ${rentalrequestFromDb.car.title} was approved.`,
+          rentalRequest: rentalrequestFromDb,
+        }
+        
+        const notification = await this.notificationService.create(createNotificationInput);
+    
+        this.eventEmitter.emit('notifications', {
+          userId: rentalrequestFromDb.car.owner.id,
+          notification: {
+            id: notification.id,
+    
+            message: notification.message,
+            
+            status: notification.status,
+            
+            rentalRequestId: notification.rentalRequest.id
+          }
         });
+      }
       else if(input.newStatus == statusRequest.Cancelled)
-        this.eventEmitter.emit('sse.event', {
-          message: 'Your request was cancelled!',
-          userId: rentalrequest.renterId,
+      {
+        const notificationOwner = await this.userRepository.findOne({where: {id: rentalrequestFromDb.renterId as unknown as number}})
+        const createNotificationInput: CreateNotificationInput = {
+          owner: notificationOwner,
+          message: `Your request for ${rentalrequestFromDb.car.title} was cancelled.`,
+          rentalRequest: rentalrequestFromDb,
+        }
+
+        const notification = await this.notificationService.create(createNotificationInput);
+    
+        this.eventEmitter.emit('notifications', {
+          userId: rentalrequestFromDb.car.owner.id,
+          notification: {
+            id: notification.id,
+    
+            message: notification.message,
+            
+            status: notification.status,
+            
+            rentalRequestId: notification.rentalRequest.id
+          }
         });
-        else if(input.newStatus == statusRequest.Paid)
-          this.eventEmitter.emit('sse.event', {
-            message: 'Payment Received!',
-            userId: rentalrequest.ownerId,
-          });
+      }
     }
     else {
       throw new Error("You are not allowed to update the status of this rental request")

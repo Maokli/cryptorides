@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 import { Car } from "../../car/entities/car.entity";
 import { IsNotEmpty } from "class-validator";
 import { statusRequest } from "../enum/statusRequest.enum";
+import { Notification } from "src/notification/entities/notification.entity";
 
 @ObjectType()
 @Entity("CarRentalRequestTable")
@@ -44,4 +45,8 @@ export class rentalRequest {
     @Field(() => Car)
     @ManyToOne((car) => Car, (car) => car.rentalrequests)
     car: Car;
+
+    @Field(() => Car)
+    @ManyToOne((notification) => Notification, (notification) => notification.rentalRequest)
+    notifications: Notification[];
 }
