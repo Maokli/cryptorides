@@ -1,11 +1,26 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Button, Grid, Container, Box, TextField, InputAdornment } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Container,
+  Box,
+  TextField,
+  InputAdornment,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import axios from "../../helpers/axios.helpers";
-import { getIdFromToken, getUserToken } from '../../helpers/auth.helpers';
+import { getIdFromToken, getUserToken } from "../../helpers/auth.helpers";
 import PictureUpload from "../../components/carRentForm/imageUpload";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import {
+  failedToIdentifyCar,
+  noImageIsSelected,
+  notifyCarCreationFailure,
+} from "../../helpers/toast.helpers";
 
+const prediction_key = process.env.REACT_APP_PREDICTION_KEY;
 
 interface CarData {
   picture1: File | null;
@@ -51,7 +66,10 @@ const AddCarForm = () => {
     numberOfSeats: false,
   });
 
-  const handlePictureChange = (e: ChangeEvent<HTMLInputElement>, pictureName: string) => {
+  const handlePictureChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    pictureName: string
+  ) => {
     if (e.target.files && e.target.files[0]) {
       setCarData({
         ...carData,
@@ -105,18 +123,52 @@ const AddCarForm = () => {
 
     if (!ownerIdString) {
       console.error("OwnerId  missing in local storage");
+      
       return;
     }
 
-    if (
-      !carData.picture1 &&
-      !carData.picture2 &&
-      !carData.picture3 &&
-      !carData.picture4
-    ) {
-      console.error("At least one image is required");
+    const images = [
+      carData.picture1,
+      carData.picture2,
+      carData.picture3,
+      carData.picture4,
+    ].filter(Boolean);
+
+    if (images.length === 0) {
+      noImageIsSelected();
       return;
     }
+
+    // Verify that all images are cars
+    for (const image of images) {
+      const aiResponse = await axios.instance.post(
+        "https://cryptoridesprediction-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/2ba1f1ab-1903-48cd-b52d-56e82b28f440/classify/iterations/CarPrediction/image",
+        image,
+        {
+          headers: {
+            "Prediction-Key": prediction_key,
+            "Content-Type": "application/octet-stream",
+          },
+        }
+      );
+
+      const predictions = aiResponse.data.predictions;
+
+      if (!predictions) {
+        console.error("No predictions returned from AI.");
+        return;
+      }
+
+      const isCar = predictions.some(
+        (prediction: any) =>
+          prediction.tagName === "Vehicle" && prediction.probability > 0.75
+      );
+      if (!isCar) {
+        failedToIdentifyCar();
+        return;
+      }
+    }
+
     const ownerId = parseInt(ownerIdString);
 
     const query = `
@@ -153,16 +205,12 @@ const AddCarForm = () => {
     };
 
     try {
-      const response = await axios.instance.post("",
-        {
-          query,
-          variables,
-        }
-      );
+      const response = await axios.instance.post("", {
+        query,
+        variables,
+      });
 
       if (response.data.data && response.data.data.createCar) {
-        console.log("Car created:", response.data.data.createCar);
-
         const uploadData = new FormData();
         if (carData.picture1) uploadData.append("files", carData.picture1);
         if (carData.picture2) uploadData.append("files", carData.picture2);
@@ -207,7 +255,7 @@ const AddCarForm = () => {
           numberOfSeats: false,
         });
       } else {
-        console.error("Error creating car:", response.data.errors);
+        notifyCarCreationFailure();
       }
     } catch (error) {
       console.error("Error:", error);
@@ -270,7 +318,11 @@ const AddCarForm = () => {
                 required
                 fullWidth
                 error={touched.title && carData.title === ""}
-                helperText={touched.title && carData.title === "" ? "Title is required" : ""}
+                helperText={
+                  touched.title && carData.title === ""
+                    ? "Title is required"
+                    : ""
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -284,7 +336,11 @@ const AddCarForm = () => {
                 required
                 fullWidth
                 error={touched.brand && carData.brand === ""}
-                helperText={touched.brand && carData.brand === "" ? "Brand is required" : ""}
+                helperText={
+                  touched.brand && carData.brand === ""
+                    ? "Brand is required"
+                    : ""
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -299,7 +355,11 @@ const AddCarForm = () => {
                 fullWidth
                 type="number"
                 error={touched.rentalPrice && Number(carData.rentalPrice) <= 0}
-                helperText={touched.rentalPrice && Number(carData.rentalPrice) <= 0 ? "Rental Price must be greater than 0" : ""}
+                helperText={
+                  touched.rentalPrice && Number(carData.rentalPrice) <= 0
+                    ? "Rental Price must be greater than 0"
+                    : ""
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">TND</InputAdornment>
@@ -318,7 +378,11 @@ const AddCarForm = () => {
                 required
                 fullWidth
                 error={touched.carLocation && carData.carLocation === ""}
-                helperText={touched.carLocation && carData.carLocation === "" ? "Car Location is required" : ""}
+                helperText={
+                  touched.carLocation && carData.carLocation === ""
+                    ? "Car Location is required"
+                    : ""
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -332,7 +396,11 @@ const AddCarForm = () => {
                 required
                 fullWidth
                 error={touched.color && carData.color === ""}
-                helperText={touched.color && carData.color === "" ? "Color is required" : ""}
+                helperText={
+                  touched.color && carData.color === ""
+                    ? "Color is required"
+                    : ""
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -347,7 +415,11 @@ const AddCarForm = () => {
                 fullWidth
                 type="number"
                 error={touched.downPayment && Number(carData.downPayment) < 0}
-                helperText={touched.downPayment && Number(carData.downPayment) < 0 ? "Down Payment cannot be negative" : ""}
+                helperText={
+                  touched.downPayment && Number(carData.downPayment) < 0
+                    ? "Down Payment cannot be negative"
+                    : ""
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">TND</InputAdornment>
@@ -357,6 +429,7 @@ const AddCarForm = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                select
                 label="Fuel Type"
                 placeholder="Fuel Type"
                 name="fuelType"
@@ -366,8 +439,16 @@ const AddCarForm = () => {
                 required
                 fullWidth
                 error={touched.fuelType && carData.fuelType === ""}
-                helperText={touched.fuelType && carData.fuelType === "" ? "Fuel Type is required" : ""}
-              />
+                helperText={
+                  touched.fuelType && carData.fuelType === ""
+                    ? "Fuel Type is required"
+                    : ""
+                }
+              >
+                <MenuItem value="Gas">Gas</MenuItem>
+                <MenuItem value="Electric">Electric</MenuItem>
+                <MenuItem value="Diesel">Diesel</MenuItem>
+              </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -380,8 +461,14 @@ const AddCarForm = () => {
                 required
                 fullWidth
                 type="number"
-                error={touched.numberOfSeats && Number(carData.numberOfSeats) <= 0}
-                helperText={touched.numberOfSeats && Number(carData.numberOfSeats) <= 0 ? "Number of Seats must be greater than 0" : ""}
+                error={
+                  touched.numberOfSeats && Number(carData.numberOfSeats) <= 0
+                }
+                helperText={
+                  touched.numberOfSeats && Number(carData.numberOfSeats) <= 0
+                    ? "Number of Seats must be greater than 0"
+                    : ""
+                }
               />
             </Grid>
           </Grid>

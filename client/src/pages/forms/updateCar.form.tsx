@@ -5,12 +5,18 @@ import {
   Container,
   TextField,
   InputAdornment,
+  MenuItem,
 } from "@mui/material";
 import axios from "../../helpers/axios.helpers";
 import PictureUpload from "../../components/carRentForm/imageUpload";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/backButton.component";
 import { getUserToken } from "../../helpers/auth.helpers";
+import { upload } from "@testing-library/user-event/dist/upload";
+import { failedToIdentifyCar, noImageIsSelected } from "../../helpers/toast.helpers";
+
+const prediction_key = process.env.REACT_APP_PREDICTION_KEY;
+
 
 interface CarData {
   picture1: File | null;
@@ -162,6 +168,51 @@ const UpdateCarForm = () => {
       return;
     }
 
+    const images = [
+      carData.picture1,
+      carData.picture2,
+      carData.picture3,
+      carData.picture4,
+    ].filter(Boolean);
+    
+    const filteredImages = images.filter(imageData => imageData && imageData.name && !imageData.name.includes("http"));
+
+    if (images.length === 0) {
+      noImageIsSelected();
+      return;
+    }
+
+    // Verify that all images are cars
+    for (const image of filteredImages) {
+      const aiResponse = await axios.instance.post(
+        "https://cryptoridesprediction-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/2ba1f1ab-1903-48cd-b52d-56e82b28f440/classify/iterations/CarPrediction/image",
+        image,
+        {
+          headers: {
+            "Prediction-Key": prediction_key,
+            "Content-Type": "application/octet-stream",
+          },
+        }
+      );
+
+      const predictions = aiResponse.data.predictions;
+
+      if (!predictions) {
+        console.error("No predictions returned from AI.");
+        return;
+      }
+
+      const isCar = predictions.some(
+        (prediction: any) =>
+          prediction.tagName === "Vehicle" && prediction.probability > 0.75
+      );
+      if (!isCar) {
+        failedToIdentifyCar();
+        return;
+      }
+    }
+
+
     const query = `
     mutation UpdateCar($input: UpdateCarInput!) {
       updateCar(updateCarInput: $input) {
@@ -192,13 +243,13 @@ const UpdateCarForm = () => {
       },
     };
 
-    try {
+      try {
       const response = await axios.instance.post(
         "http://localhost:3001/graphql",
         { query, variables },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
+      
       if (response.data.data && response.data.data.updateCar) {
         console.log("Car updated:", response.data.data.updateCar);
 
@@ -214,6 +265,7 @@ const UpdateCarForm = () => {
         uploadData.append("elementId", response.data.data.updateCar.id);
         uploadData.append("elementType", "1");
 
+        
         const imageUploadResponse = await axios.instance.post(
           "http://localhost:3001/upload",
           uploadData,
@@ -294,7 +346,6 @@ const UpdateCarForm = () => {
             { label: "Down Payment", name: "downPayment", adornment: "$" },
             { label: "Location", name: "carLocation" },
             { label: "Color", name: "color" },
-            { label: "Fuel Type", name: "fuelType" },
             { label: "Number of Seats", name: "numberOfSeats" },
           ].map(({ label, name, adornment }) => (
             <Grid item xs={12} sm={6} key={name}>
@@ -333,6 +384,29 @@ const UpdateCarForm = () => {
               />
             </Grid>
           ))}
+          <Grid item xs={12} sm={6}>
+              <TextField
+                select
+                label="Fuel Type"
+                placeholder="Fuel Type"
+                name="fuelType"
+                value={carData.fuelType}
+                onChange={handleChange}
+                onBlur={() => setTouched({ ...touched, fuelType: true })}
+                required
+                fullWidth
+                error={touched.fuelType && carData.fuelType === ""}
+                helperText={
+                  touched.fuelType && carData.fuelType === ""
+                    ? "Fuel Type is required"
+                    : ""
+                }
+              >
+                <MenuItem value="Gas">Gas</MenuItem>
+                <MenuItem value="Electric">Electric</MenuItem>
+                <MenuItem value="Diesel">Diesel</MenuItem>
+              </TextField>
+            </Grid>
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Update Car
