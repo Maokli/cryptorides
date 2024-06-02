@@ -20,6 +20,7 @@ import NavbarSwitcher from './components/NavbarSwitcher';
 import { FiltersProvider } from './components/filterContext'; // Import FiltersProvider
 import Footer from './components/footer/footer';
 import './index.css';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const theme = createTheme({
   palette: {
@@ -55,6 +56,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+
+      <LoadingSpinner isAuthorized={isLoggedIn} />  
       <ToastContainer /> {/* Add ToastContainer here */}
       <ApolloProvider client={client}>
         <FiltersProvider>

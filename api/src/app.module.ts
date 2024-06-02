@@ -16,6 +16,8 @@ import { RentalcarModule } from "./Rentalcar/rentalcar.module";
 import { ChatGateway } from './chat/chat.gateway';
 import { NotificationModule } from './notification/notification.module';
 import { EventEmitterModule } from "@nestjs/event-emitter";
+import { User } from "./shared/entities/user.entity";
+import { AuthGuard } from "@nestjs/passport";
 
 @Module({
   imports: [

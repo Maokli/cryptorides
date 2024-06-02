@@ -3,25 +3,26 @@ import { NotificationService } from './notification.service';
 import { Notification } from './entities/notification.entity';
 import { CreateNotificationInput } from './dto/create-notification.input';
 import { UpdateNotificationInput } from './dto/update-notification.input';
+import { GetCurrentUserId } from 'src/decorators/getCurrentUserId.decorator';
+import { NotificationDto } from './dto/notification.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver(() => Notification)
 export class NotificationResolver {
   constructor(private readonly notificationService: NotificationService) {}
-
-
-  async createNotification( createNotificationInput: CreateNotificationInput):Promise<void> {
-    return this.notificationService.create(createNotificationInput);
-  }
   
-  @Query(() => [Notification], { name: 'notification' })
-  findAllNewByOwnerId(ownerId: number) {
-    return this.notificationService.findAllNewByOwnerId(ownerId);
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [NotificationDto], { name: 'notification' })
+  async findAllByOwnerId(@GetCurrentUserId() ownerId: number) {
+    return await this.notificationService.findAllByOwnerId(ownerId);
   }
  
+
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => String)
-  async updateNotification(@Args('updateNotificationInput') updateNotificationInput: UpdateNotificationInput): Promise<string> {
-    await this.notificationService.update(updateNotificationInput);
-    return "Success: All Notifications Status are now seen";
+  async updateNotification(@Args('updateNotificationInput') updateNotificationInput: UpdateNotificationInput, @GetCurrentUserId() userId): Promise<NotificationDto[]> {
+    return await this.notificationService.update(updateNotificationInput, userId);
   }
   
 
