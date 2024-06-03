@@ -25,7 +25,6 @@ export class FileAssignmentController {
   async uploadFile(@UploadedFiles() files, @Body() body) {
     const fileAssignments = await Promise.all(files.map(async (file) => {
       const fileUrl = `http://localhost:3001/${file.path}`;
-      console.log(fileUrl)
       const fileAssignment = await this.fileAssignmentService.create({
         fileUrl,
         elementId: body.elementId,

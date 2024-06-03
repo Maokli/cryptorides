@@ -301,9 +301,7 @@ export class RentalCarService {
       throw new Error('Invalid userRole');
     }
     if(!rentalRequests || rentalRequests.length === 0)
-      return []
-
-    console.log(rentalRequests)
+      return [];
     return rentalRequests.map(rentalRequest => this.mapRentalRequestToDto(rentalRequest))
   }
 
@@ -454,7 +452,6 @@ export class RentalCarService {
       await this.updateRentalRequests(requestid, input, ownerid);
       const rentalrequest = await this.getRentalRequestsById(requestid);
       const car = rentalrequest.car
-      console.log(car)
       const rentalCarInput: CreateRentalcarInput = {
         reservedfrom: rentalrequest.fromdate,
         reservedto: rentalrequest.todate,

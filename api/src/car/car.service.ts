@@ -248,7 +248,6 @@ export class CarService {
     if(filter.search) {
       await this.addSearchToQuery(filter.search, query);
     }
-    console.log(query.getQuery());
     const carsWithoutImages = await query.getMany();
     const carsWithImages: CarWithImages[] = [];
 
@@ -276,11 +275,8 @@ export class CarService {
       }
 
       carsWithImages.push(carWithImages);
-      console.log(carWithImages)
-
     }
 
-    console.log(carsWithImages)
     // Add images
     return carsWithImages;
   }

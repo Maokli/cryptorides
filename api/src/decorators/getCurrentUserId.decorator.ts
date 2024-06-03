@@ -5,8 +5,7 @@ import { JwtPayload } from 'jsonwebtoken'; // Adjust this import to match your J
 export const GetCurrentUserId = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const gqlContext = GqlExecutionContext.create(ctx);
-    const request = gqlContext.getContext().req;
-    console.log('Request:', request); // Add this line
+    const request = gqlContext.getContext().req; // Add this line
     const user = request.user as JwtPayload; // Type assertion to match your payload type
     
     return user.sub;

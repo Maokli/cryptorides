@@ -61,8 +61,6 @@ const CarFiltersComponent: React.FC<CarFiltersComponentProps> = ({ filters, setF
   // Handle radio button changes
   const handleRadioSelectChanged = (event: React.MouseEvent, property: "location" | "color" | "brand") => {
     const newValue = (event.target as HTMLInputElement).value;
-    console.log(newValue)
-    console.log(filters[property])
     const newFilters = {...filters}
     if (newValue === filters[property]) {
       newFilters[property] = null; // uncheck

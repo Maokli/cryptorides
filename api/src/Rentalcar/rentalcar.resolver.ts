@@ -77,7 +77,6 @@ export class RentalcarResolver {
   ): Promise<string> {
     try {
       const userId = context.req.user.sub;
-      console.log(userId)
       await this.rentalcarService.updateRentalRequests(requestid, input, userId);
       return `Le statut de la demande de location avec l'ID ${requestid} a été mis à jour à ${input.newStatus}`;
     } catch (error) {

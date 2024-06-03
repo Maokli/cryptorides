@@ -67,7 +67,6 @@ export class UsersService {
   async getLikedCarsByUserId(id: number): Promise<CarWithImages[] | null> {
     try {
       const user = await this.userRepository.findOne({where:{ id },relations: ["carsLikedByUser", "carsLikedByUser.owner"]});
-      console.log("cars",user.carsLikedByUser);
       if (!user) {
         throw new Error("User not found");
       }
@@ -77,7 +76,6 @@ export class UsersService {
     
       for (let i = 0; i<carsWithoutImages.length; i++) {
         const car = carsWithoutImages[i];
-        console.log("car",car);
         const carFileAssignments = await this.getCarPictures(car.id);
         const images: Image[] = carFileAssignments.map(fa => {
           return {
@@ -101,7 +99,6 @@ export class UsersService {
   
         carsWithImages.push(carWithImages);
       }
-      console.log("carsWithImages",carsWithImages);
       return carsWithImages;
     } catch (error) {
       console.error(error);
