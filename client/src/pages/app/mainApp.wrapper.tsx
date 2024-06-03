@@ -19,27 +19,6 @@ import { toast } from 'react-toastify';
 function MainAppWrapper() {
   const [isAuthorized, setIsAuthorized] = useState(false);
 
-  const source = new EventSource('http://localhost:3001/sse');
-
-  source.onmessage = function (event) {
-    const loggedInUserId = parseInt(getUserIdFromToken() ?? "");
-    const eventBody = JSON.parse(event.data);
-    if(eventBody.userId === loggedInUserId)
-      toast.info(eventBody.message, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-  };
-
-  source.onerror = function (error) {
-    console.error('EventSource error:', error);
-  };
-
   useEffect(() => {
     if(!isAuthenticated())
       redirect("/login")
@@ -51,7 +30,6 @@ function MainAppWrapper() {
   
   return (
     <>
-      <LoadingSpinner isAuthorized={isAuthorized} />
       <Routes>
         <Route path="/browse" element={<BrowseCarsPage />}></Route>
         <Route path="/add" element={<AddCarForm />}></Route>

@@ -1,10 +1,14 @@
 
 import { InputType } from '@nestjs/graphql';
-import { Car } from 'src/car/entities/car.entity';
+import { rentalRequest } from 'src/Rentalcar/entities/rentalRequest.entity';
+import { User } from 'src/shared/entities/user.entity';
 
 @InputType()
 export class CreateNotificationInput {
 
-  car : Car;
+  owner : User;
 
+  message: string;
+
+  rentalRequest: rentalRequest;
 }

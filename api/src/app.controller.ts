@@ -1,7 +1,9 @@
-import { Controller, Get, Sse, MessageEvent } from "@nestjs/common";
+import { Controller, Get, Sse, MessageEvent, UseGuards } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Observable, fromEvent, map } from 'rxjs';
+import { Observable, filter, fromEvent, map } from 'rxjs';
+import { GetCurrentUserId } from "./decorators/getCurrentUserId.decorator";
+import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 
 @Controller()
 export class AppController {
@@ -15,10 +17,14 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Sse('/sse')
-  async sse(): Promise<Observable<MessageEvent>> {
-    return fromEvent(this.eventEmitter, 'sse.event').pipe(
-      map((payload) => ({
+  @Sse('/sse/notifications')
+  async sseNotifications(): Promise<Observable<MessageEvent>> {
+    return fromEvent(this.eventEmitter, 'notifications').pipe(
+      filter((payload: any) => {
+        console.log(payload);
+        return true;
+      }),
+      map((payload: any) => ({
         data: JSON.stringify(payload),
       })),
     );

@@ -147,7 +147,17 @@ type Notification {
 
   """Car Owner"""
   owner: User!
+
+  """Concerned rental request"""
+  rentalRequest: User!
   status: statusNotification!
+}
+
+type NotificationDto {
+  id: Float!
+  message: String!
+  rentalRequestId: Float!
+  status: String!
 }
 
 type Query {
@@ -162,7 +172,7 @@ type Query {
   filteredCars(filter: CarFilter): [CarWithImages!]!
   getAllRentalsRequests(getRentalRequestInput: getRentalRequestInput!): [rentalRequestDto!]!
   getRentalRequests(requestid: Float!): rentalRequestDto!
-  notification: [Notification!]!
+  notification: [NotificationDto!]!
   payProcess(request: Float!): String!
   rentalHistoryByCarId(carId: Int!): [Rentalcar!]!
   searchCars(searchInput: String!): [Car!]!
@@ -240,6 +250,7 @@ type rentalRequest {
   createdAt: String!
   fromdate: DateTime!
   id: Int!
+  notifications: Car!
   ownerId: Float!
   renterId: Float!
   status: StatusRequest!

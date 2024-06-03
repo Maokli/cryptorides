@@ -8,10 +8,11 @@ import { CarModule } from "../car/car.module";
 import { rentalRequest } from "./entities/rentalRequest.entity";
 import { NotificationModule } from "src/notification/notification.module";
 import { FileAssignment } from "src/file-assignment/entities/file-assignment.entity";
+import { User } from "src/shared/entities/user.entity";
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Rentalcar, Car, rentalRequest, FileAssignment]), CarModule,NotificationModule],
+  imports: [TypeOrmModule.forFeature([Rentalcar, Car, rentalRequest, FileAssignment, User]), CarModule,NotificationModule],
   providers: [RentalcarResolver, RentalCarService],
 })
 export class RentalcarModule {}
