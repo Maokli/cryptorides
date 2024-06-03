@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 import { Car } from "../../car/entities/car.entity";
 import { IsNotEmpty } from "class-validator";
 import { statusRequest } from "../enum/statusRequest.enum";
-import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
+import { CarWithImages } from "src/shared/dto/get-car-withImage-dto";
 
 @ObjectType()
 export class rentalRequestDto {

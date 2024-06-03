@@ -23,7 +23,6 @@ import { handleLogout as performLogout } from '../helpers/auth.helpers';
 import { CarFilters } from '../models/car-filters.model';
 import CarFiltersComponent from '../components/car-filters.component';
 import { useFilters } from '../components/filterContext';
-import NotificationButton from './notification-button.component';
 
 
 export default function WhiteNavbar() {
@@ -51,7 +50,9 @@ export default function WhiteNavbar() {
   const handleCars = () => {
     navigate('/browse');
   };
-
+  const handleLikes = () => {
+    navigate('/likes');
+  };
   const onSearchInput = (e: React.FormEvent<HTMLDivElement>) => {
     const newFilters = { ...props.filters };
     newFilters.search = (e.target as HTMLInputElement).value;
@@ -100,6 +101,13 @@ export default function WhiteNavbar() {
     fontSize: '1.2rem',
     color: 'gray',
     marginRight: '5px',
+  };
+
+  const filterIconStyle = {
+    fontSize: '1.2rem',
+    color: 'gray',
+    marginLeft: 'auto',
+    cursor: 'pointer',
   };
 
   const textFieldStyle = {
@@ -154,8 +162,12 @@ export default function WhiteNavbar() {
             <IconButton sx={iconButtonStyle} color="inherit" onClick={handleCars}>
               <IoCarSport />
             </IconButton>
-            <NotificationButton />
             <IconButton sx={iconButtonStyle} color="inherit">
+              <Badge badgeContent={0} color="primary">
+                <IoIosNotifications />
+              </Badge>
+            </IconButton>
+            <IconButton sx={iconButtonStyle} color="inherit" onClick={handleLikes}>
               <AiFillHeart />
             </IconButton>
             <IconButton sx={avatarButtonStyle} color="inherit" onClick={handleMenuOpen}>

@@ -89,6 +89,6 @@
     "google-fonts-webpack-plugin": "^0.4.4"
   },
   "browser": {
-      "crypto": false
+    "crypto": false
   }
 }

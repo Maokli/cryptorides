@@ -12,6 +12,7 @@ type Car {
 
   """Unique id of the car"""
   id: Int!
+  likedByUsers: [User!]
   location: String!
 
   """Car Owner"""
@@ -125,6 +126,8 @@ input LoginUserInput {
 }
 
 type Mutation {
+  AddLikedCar(carId: Float!): User!
+  RemoveLikedCar(carId: Float!): User!
   createCar(createCarInput: CreateCarInput!): Car!
   createFileAssignment(elementId: Int!, elementType: EntityType!, fileUrl: String!): FileAssignment!
   createRentalcar(input: CreateRentalcarInput!): Rentalcar!
@@ -158,6 +161,8 @@ type NotificationDto {
 }
 
 type Query {
+  LikedCars: [CarWithImages!]!
+  LikedState(carId: Float!): Boolean!
   TestAvailibilty(request: rentalRequestInput!): Boolean!
   availableFilters: FilterOptions!
   car(id: Int!): CarWithImages!
@@ -226,6 +231,7 @@ input UpdateRentalRequestInput {
 type User {
   FamilyName: String
   carsCreatedByUser: [Car!]
+  carsLikedByUser: [Car!]
   email: String
   id: ID!
   name: String!

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { ObjectType, Field, ID } from "@nestjs/graphql";
 import { Car } from "../../car/entities/car.entity";
 import { Notification } from "../../notification/entities/notification.entity";
@@ -36,6 +36,10 @@ export class User {
   @OneToMany(() => Notification, (notification) => notification.owner)
   notifByUser: Notification[];
 
+  @Field(() => [Car], { nullable: true })
+  @ManyToMany(() => Car, (car) => car.likedByUsers, { nullable: true })
+  @JoinTable()
+  carsLikedByUser: Car[];
   /**
    * A random string of a constant length.
    * Before hashing the password we concat it with this salt and hash the result.

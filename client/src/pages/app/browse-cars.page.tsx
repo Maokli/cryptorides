@@ -9,7 +9,6 @@ import CarFiltersComponent from '../../components/car-filters.component';
 import CenterCarFiltersComponent from '../../components/center-car-filters.component';
 const useDebouncedFilters = (filters: CarFilters, delay: number) => {
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
-  console.log(filters);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedFilters(filters);

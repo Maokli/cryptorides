@@ -7,7 +7,7 @@ import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { CarFilter } from "src/Rentalcar/dto/car.filter";
 import { FilterOptions } from "./dto/filterOptions";
-import { CarWithImages } from "./dto/get-car-withImage-dto";
+import { CarWithImages } from "../shared/dto/get-car-withImage-dto";
 import { GetCurrentUserId } from "src/decorators/getCurrentUserId.decorator";
 
 @Resolver(() => Car)

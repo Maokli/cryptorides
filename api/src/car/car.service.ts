@@ -12,9 +12,9 @@ import { CarFilter } from "src/Rentalcar/dto/car.filter";
 import { FilterOptions } from "./dto/filterOptions";
 import { FileAssignment } from "src/file-assignment/entities/file-assignment.entity";
 import { entityType } from "src/shared/enum/entityType.enum";
-import { CarWithImages } from "./dto/get-car-withImage-dto";
+import { CarWithImages } from "../shared/dto/get-car-withImage-dto";
 import { fuelType } from "./enum/fuelType.enum";
-import { Image } from "./dto/image.model";
+import { Image } from "../shared/dto/image.model";
 
 @Injectable()
 export class CarService {

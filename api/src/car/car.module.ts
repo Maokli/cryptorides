@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { CarService } from "./car.service";
 import { CarResolver } from "./car.resolver";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -9,7 +9,7 @@ import { FileAssignment } from "src/file-assignment/entities/file-assignment.ent
 
 @Module({
   providers: [CarResolver, CarService],
-  imports: [TypeOrmModule.forFeature([Car, Rentalcar, FileAssignment]), UsersModule],
+  imports: [TypeOrmModule.forFeature([Car, Rentalcar, FileAssignment]), forwardRef(() => UsersModule)],
   exports: [CarService],
 })
 export class CarModule {}
