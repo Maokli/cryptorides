@@ -50,7 +50,9 @@ export default function WhiteNavbar() {
   const handleCars = () => {
     navigate('/browse');
   };
-
+  const handleLikes = () => {
+    navigate('/likes');
+  };
   const onSearchInput = (e: React.FormEvent<HTMLDivElement>) => {
     const newFilters = { ...props.filters };
     newFilters.search = (e.target as HTMLInputElement).value;
@@ -165,7 +167,7 @@ export default function WhiteNavbar() {
                 <IoIosNotifications />
               </Badge>
             </IconButton>
-            <IconButton sx={iconButtonStyle} color="inherit">
+            <IconButton sx={iconButtonStyle} color="inherit" onClick={handleLikes}>
               <AiFillHeart />
             </IconButton>
             <IconButton sx={avatarButtonStyle} color="inherit" onClick={handleMenuOpen}>

@@ -8,6 +8,7 @@ import AddCarForm from '../forms/addCar.form';
 import CarDetailsPage from './car-details.page';
 import AgreementPage from './Agreement.page';
 import RentalRequestsPage from './rental-requests.page';
+import LikedCarsPage from './liked-cars.page';
 import BrowseUserCars from './userCarsPage';
 import BrowseUserRentalRequests from './rentalrequestPage';
 import UpdateCarForm from '../forms/updateCar.form';
@@ -60,6 +61,7 @@ function MainAppWrapper() {
         <Route path="/agreement/:id" element={<AgreementPage />}></Route>
         <Route path="/rentalRequests/" element={<RentalRequestsPage />}></Route>
         <Route path="/update/:id" element={<UpdateCarForm/>}></Route>
+        <Route path="/likes" element={<LikedCarsPage />}></Route>
         <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>
     </>
