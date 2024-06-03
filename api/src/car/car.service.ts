@@ -277,7 +277,6 @@ export class CarService {
       carsWithImages.push(carWithImages);
     }
 
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA",carsWithImages)
     // Add images
     return carsWithImages;
   }
