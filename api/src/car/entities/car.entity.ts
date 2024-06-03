@@ -4,6 +4,8 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
 import { User } from "../../shared/entities/user.entity";
@@ -65,4 +67,8 @@ export class Car {
   @Field(()=>[rentalRequest], {nullable:true})
   @OneToMany(() =>rentalRequest , (rentalrequest) => rentalrequest.car)
   rentalrequests: rentalRequest[];
+
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User, user => user.carsLikedByUser, { nullable: true })
+  likedByUsers: User[];
 }

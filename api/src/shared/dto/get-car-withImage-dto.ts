@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
-import { User } from "../../shared/entities/user.entity";
-import { fuelType } from "../enum/fuelType.enum";
+import { User } from "../entities/user.entity";
+import { fuelType } from "../../car/enum/fuelType.enum";
 import { Rentalcar } from "../../Rentalcar/entities/rentalcar.entity";
 import { Image } from "./image.model";
 

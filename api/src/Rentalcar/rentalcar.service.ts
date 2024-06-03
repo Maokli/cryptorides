@@ -21,8 +21,8 @@ import { getRentalRequestInput } from "./dto/getRentalRequest.input";
 import { rentalRequestDto } from "./dto/rental-request.dto";
 import { FileAssignment } from "src/file-assignment/entities/file-assignment.entity";
 import { entityType } from "src/shared/enum/entityType.enum";
-import { CarWithImages } from "src/car/dto/get-car-withImage-dto";
-import { Image } from "src/car/dto/image.model";
+import { CarWithImages } from "src/shared/dto/get-car-withImage-dto";
+import { Image } from "src/shared/dto/image.model";
 import { request } from "http";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
