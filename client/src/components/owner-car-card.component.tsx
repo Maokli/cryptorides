@@ -16,24 +16,12 @@ import { useNavigate } from 'react-router-dom';
 export default function OwnerCarCard(props: { car: Car }) {
   const navigate = useNavigate();
   return (
-    <Card sx={{ width: 300, height: 400, borderRadius: 10, paddingY: 1, boxShadow: 2  , marginLeft : 10}}>
+    <Card sx={{ width: 300, borderRadius: 10, paddingY: 1, boxShadow: 2  , marginLeft : 10}}>
       <CardHeader
         title={props.car.title}
         titleTypographyProps={{ fontFamily: 'Montserrat', fontWeight: '600', fontSize: '0.9rem', textAlign: 'center' }}
       />
-      <CardMedia
-        sx={{
-          width: 200,
-          height: 70,
-          margin: 'auto',
-          '& .MuiBox-root.css-1tnsptx': {
-            width: '100%',
-            height: '100%',
-            borderRadius: 10,
-            marginLeft: 'auto'
-          },
-        }}
-      >
+      <CardMedia      >
         <Carousel images={props.car.images}></Carousel>
       </CardMedia>
       <CardContent>
@@ -43,9 +31,8 @@ export default function OwnerCarCard(props: { car: Car }) {
           alignItems="center"
           justifyContent="space-around"
           spacing={2}
-          marginTop={12}
         >
-          <Stack spacing={0.5} direction="row" alignItems="center" sx={{ marginTop: '15px' }}>
+          <Stack spacing={0.5} direction="row" alignItems="center" >
             <Icon>
               <Typography color="text.secondary" variant="body2" sx={{ fontFamily: 'Montserrat', fontSize: '0.8rem' }}>
                 <PlaceIcon fontSize="small" />
